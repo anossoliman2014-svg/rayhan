@@ -57,4 +57,261 @@ h1{color:var(--g);font-size:26px}
 .nitem .tm{margin-inline-start:auto;background:#f3f4f6;padding:4px 10px;border-radius:10px;font-size:11px;color:var(--mut);white-space:nowrap}
 .nitem.unread::after{content:'';width:9px;height:9px;background:var(--g);border-radius:50%;flex-shrink:0}
 input,select{width:100%;padding:12px;border-radius:12px;border:1px solid #e5e7eb;font-size:14px;margin-top:6px}
-label{font-size:12
+label{font-size:12px;color:var(--mut);font-weight:bold;display:block;margin-top:12px}
+.hidden{display:none!important}
+.pump{background:#d1fae5;color:var(--gd);border-radius:12px;padding:10px;text-align:center;font-weight:bold;margin-bottom:10px}
+.pump.on{background:#fee2e2;color:var(--r);animation:bl 1s infinite}
+@keyframes bl{50%{opacity:.6}}
+canvas{width:100%;border-radius:12px}
+#toasts{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:99}
+.toast{color:#fff;background:var(--gd);padding:11px 20px;border-radius:14px;font-size:13px;font-weight:bold;margin-bottom:8px;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:50;display:none;align-items:center;justify-content:center}
+.overlay.show{display:flex}
+</style>
+</head>
+<body>
+<div id="toasts"></div>
+<aside>
+  <div class="logo"><div class="ic">🌱</div><div><b>الري الذكي</b><small>PRO DASHBOARD</small></div></div>
+  <nav>
+    <div class="ni on" onclick="go('dash',this)">🎛️ لوحة التحكم</div>
+    <div class="ni" onclick="go('zones',this)">🗺️ المناطق</div>
+    <div class="ni" onclick="go('cons',this)">📊 الاستهلاك</div>
+    <div class="ni" onclick="go('weather',this)">🌤️ الطقس</div>
+    <div class="ni" onclick="go('notif',this)">🔔 التنبيهات</div>
+    <div class="ni" onclick="go('settings',this)">⚙️ الإعدادات</div>
+  </nav>
+  <div class="stat" onclick="toggleConn()"><b><i id="dot"></i><span id="connTxt">...</span></b><small id="lastUpd">آخر تحديث: الآن</small></div>
+</aside>
+<main>
+
+<section id="pg-dash">
+  <h1>لوحة التحكم</h1><div class="sub">مراقبة لحظية وتحكم كامل بنظام الري</div>
+  <div class="tgl"><div id="m0" onclick="setMode(0)">🤖 ذكي</div><div id="m1" onclick="setMode(1)">🎛 يدوي</div><div id="m2" onclick="setMode(2)">📅 جدول</div></div>
+  <div class="cards">
+    <div class="card"><div class="t"><span class="ic" style="background:#d1fae5">💧</span>رطوبة التربة</div><div class="big" id="soil">--</div><div class="bar"><i id="soilBar"></i></div><small style="color:var(--mut)">الهدف: <span id="tgt">--</span>%</small></div>
+    <div class="card"><div class="t"><span class="ic" style="background:#dbeafe">🪣</span>مستوى الخزان</div><div class="big" id="water" style="color:var(--b)">--</div><div class="bar"><i id="waterBar" style="background:var(--b)"></i></div></div>
+    <div class="card"><div class="t"><span class="ic" style="background:#fef3c7">🌡️</span>الحرارة</div><div class="big" id="temp">--</div></div>
+    <div class="card"><div class="t"><span class="ic" style="background:#e0e7ff">💦</span>رطوبة الجو</div><div class="big" id="hum">--</div><small id="rain" style="color:var(--mut)">☀️ جاف</small></div>
+  </div>
+  <div class="grid2">
+    <div class="card"><div class="t">📈 السجل الحي</div><canvas id="chart" height="140" style="margin-top:10px"></canvas></div>
+    <div>
+      <div class="card" style="margin-bottom:16px"><div class="t">🧠 الذكاء الاصطناعي</div>
+        <div style="font-size:13px;margin-top:10px;line-height:2">الثقة: <b id="conf" style="color:var(--gd)">--</b><br>الحاجة للري: <b id="need" style="color:var(--gd)">--</b><br>الجفاف: <b id="dry" style="color:var(--gd)">--</b><br>القرار: <b id="reason" style="color:var(--gd)">--</b></div>
+      </div>
+      <div class="card"><div class="t">⚙️ التحكم</div>
+        <div class="pump" id="pumpSt" style="margin-top:10px">المضخة متوقفة</div>
+        <div style="display:flex;gap:8px"><button class="btn g" style="flex:1" onclick="irrigate(10)">💧 10ث</button><button class="btn g" style="flex:1" onclick="irrigate(30)">💧 30ث</button><button class="btn o" style="flex:1" onclick="stopPump()">⏹</button></div>
+        <button class="btn r" style="width:100%;margin-top:8px" onclick="emergencyStop()">⛔ إيقاف طارئ</button>
+        <div style="display:flex;gap:8px;margin-top:8px"><select id="selPlant" onchange="setPlant(this.value)"></select><select id="selSoil" onchange="setSoil(this.value)"></select></div>
+        <label>الرطوبة المستهدفة: <b id="tgtVal">--</b>%</label>
+        <input type="range" min="20" max="80" id="rng" oninput="$('tgtVal').innerText=this.value" onchange="setTarget(this.value)"/>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pg-zones" class="hidden">
+  <h1>المناطق</h1><div class="sub">تحكم مستقل بكل منطقة ري</div>
+  <div class="cards" id="zoneCards"></div>
+</section>
+
+<section id="pg-cons" class="hidden">
+  <h1 style="color:var(--b)">استهلاك المياه</h1><div class="sub">تحليل استهلاك المياه الأسبوعي والشهري</div>
+  <div class="cards">
+    <div class="card"><div class="t"><span class="ic" style="background:#dbeafe">💧</span>الاستهلاك اليومي</div><div class="big" id="cDay">--</div><span class="pill g">-12% عن الأمس</span></div>
+    <div class="card"><div class="t"><span class="ic" style="background:#e0e7ff">🌊</span>الاستهلاك الأسبوعي</div><div class="big" id="cWeek">--</div><span class="pill r">+5% عن الأسبوع الماضي</span></div>
+    <div class="card"><div class="t"><span class="ic" style="background:#d1fae5">🫗</span>متوسط الاستهلاك</div><div class="big" id="cAvg">--</div><small style="color:var(--mut)">معدل طبيعي لهذا الموسم</small></div>
+  </div>
+  <div class="card"><div class="t">📊 الرسم البياني للأسبوع الحالي</div><div class="sub">كمية المياه المستهلكة باللتر</div><div class="bars" id="weekBars"></div></div>
+  <div class="card" style="margin-top:16px"><div class="t">💰 التكلفة التقديرية</div><div class="big" id="cCost" style="color:var(--gd)">--</div><small style="color:var(--mut)">أسبوعياً حسب سعر <span id="cRate">0.15</span> SAR/م³</small></div>
+</section>
+
+<section id="pg-weather" class="hidden">
+  <h1 style="color:var(--b)">حالة الطقس</h1><div class="sub">بيانات OpenWeather للتنبؤ وتعديل خطة الري</div>
+  <span class="pill g" id="wSuit">✔ مناسب للري اليوم — 85%</span>
+  <div class="grid2" style="margin-top:16px">
+    <div class="wcard"><div style="font-size:40px" id="wEmo">⛅</div><div id="wCity" style="font-weight:bold;margin-top:8px">--</div><div id="wDate" style="opacity:.8;font-size:12px"></div><div class="tmp"><span id="wTemp">--</span>°</div><div id="wCond">--</div>
+      <div class="wrow"><span>💧 الرطوبة<br><b id="wHum">--</b></span><span>🌬 الرياح<br><b id="wWind">--</b></span><span>⏱ الضغط<br><b id="wPress">--</b></span><span>🌧 المطر<br><b id="wRain">--</b></span></div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:16px"><div class="t">🌅 دورة الشمس</div><div style="display:flex;justify-content:space-around;margin-top:12px;text-align:center"><div><div style="font-size:24px">🌄</div><b id="wRise">--</b><small style="color:var(--mut);display:block">شروق</small></div><div><div style="font-size:24px">🌇</div><b id="wSet">--</b><small style="color:var(--mut);display:block">غروب</small></div></div></div>
+      <div class="card"><div class="t">🧭 اتجاه الرياح</div><div class="big" id="wDir" style="font-size:20px">--</div><small style="color:var(--mut)">سرعة <span id="wWind2">--</span> كم/س</small></div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px"><div class="t">📅 توقعات الأيام القادمة</div><div class="cards" id="wForecast" style="margin-top:12px"></div></div>
+</section>
+
+<section id="pg-notif" class="hidden">
+  <h1>التنبيهات</h1><div class="sub">سجل كامل لإشعارات النظام والأخطاء</div>
+  <div style="display:flex;gap:10px;margin-bottom:18px"><button class="btn o" onclick="markRead()">✔ تحديد الكل كمقروء</button><button class="btn o" style="color:var(--r)" onclick="clearNotif()">🗑 مسح السجل</button></div>
+  <div id="notifList"></div>
+</section>
+
+<section id="pg-settings" class="hidden">
+  <h1>الإعدادات</h1><div class="sub">تهيئة الاتصال والخدمات الخارجية</div>
+  <div class="card"><div class="t"><span class="ic" style="background:#d1fae5">🛡️</span>الأمان والتوكن</div><label>API Token</label><input id="sToken" type="password"/></div>
+  <div class="card" style="margin-top:16px"><div class="t"><span class="ic" style="background:#dbeafe">🖥️</span>إعدادات MQTT (للتحكم عن بعد)</div>
+    <div style="display:flex;gap:10px"><div style="flex:2"><label>Server Address</label><input id="sMqttS" placeholder="broker.hivemq.com"/></div><div style="flex:1"><label>Port</label><input id="sMqttP" placeholder="1883"/></div></div>
+    <div style="display:flex;gap:10px"><div style="flex:1"><label>Username</label><input id="sMqttU" placeholder="Optional"/></div><div style="flex:1"><label>Password</label><input id="sMqttW" placeholder="Optional"/></div></div>
+  </div>
+  <div class="card" style="margin-top:16px"><div class="t"><span class="ic" style="background:#ffedd5">🌤️</span>خدمة OpenWeather</div><label>API Key</label><input id="sOwm" type="password"/><label>المدينة</label><input id="sCity"/></div>
+  <div class="card" style="margin-top:16px"><div class="t"><span class="ic" style="background:#cffafe">💧</span>تكلفة المياه والتدفق</div>
+    <div style="display:flex;gap:10px"><div style="flex:1"><label>السعر (لكل متر مكعب)</label><input id="sCost" type="number" step="0.01"/></div><div style="flex:1"><label>تدفق المضخة (لتر/دقيقة)</label><input id="sFlow" type="number"/></div></div>
+  </div>
+  <div style="display:flex;gap:10px;margin-top:20px"><button class="btn g" onclick="saveCfg()">💾 حفظ التغييرات</button><button class="btn o" onclick="loadCfgUI()">إلغاء</button><button class="btn o" style="margin-inline-start:auto" onclick="toggleConn()">📡 الاتصال بجهاز</button></div>
+</section>
+
+</main>
+
+<!-- نافذة الاتصال (مُصلحة + وضع المطور) -->
+<div id="connPanel" class="overlay">
+  <div class="card" style="width:90%;max-width:380px">
+    <div class="t">📡 الاتصال بالجهاز</div>
+    <input id="inpHost" placeholder="IP الجهاز"/>
+    <input id="inpToken2" placeholder="التوكن"/>
+    <div style="display:flex;gap:8px;margin-top:12px">
+      <button class="btn g" style="flex:1" onclick="connectLive()">اتصال</button>
+      <button class="btn o" style="flex:1" onclick="startDemo()">تجريبي</button>
+    </div>
+    <small style="color:var(--mut);display:block;margin-top:10px">💡 للمبرمج: أدخل 2056 + 666 ثم "تجريبي" لوضع الاختبار</small>
+  </div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const fmt=(n,d=0)=>Number(n).toFixed(d);
+let MODE='demo',BASE='',ws=null,selLoaded=false,DEV=false;
+let CFG=Object.assign({token:'rayhan-2026',mqttS:'broker.hivemq.com',mqttP:'1883',mqttU:'',mqttW:'',owm:'',city:'Riyadh, SA',cost:0.15,flow:10},JSON.parse(localStorage.getItem('rayhan_cfg')||'{}'));
+let S={soil:35,water:80,temp:27,hum:55,rain:false,target:40,mode:0};
+let A={conf:.7,need:.3,dry:2.2,reason:'OK_NO_NEED',decision:'IDLE'};
+let P={running:false,remaining:0,reason:'IDLE'};
+let PLANTS=['طماطم','نعناع','ريحان','ورود','صبار','خضروات'],SOILS=['رملية','طينية','طمية','بتموس','صخرية'];
+let hist={soil:[],water:[]},cons=[120,150,90,200,110,130,100];
+let NOTIF=[{t:'مستوى الخزان منخفض',d:'وصل مستوى خزان المياه إلى 15%',lv:2,tm:'10:30 ص',un:true},{t:'بدء الري',d:'تم تفعيل المضخة 1 للمنطقة الأمامية',lv:1,tm:'08:00 ص',un:false},{t:'خطأ في الحساس',d:'لا توجد قراءة من حساس الرطوبة 2',lv:3,tm:'أمس',un:false}];
+let WDATA=null;
+const DAYS=['السبت','الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة'];
+function toast(m,c){const t=document.createElement('div');t.className='toast';if(c)t.style.background=c;t.innerText=m;$('toasts').appendChild(t);setTimeout(()=>t.remove(),3200);}
+function go(p,el){document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));el.classList.add('on');document.querySelectorAll('main>section').forEach(s=>s.classList.add('hidden'));$('pg-'+p).classList.remove('hidden');renderAll();}
+function toggleConn(){$('connPanel').classList.toggle('show');}
+
+/* ═══ REST/WS ═══ */
+function sameOrigin(){return MODE==='live'&&BASE===location.origin;}
+async function api(p,m='GET',b=null,auth=false){let u=BASE+p;const h={};if(b)h['Content-Type']=sameOrigin()?'application/json':'text/plain';if(auth){sameOrigin()?h['Authorization']='Bearer '+CFG.token:u+=(u.includes('?')?'&':'?')+'token='+CFG.token;}const r=await fetch(u,{method:m,headers:h,body:b?JSON.stringify(b):undefined});return r.json();}
+function connectLive(){const h=$('inpHost').value.trim();if(!h)return toast('❌ أدخل IP','#ef4444');CFG.token=$('inpToken2').value.trim()||CFG.token;BASE='http://'+h;MODE='live';$('connPanel').classList.remove('show');startWS();refreshLive();fetchWeatherLive();toast('📡 جارٍ الاتصال...','#3b82f6');}
+function startWS(){try{if(ws)ws.close();}catch(e){}const h=BASE.replace(/^https?:\/\//,'');ws=new WebSocket('ws://'+h+':81/?token='+CFG.token);
+ws.onopen=()=>{$('connTxt').innerText='النظام متصل';$('dot').style.background='#10b981';};
+ws.onclose=()=>{$('connTxt').innerText='انقطع الاتصال';$('dot').style.background='#ef4444';setTimeout(startWS,3000);};
+ws.onmessage=ev=>{const m=JSON.parse(ev.data),p=m.payload||{};
+if(m.type==='sensors'){S.soil=p.soil_percent;S.water=p.water_percent;S.temp=p.temp_c;S.hum=p.humidity_percent;S.rain=p.rain_detected;S.target=p.target_moisture||S.target;S.mode=p.mode??S.mode;pushHist();if(P.running)cons[6]+=CFG.flow/60;}
+else if(m.type==='ai'){A={conf:p.confidence,need:p.need,dry:p.drying_rate,reason:p.reason,decision:p.decision};}
+else if(m.type==='pump'){P={running:p.running,remaining:p.remaining_sec,reason:p.reason};}
+else if(m.type==='alarm'){NOTIF.unshift({t:'تنبيه: '+p.code,d:'إشعار من النظام',lv:2,tm:'الآن',un:true});}
+$('lastUpd').innerText='آخر تحديث: الآن';renderAll();};}
+async function refreshLive(){try{const[s,a,p,st]=await Promise.all([api('/api/v1/sensors'),api('/api/v1/ai'),api('/api/v1/pump'),api('/api/v1/settings')]);
+if(s.ok){S.soil=s.data.soil_percent;S.water=s.data.water_percent;S.temp=s.data.temp_c;S.hum=s.data.humidity_percent;S.rain=s.data.rain_detected;pushHist();}
+if(a.ok)A={conf:a.data.confidence,need:a.data.need,dry:a.data.drying_rate,reason:a.data.reason,decision:a.data.decision};
+if(p.ok)P={running:p.data.running,remaining:p.data.remaining_sec,reason:p.data.reason};
+if(st.ok){S.mode=st.data.mode;S.target=st.data.target_moisture;if(!selLoaded&&st.data.plants){PLANTS=st.data.plants;SOILS=st.data.soils;selLoaded=true;}}
+renderAll();}catch(e){}}
+setInterval(()=>{if(MODE==='live')refreshLive();},5000);
+
+/* ═══ الأوامر ═══ */
+function act(p,b){if(MODE==='demo'){demoAct(p,b);return;}api(p,p.includes('settings')?'PUT':'POST',b,true).then(j=>{j.ok?toast('✅ تم'):toast('❌ '+(j.error||'فشل'),'#ef4444');refreshLive();}).catch(()=>toast('❌ تعذر الاتصال','#ef4444'));}
+function irrigate(s){act('/api/v1/actions/irrigate',{duration_sec:s,reason:'MANUAL_UI'});}
+function stopPump(){act('/api/v1/actions/stop',{});}
+function emergencyStop(){if(confirm('⛔ إيقاف طارئ؟'))act('/api/v1/actions/emergency-stop',{});}
+function setMode(m){act('/api/v1/settings/mode',{mode:m});}
+function setPlant(v){act('/api/v1/settings/plant',{plant_id:+v});}
+function setSoil(v){act('/api/v1/settings/soil',{soil_id:+v});}
+function setTarget(v){act('/api/v1/settings/target',{target_moisture:+v});}
+function zoneCmd(z,on){if(MODE==='demo'){toast((on?'💧 تشغيل':'⏹ إيقاف')+' المنطقة '+z);return;}api('/api/v1/zones/'+z+(on?'/start':'/stop'),'POST',on?{duration_sec:15}:{}).then(j=>{j.ok?toast('✅ المنطقة '+z):toast('⚠️ يتطلب فيرموير v4.7','#f59e0b');}).catch(()=>toast('⚠️ يتطلب فيرموير v4.7','#f59e0b'));}
+
+/* ═══ الطقس ═══ */
+const emo=c=>({Clear:'☀️',Clouds:'⛅',Rain:'🌧️',Drizzle:'🌦️',Thunderstorm:'⛈️',Snow:'❄️',Mist:'🌫️'}[c]||'🌤️');
+const dirN=d=>['شمالية','ش شرقية','شرقية','ج شرقية','جنوبية','ج غربية','غربية','ش غربية'][Math.round(d/45)%8];
+async function fetchWeatherLive(){if(!CFG.owm)return;try{
+const q=CFG.city||'Riyadh, SA';
+const w=await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${q}&appid=${CFG.owm}&units=metric&lang=ar`).then(r=>r.json());
+WDATA={city:w.name,temp:w.main.temp,cond:w.weather[0].description,main:w.weather[0].main,hum:w.main.humidity,wind:(w.wind.speed*3.6).toFixed(0),press:w.main.pressure,rain:Math.round((w.clouds?.all||0)/2),rise:w.sys.sunrise,set:w.sys.sunset,deg:w.wind.deg||0};
+const f=await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${q}&appid=${CFG.owm}&units=metric&lang=ar`).then(r=>r.json());
+WDATA.fc=[];const seen={};f.list.forEach(it=>{const d=new Date(it.dt*1000).toDateString();if(!seen[d]&&WDATA.fc.length<5){seen[d]=1;WDATA.fc.push({day:new Date(it.dt*1000).toLocaleDateString('ar',{weekday:'long'}),t:Math.round(it.main.temp_max||it.main.temp),tm:Math.round(it.main.temp_min),main:it.weather[0].main});}});
+renderWeather();}catch(e){}}
+function demoWeather(){WDATA={city:'الرياض، المملكة العربية السعودية',temp:32,cond:'مشمس',main:'Clear',hum:40,wind:12,press:1012,rain:5,rise:null,set:null,deg:315,fc:[{day:'غداً',t:34,tm:22,main:'Clouds'},{day:'الإثنين',t:33,tm:21,main:'Clouds'},{day:'الثلاثاء',t:30,tm:20,main:'Rain'},{day:'الأربعاء',t:29,tm:19,main:'Rain'},{day:'الخميس',t:31,tm:20,main:'Clouds'}]};}
+function renderWeather(){if(!WDATA)return;const w=WDATA;
+$('wCity').innerText=w.city;$('wTemp').innerText=fmt(w.temp);$('wCond').innerText=w.cond;$('wEmo').innerText=emo(w.main);
+$('wHum').innerText=w.hum+'%';$('wWind').innerText=w.wind+' كم/س';$('wPress').innerText=w.press;$('wRain').innerText=w.rain+'%';
+$('wDir').innerText=dirN(w.deg);$('wWind2').innerText=w.wind;
+$('wDate').innerText=new Date().toLocaleDateString('ar',{weekday:'long',day:'numeric',month:'long'});
+if(w.rise)$('wRise').innerText=new Date(w.rise*1000).toLocaleTimeString('ar',{hour:'2-digit',minute:'2-digit'});
+if(w.set)$('wSet').innerText=new Date(w.set*1000).toLocaleTimeString('ar',{hour:'2-digit',minute:'2-digit'});
+const suit=Math.max(0,Math.min(100,100-w.rain-Math.max(0,w.temp-36)*3));$('wSuit').innerText=(suit>60?'✔ مناسب للري اليوم — ':'⚠ حذر للري — ')+suit+'%';
+$('wForecast').innerHTML=w.fc.map(f=>`<div class="fcard"><b>${f.day}</b><div class="e">${emo(f.main)}</div><div><b>${f.t}°</b> <small style="color:var(--mut)">${f.tm}°</small></div></div>`).join('');}
+
+/* ═══ الوضع التجريبي + وضع المطور السري 🛠️ ═══ */
+function startDemo(){
+  $('connPanel').classList.remove('show');   // إغلاق النافذة دائماً (الإصلاح)
+  const h=$('inpHost').value.trim(), t=$('inpToken2').value.trim();
+  DEV = (h==='2056' && t==='666');           // باب المطور السري — تجريبي فقط
+  MODE='demo'; BASE='';
+  if(DEV){
+    $('connTxt').innerText='وضع المطور 🛠️'; $('dot').style.background='#8b5cf6';
+    S.water=12; S.soil=22;                   // سيناريو اختبار: خزان منخفض + تربة جافة
+    NOTIF.unshift({t:'وضع المطور مفعّل',d:'أهلاً أيها المبرمج! محاكاة مسرّعة + سيناريو اختبار',lv:1,tm:'الآن',un:true});
+    toast('🛠️ أهلاً أيها المبرمج! وضع الاختبار السريع مفعّل','#8b5cf6');
+  } else {
+    $('connTxt').innerText='وضع تجريبي'; $('dot').style.background='#f59e0b';
+    toast('🧪 وضع تجريبي مفعّل','#3b82f6');
+  }
+  demoWeather(); renderAll();
+}
+setInterval(()=>{if(MODE!=='demo')return;
+if(P.running){P.remaining--;S.soil=Math.min(100,S.soil+1.2);S.water=Math.max(0,S.water-0.7);cons[6]+=CFG.flow/60;if(P.remaining<=0||S.water<=5){P.running=false;P.reason='COMPLETED';}}else S.soil=Math.max(0,S.soil-0.15);
+S.temp=Math.max(15,Math.min(45,S.temp+(Math.random()-.5)*.3));S.hum=Math.max(20,Math.min(95,S.hum+(Math.random()-.5)));
+A.need=Math.max(0,Math.min(1,(S.target-S.soil)/50));A.conf=.55+A.need*.4;A.dry=1.8+Math.random();A.decision=A.need>=.55?'IRRIGATE':'IDLE';A.reason=A.decision==='IRRIGATE'?'DEFICIT':'OK_NO_NEED';
+if(S.mode===0&&!P.running&&A.need>=.6&&S.water>10){P.running=true;P.remaining=20;P.reason='AUTO';NOTIF.unshift({t:'بدء الري',d:'تم تفعيل المضخة تلقائياً',lv:1,tm:'الآن',un:true});}
+pushHist();renderAll();},DEV?250:1000);   // وضع المطور = محاكاة ×4 أسرع
+function demoAct(p,b){if(p.includes('irrigate')){P.running=true;P.remaining=b.duration_sec;P.reason='MANUAL';toast('✅ تشغيل '+b.duration_sec+'ث');}
+else if(p.includes('emergency')){P.running=false;S.mode=1;toast('⛔ إيقاف طارئ','#ef4444');}
+else if(p.includes('stop')){P.running=false;toast('⏹ توقف');}
+else if(p.includes('mode')){S.mode=b.mode;toast('✅ الوضع تغيّر');}
+else if(p.includes('plant'))toast('✅ '+PLANTS[b.plant_id-1]);else if(p.includes('soil'))toast('✅ '+SOILS[b.soil_id-1]);
+else if(p.includes('target')){S.target=b.target_moisture;toast('✅ الهدف '+S.target+'%');}renderAll();}
+
+/* ═══ الرسم والعرض ═══ */
+function pushHist(){hist.soil.push(S.soil);hist.water.push(S.water);if(hist.soil.length>60){hist.soil.shift();hist.water.shift();}}
+function drawChart(){const cv=$('chart'),c=cv.getContext('2d');const W=cv.width=cv.clientWidth,H=140;c.clearRect(0,0,W,H);
+c.strokeStyle='rgba(0,0,0,.06)';for(let i=0;i<=4;i++){const y=8+i*(H-16)/4;c.beginPath();c.moveTo(0,y);c.lineTo(W,y);c.stroke();}
+if(hist.soil.length<2)return;const n=hist.soil.length,x=i=>W-(n-1-i)*(W/59),y=v=>8+(100-v)*(H-16)/100;
+const L=(a,col)=>{c.strokeStyle=col;c.lineWidth=2;c.beginPath();a.forEach((v,i)=>i?c.lineTo(x(i),y(v)):c.moveTo(x(i),y(v)));c.stroke();};
+L(hist.water,'#3b82f6');L(hist.soil,'#10b981');}
+function renderAll(){
+$('soil').innerText=fmt(S.soil)+'%';$('soilBar').style.width=S.soil+'%';$('water').innerText=fmt(S.water)+'%';$('waterBar').style.width=S.water+'%';
+$('temp').innerText=fmt(S.temp,1)+'°';$('hum').innerText=fmt(S.hum)+'%';$('tgt').innerText=S.target;$('tgtVal').innerText=S.target;$('rng').value=S.target;
+$('rain').innerText=S.rain?'🌧 ممطر':'☀️ جاف';
+$('conf').innerText=fmt(A.conf*100)+'%';$('need').innerText=fmt(A.need*100)+'%';$('dry').innerText=fmt(A.dry,1)+' %/س';$('reason').innerText=A.reason;
+['m0','m1','m2'].forEach((id,i)=>$(id).className=(S.mode===i?'on':''));
+const ps=$('pumpSt');ps.className='pump'+(P.running?' on':'');ps.innerText=P.running?'💧 تعمل — '+P.remaining+'ث':'المضخة متوقفة';
+if($('selPlant').options.length===0){$('selPlant').innerHTML=PLANTS.map((n,i)=>`<option value="${i+1}">🌿 ${n}</option>`).join('');$('selSoil').innerHTML=SOILS.map((n,i)=>`<option value="${i+1}">⛰ ${n}</option>`).join('');}
+$('zoneCards').innerHTML=[1,2].map(z=>`<div class="card"><div class="t"><span class="ic" style="background:#d1fae5">🌿</span>المنطقة ${z} — ${z===1?'الأمامية':'الخلفية'}</div><div class="pump${P.running?' on':''}" style="margin-top:10px">${P.running?'💧 تُروى الآن':'جاهزة'}</div><div style="font-size:13px;color:var(--mut);margin-bottom:10px">رطوبة التربة: <b style="color:var(--gd)">${fmt(S.soil+(z===2?-3:0))}%</b></div><div style="display:flex;gap:8px"><button class="btn g sm" style="flex:1" onclick="zoneCmd(${z},1)">💧 ري 15ث</button><button class="btn o sm" style="flex:1" onclick="zoneCmd(${z},0)">⏹ إيقاف</button></div></div>`).join('');
+const day=Math.round(cons[6]),week=Math.round(cons.reduce((a,b)=>a+b,0)),avg=Math.round(week/7);
+$('cDay').innerText=day+' لتر/يوم';$('cWeek').innerText=week+' لتر';$('cAvg').innerText=avg+' لتر/يوم';
+$('cCost').innerText=fmt(week/1000*CFG.cost,2)+' SAR';$('cRate').innerText=CFG.cost;
+const mx=Math.max(...cons);$('weekBars').innerHTML=cons.map((v,i)=>`<div class="bcol"><small>${Math.round(v)}L</small><div class="b" style="height:${v/mx*80}%"></div><small>${DAYS[i]}</small></div>`).join('');
+$('notifList').innerHTML=NOTIF.map(n=>{const ic=n.lv===3?['❌','#fee2e2']:n.lv===2?['⚠️','#fef9c3']:['ℹ️','#dbeafe'];return `<div class="nitem${n.un?' unread':''}"><div class="ic" style="background:${ic[1]}">${ic[0]}</div><div><b>${n.t}</b><div style="color:var(--mut);font-size:12px;margin-top:3px">${n.d}</div></div><span class="tm">${n.tm}</span></div>`;}).join('')||'<div class="card">لا تنبيهات 🎉</div>';
+drawChart();renderWeather();}
+function markRead(){NOTIF.forEach(n=>n.un=false);renderAll();toast('✔ تم تحديد الكل كمقروء');}
+function clearNotif(){NOTIF=[];renderAll();toast('🗑 تم مسح السجل');}
+function loadCfgUI(){$('sToken').value=CFG.token;$('sMqttS').value=CFG.mqttS;$('sMqttP').value=CFG.mqttP;$('sMqttU').value=CFG.mqttU;$('sMqttW').value=CFG.mqttW;$('sOwm').value=CFG.owm;$('sCity').value=CFG.city;$('sCost').value=CFG.cost;$('sFlow').value=CFG.flow;}
+function saveCfg(){CFG.token=$('sToken').value||CFG.token;CFG.mqttS=$('sMqttS').value;CFG.mqttP=$('sMqttP').value;CFG.mqttU=$('sMqttU').value;CFG.mqttW=$('sMqttW').value;CFG.owm=$('sOwm').value;CFG.city=$('sCity').value;CFG.cost=+$('sCost').value||0.15;CFG.flow=+$('sFlow').value||10;localStorage.setItem('rayhan_cfg',JSON.stringify(CFG));fetchWeatherLive();renderAll();toast('💾 تم حفظ التغييرات');}
+window.onload=()=>{
+  loadCfgUI();
+  const saved=localStorage.getItem('rayhan_conn');
+  if(saved){try{const c=JSON.parse(saved);BASE='http://'+c.host;CFG.token=c.token||CFG.token;MODE='live';startWS();refreshLive();fetchWeatherLive();return;}catch(e){}}
+  if(location.protocol.startsWith('http')&&!location.hostname.includes('github.io')){BASE=location.origin;MODE='live';startWS();refreshLive();}
+  else startDemo();   // يفتح مباشرة بدون نافذة معلّقة
+};
+</script>
+</body>
+</html>
