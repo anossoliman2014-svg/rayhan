@@ -83,14 +83,11 @@ label{font-size:12px;color:var(--mut);font-weight:bold;display:block;margin-top:
 .hidden{display:none!important}
 .pump{background:var(--gl);color:var(--gd);border-radius:12px;padding:10px;text-align:center;font-weight:bold;margin-bottom:10px}
 .pump.on{background:#fee2e2;color:var(--r);animation:bl 1s infinite}
-canvas{width:100%;border-radius:12px}
 #toasts{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:99}
 .toast{color:#fff;background:var(--gd);padding:11px 20px;border-radius:14px;font-size:13px;font-weight:bold;margin-bottom:8px}
 .overlay{position:fixed;inset:0;background:rgba(31,41,55,.4);backdrop-filter:blur(3px);z-index:50;display:none;align-items:center;justify-content:center}
 .overlay.show{display:flex}
 .tip{display:flex;gap:10px;background:var(--gl);border-radius:14px;padding:12px;font-size:13px;margin-bottom:10px}
-#feed{max-height:120px;overflow-y:auto;margin-top:10px;font-size:11px;color:var(--mut)}
-#feed div{padding:3px 0;border-bottom:1px dashed var(--line)}
 #micFab{position:fixed;bottom:20px;left:20px;z-index:60;width:62px;height:62px;border-radius:50%;border:none;background:linear-gradient(135deg,var(--g),#047857);font-size:27px;cursor:pointer;box-shadow:0 10px 26px rgba(16,185,129,.45)}
 #chatPanel{position:fixed;bottom:94px;left:20px;z-index:60;width:min(400px,94vw);height:min(580px,74vh);background:var(--card);border:1px solid var(--line);border-radius:22px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.25)}
 .chatHead{background:linear-gradient(135deg,var(--g),#047857);color:#fff;padding:12px 16px;display:flex;align-items:center;gap:8px}
@@ -148,7 +145,13 @@ canvas{width:100%;border-radius:12px}
     <div class="card"><div class="t">🏆 <span data-t="saved">وفر الذكاء</span></div><div class="big" id="qSaved" style="color:var(--gd)">0 L</div></div>
   </div>
   <div class="grid2">
-    <div class="card"><div class="t">📈 <span data-t="live">السجل الحي</span></div><canvas id="chart" height="150" style="margin-top:10px"></canvas><div id="feed"></div></div>
+    <div class="card"><div class="t">🧭 <span id="dcTitle">مركز القرار</span></div>
+      <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+        <canvas id="gauge" width="130" height="130" style="width:130px;height:130px"></canvas>
+        <div style="flex:1;min-width:180px" id="factors"></div>
+      </div>
+      <div id="nextIrr" class="pill g" style="margin-top:12px">--</div>
+    </div>
     <div>
       <div class="card" style="margin-bottom:16px"><div class="t">🧠 <span data-t="ai">الذكاء الاصطناعي</span></div>
         <div style="font-size:13px;margin-top:10px;line-height:2"><span data-t="conf">الثقة</span>: <b id="conf" style="color:var(--gd)">--</b><br><span data-t="need">الحاجة للري</span>: <b id="need" style="color:var(--gd)">--</b><br><span data-t="dry">الجفاف</span>: <b id="dry" style="color:var(--gd)">--</b><br><span data-t="decision">القرار</span>: <b id="reason" style="color:var(--gd)">--</b></div>
@@ -195,7 +198,7 @@ canvas{width:100%;border-radius:12px}
   <div class="card"><div class="t">🎨 <span data-t="appear">المظهر واللغة</span></div><div style="display:flex;gap:10px"><div style="flex:1"><label data-t="lang">اللغة</label><select id="sLang" onchange="setLang(this.value)"><option value="ar">العربية 🇶🇦</option><option value="en">English</option></select></div><div style="flex:1"><label data-t="theme">المظهر</label><select id="sTheme" onchange="setTheme(this.value)"><option value="light">☀️</option><option value="dark">🌙</option></select></div><div style="flex:1"><label data-t="units">الحرارة</label><select id="sUnit" onchange="CFG.unit=this.value;save();renderNow()"><option value="C">°C</option><option value="F">°F</option></select></div></div>
   <label data-t="loc">الموقع</label><select id="sCity" onchange="CFG.city=this.value;save();refreshWeather()"><option value="Doha, QA">🇶🇦 الدوحة</option><option value="Al Rayyan, QA">🇶 الريان</option><option value="Al Wakrah, QA">🇶🇦 الوكرة</option><option value="Al Khor, QA">🇶🇦 الخور</option><option value="Riyadh, SA">🇸🇦 الرياض</option><option value="Jeddah, SA">🇸🇦 جدة</option><option value="Kuwait City, KW">🇰🇼 الكويت</option><option value="Dubai, AE">🇦🇪 دبي</option></select></div>
   <div class="card" style="margin-top:16px"><div class="t">🛡️ <span data-t="sec">الأمان</span></div><label>API Token</label><input id="sToken" type="password"/></div>
-  <div class="card" style="margin-top:16px"><div class="t">️ MQTT</div><div style="display:flex;gap:10px"><div style="flex:2"><label>Server</label><input id="sMqttS"/></div><div style="flex:1"><label>Port</label><input id="sMqttP"/></div></div></div>
+  <div class="card" style="margin-top:16px"><div class="t">🖥️ MQTT</div><div style="display:flex;gap:10px"><div style="flex:2"><label>Server</label><input id="sMqttS"/></div><div style="flex:1"><label>Port</label><input id="sMqttP"/></div></div></div>
   <div class="card" style="margin-top:16px"><div class="t">🌤️ OpenWeather</div><label>API Key</label><input id="sOwm" type="password"/></div>
   <div class="card" style="margin-top:16px"><div class="t">💧 <span data-t="wcost">التكلفة والتدفق</span></div><div style="display:flex;gap:10px"><div style="flex:1"><label>SAR/m³</label><input id="sCost" type="number" step="0.01"/></div><div style="flex:1"><label>L/min</label><input id="sFlow" type="number"/></div></div></div>
   <div style="display:flex;gap:10px;margin-top:20px"><button class="btn g" onclick="saveCfgUI()">💾 <span data-t="save">حفظ</span></button><button class="btn o" onclick="loadCfgUI()" data-t="cancel">إلغاء</button></div></section>
@@ -217,8 +220,8 @@ const unobf=s=>{try{return decodeURIComponent(escape(atob(s.split('').reverse().
 function validHost(h){return /^(\d{1,3}\.){3}\d{1,3}$/.test(h)&&h.split('.').every(x=>+x<256)||/^[a-z0-9][a-z0-9.-]*\.local$/i.test(h);}
 async function fjson(url,opts,ms=6000){const c=new AbortController();const t=setTimeout(()=>c.abort(),ms);try{const r=await fetch(url,Object.assign({},opts,{signal:c.signal}));return await r.json();}catch(e){return null;}finally{clearTimeout(t);}}
 /* ═══ الحالة ═══ */
-const T={ar:{app:'ريحان',tag:'نظام الري الذكي',nav_dash:'لوحة التحكم',nav_zones:'المناطق',nav_sched:'الجدولة',nav_cons:'الاستهلاك',nav_rep:'التقارير',nav_weather:'الطقس',nav_notif:'التنبيهات',nav_set:'الإعدادات',dash_sub:'مراقبة وتحكم لحظي',zones_sub:'تحكم مستقل',sched_sub:'مواعيد الري',cons_sub:'تحليل المياه',rep_sub:'السجل والتصدير',weather_sub:'بيانات حية',notif_sub:'الإشعارات',set_sub:'تهيئة',auto:'ذكي',manual:'يدوي',sched:'جدول',soil:'رطوبة التربة',tank:'الخزان',temp:'الحرارة',hum:'رطوبة الجو',target:'الهدف',live:'السجل الحي',ai:'الذكاء',conf:'الثقة',need:'الحاجة',dry:'الجفاف',decision:'القرار',sens:'الحساسية',control:'التحكم',emg:'إيقاف طارئ',plant:'النبات',soil_t:'التربة',uptime:'التشغيل',ops:'عمليات',saved:'التوفير',used:'المستهلك',goal:'هدف شهري',hist:'سجل الري',add_sched:'جدول جديد',add:'إضافة',add_zone:'إضافة منطقة',total_zones:'المناطق',total_used:'إجمالي الري',active_z:'نشطة',daily:'يومي',weekly:'أسبوعي',avg:'متوسط',week_chart:'رسم الأسبوع',cost:'التكلفة',tips:'نصائح',tip1:'الري فجراً يقلل التبخر 40%',tip2:'النبضي مثالي للطينية',tip3:'النخيل رية عميقة أسبوعياً',refresh:'تحديث',hourly:'الساعات',recs:'توصيات',forecast:'التوقعات',sun:'الشمس',rise:'شروق',set:'غروب',wind_dir:'الرياح',filter_all:'الكل',filter_warn:'تحذيرات',filter_err:'أخطاء',appear:'المظهر',lang:'اللغة',theme:'المظهر',units:'الحرارة',loc:'الموقع',sec:'الأمان',wcost:'التكلفة',save:'حفظ',cancel:'إلغاء',conn:'الاتصال',connect:'اتصال',demo:'تجريبي',pump_off:'متوقفة',pump_on:'تعمل',asst:'مساعد ريحان',asst_sub:'خبير نباتات — دون إنترنت'},
-en:{app:'Rayhan',tag:'Smart Irrigation',nav_dash:'Dashboard',nav_zones:'Zones',nav_sched:'Scheduling',nav_cons:'Consumption',nav_rep:'Reports',nav_weather:'Weather',nav_notif:'Alerts',nav_set:'Settings',dash_sub:'Live control',zones_sub:'Per-zone',sched_sub:'Weekly',cons_sub:'Analysis',rep_sub:'Log & export',weather_sub:'Live data',notif_sub:'Alerts',set_sub:'Setup',auto:'Auto',manual:'Manual',sched:'Sched',soil:'Soil',tank:'Tank',temp:'Temp',hum:'Humidity',target:'Target',live:'Live Log',ai:'AI',conf:'Conf',need:'Need',dry:'Dry',decision:'Decision',sens:'Sens',control:'Control',emg:'E-Stop',plant:'Plant',soil_t:'Soil',uptime:'Uptime',ops:'Ops',saved:'Saved',used:'Used',goal:'Goal',hist:'Log',add_sched:'New',add:'Add',add_zone:'Add zone',total_zones:'Zones',total_used:'Total',active_z:'Active',daily:'Daily',weekly:'Weekly',avg:'Avg',week_chart:'Week',cost:'Cost',tips:'Tips',tip1:'Dawn cuts evaporation',tip2:'Pulse suits clay',tip3:'Palms deep weekly',refresh:'Refresh',hourly:'Hours',recs:'Tips',forecast:'Forecast',sun:'Sun',rise:'Rise',set:'Set',wind_dir:'Wind',filter_all:'All',filter_warn:'Warn',filter_err:'Err',appear:'Look',lang:'Lang',theme:'Theme',units:'Unit',loc:'Location',sec:'Security',wcost:'Cost',save:'Save',cancel:'Cancel',conn:'Connect',connect:'Connect',demo:'Demo',pump_off:'Stopped',pump_on:'Running',asst:'Rayhan AI',asst_sub:'Offline plant expert'}};
+const T={ar:{app:'ريحان',tag:'نظام الري الذكي',nav_dash:'لوحة التحكم',nav_zones:'المناطق',nav_sched:'الجدولة',nav_cons:'الاستهلاك',nav_rep:'التقارير',nav_weather:'الطقس',nav_notif:'التنبيهات',nav_set:'الإعدادات',dash_sub:'مراقبة وتحكم لحظي',zones_sub:'تحكم مستقل',sched_sub:'مواعيد الري',cons_sub:'تحليل المياه',rep_sub:'السجل والتصدير',weather_sub:'بيانات حية',notif_sub:'الإشعارات',set_sub:'تهيئة',auto:'ذكي',manual:'يدوي',sched:'جدول',soil:'رطوبة التربة',tank:'الخزان',temp:'الحرارة',hum:'رطوبة الجو',target:'الهدف',ai:'الذكاء',conf:'الثقة',need:'الحاجة',dry:'الجفاف',decision:'القرار',sens:'الحساسية',control:'التحكم',emg:'إيقاف طارئ',plant:'النبات',soil_t:'التربة',uptime:'التشغيل',ops:'عمليات',saved:'التوفير',used:'المستهلك',goal:'هدف شهري',hist:'سجل الري',add_sched:'جدول جديد',add:'إضافة',add_zone:'إضافة منطقة',total_zones:'المناطق',total_used:'إجمالي الري',active_z:'نشطة',daily:'يومي',weekly:'أسبوعي',avg:'متوسط',week_chart:'رسم الأسبوع',cost:'التكلفة',tips:'نصائح',tip1:'الري فجراً يقلل التبخر 40%',tip2:'النبضي مثالي للطينية',tip3:'النخيل رية عميقة أسبوعياً',refresh:'تحديث',hourly:'الساعات',recs:'توصيات',forecast:'التوقعات',sun:'الشمس',rise:'شروق',set:'غروب',wind_dir:'الرياح',filter_all:'الكل',filter_warn:'تحذيرات',filter_err:'أخطاء',appear:'المظهر',lang:'اللغة',theme:'المظهر',units:'الحرارة',loc:'الموقع',sec:'الأمان',wcost:'التكلفة',save:'حفظ',cancel:'إلغاء',conn:'الاتصال',connect:'اتصال',demo:'تجريبي',pump_off:'متوقفة',pump_on:'تعمل',asst:'مساعد ريحان',asst_sub:'خبير نباتات — دون إنترنت'},
+en:{app:'Rayhan',tag:'Smart Irrigation',nav_dash:'Dashboard',nav_zones:'Zones',nav_sched:'Scheduling',nav_cons:'Consumption',nav_rep:'Reports',nav_weather:'Weather',nav_notif:'Alerts',nav_set:'Settings',dash_sub:'Live control',zones_sub:'Per-zone',sched_sub:'Weekly',cons_sub:'Analysis',rep_sub:'Log & export',weather_sub:'Live data',notif_sub:'Alerts',set_sub:'Setup',auto:'Auto',manual:'Manual',sched:'Sched',soil:'Soil',tank:'Tank',temp:'Temp',hum:'Humidity',target:'Target',ai:'AI',conf:'Conf',need:'Need',dry:'Dry',decision:'Decision',sens:'Sens',control:'Control',emg:'E-Stop',plant:'Plant',soil_t:'Soil',uptime:'Uptime',ops:'Ops',saved:'Saved',used:'Used',goal:'Goal',hist:'Log',add_sched:'New',add:'Add',add_zone:'Add zone',total_zones:'Zones',total_used:'Total',active_z:'Active',daily:'Daily',weekly:'Weekly',avg:'Avg',week_chart:'Week',cost:'Cost',tips:'Tips',tip1:'Dawn cuts evaporation',tip2:'Pulse suits clay',tip3:'Palms deep weekly',refresh:'Refresh',hourly:'Hours',recs:'Tips',forecast:'Forecast',sun:'Sun',rise:'Rise',set:'Set',wind_dir:'Wind',filter_all:'All',filter_warn:'Warn',filter_err:'Err',appear:'Look',lang:'Lang',theme:'Theme',units:'Unit',loc:'Location',sec:'Security',wcost:'Cost',save:'Save',cancel:'Cancel',conn:'Connect',connect:'Connect',demo:'Demo',pump_off:'Stopped',pump_on:'Running',asst:'Rayhan AI',asst_sub:'Offline plant expert'}};
 let LANG=sget('rayhan_lang','ar');
 const t=k=>(T[LANG]&&T[LANG][k])||k;
 const DAYSN=()=>LANG==='ar'?['السبت','الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة']:['Sat','Sun','Mon','Tue','Wed','Thu','Fri'];
@@ -233,15 +236,12 @@ let P={running:false,remaining:0,reason:'IDLE'};
 const PLANTS=[['🌴 نخيل التمر',45],['🍅 طماطم',55],['🥒 خيار',60],['🍆 باذنجان',55],['🥒 كوسة',55],['🫛 بامية',50],['🌶️ فلفل حار',45],['🫑 فلفل رومي',50],['🧅 بصل',40],['🧄 ثوم',40],['🥕 جزر',45],['🌰 فجل',45],['🥬 خس',60],['🥬 ملفوف',55],['🌼 قرنبيط',55],['🥦 بروكلي',55],['🍃 سبانخ',60],['🌿 جرجير',55],['🍀 كزبرة',55],['🌿 بقدونس',55],['🪴 ريحان',58],['🍃 نعناع',60],['🌱 زعتر',35],['🍓 فراولة',55],['🍉 بطيخ',45],['🍈 شمام',45],['🌽 ذرة',50],['🌾 رودس',40],['🍇 عنب',40],['🍋 ليمون',40]];
 const SOILS=['🏜️ رملية','🧱 طينية','🌾 طمية','🍂 بتموس','🪨 صخرية'];
 let ZONES=JSON.parse(sget('rayhan_zones','null'))||[{id:1,name:'الأمامية',emoji:'🌳',plant:0,soil:0,en:true,lastIrr:null,usedL:0,off:0},{id:2,name:'الخلفية',emoji:'🌴',plant:1,soil:1,en:true,lastIrr:null,usedL:0,off:-3}];
-let hist=JSON.parse(sget('rayhan_hist_chart','null'))||{soil:[],water:[],ts:[]};
 let HIST=JSON.parse(sget('rayhan_hist','[]'));
 let SCHED=JSON.parse(sget('rayhan_sched','[]'));
 let NOTIF=[{t:'مرحباً',d:'النظام جاهز',lv:1,tm:'الآن',un:true}];
-let FEED=[],NF='all',WDATA=null,VOICE=true,REC=null,listening=false,lastPlant=null;
+let NF='all',WDATA=null,VOICE=true,REC=null,listening=false,lastPlant=null;
 const T0=Date.now();
 const fT=c=>CFG.unit==='F'?fmt(c*9/5+32):fmt(c,1);
-/* ═══ تغذية الأحداث ═══ */
-function feed(m){FEED.unshift({t:Date.now(),m:esc(m)});FEED=FEED.slice(0,20);$('feed').innerHTML=FEED.map(f=>`<div>${new Date(f.t).toLocaleTimeString(LANG==='ar'?'ar':'en',{hour:'2-digit',minute:'2-digit'})} — ${f.m}</div>`).join('');}
 function toast(m,c){const d=document.createElement('div');d.className='toast';if(c)d.style.background=c;d.innerText=m;$('toasts').appendChild(d);setTimeout(()=>d.remove(),3000);}
 /* ═══ صوت آمن وطلق ═══ */
 let VOICES=[],AC=null;
@@ -257,40 +257,40 @@ async function api(p,m='GET',b=null,auth=false){let u=BASE+p;const h={};if(b)h['
 function scheduleWS(){setTimeout(startWS,wsBackoff);wsBackoff=Math.min(30000,Math.round(wsBackoff*1.6+Math.random()*400));}
 function startWS(){if(wsConnecting)return;wsConnecting=true;try{if(ws)ws.close();}catch(e){}
  const h=BASE.replace(/^https?:\/\//,'');ws=new WebSocket('ws://'+h+':81/?token='+encodeURIComponent(CFG.token));
- ws.onopen=()=>{wsConnecting=false;wsBackoff=2000;wsLastMsg=Date.now();$('connTxt').innerText=LANG==='ar'?'متصل':'Online';$('dot').style.background='#10b981';feed('🟢 '+(LANG==='ar'?'اتصال مباشر':'Connected'));};
- ws.onclose=()=>{wsConnecting=false;$('connTxt').innerText=LANG==='ar'?'انقطع':'Offline';$('dot').style.background='#ef4444';feed('🔴 '+(LANG==='ar'?'انقطاع — إعادة محاولة':'Lost — retry'));scheduleWS();};
+ ws.onopen=()=>{wsConnecting=false;wsBackoff=2000;wsLastMsg=Date.now();$('connTxt').innerText=LANG==='ar'?'متصل':'Online';$('dot').style.background='#10b981';};
+ ws.onclose=()=>{wsConnecting=false;$('connTxt').innerText=LANG==='ar'?'انقطع':'Offline';$('dot').style.background='#ef4444';scheduleWS();};
  ws.onerror=()=>{try{ws.close();}catch(e){}};
  ws.onmessage=ev=>{wsLastMsg=Date.now();let m;try{m=JSON.parse(ev.data);}catch(e){return;}const p=m.payload||{};
-  if(m.type==='sensors'){S.soil=+p.soil_percent||0;S.water=+p.water_percent||0;S.temp=+p.temp_c||25;S.hum=+p.humidity_percent||50;S.rain=!!p.rain_detected;S.target=+p.target_moisture||S.target;S.mode=p.mode??S.mode;pushHist();}
+  if(m.type==='sensors'){S.soil=+p.soil_percent||0;S.water=+p.water_percent||0;S.temp=+p.temp_c||25;S.hum=+p.humidity_percent||50;S.rain=!!p.rain_detected;S.target=+p.target_moisture||S.target;S.mode=p.mode??S.mode;}
   else if(m.type==='ai')A={conf:+p.confidence||0,need:+p.need||0,dry:+p.drying_rate||0,reason:esc(p.reason)||'--',decision:esc(p.decision)||'IDLE'};
-  else if(m.type==='pump'){if(p.running&&!P.running){logIrr(+p.remaining_sec||15,'AUTO');feed('💧 '+(LANG==='ar'?'ري تلقائي':'Auto'));}P={running:!!p.running,remaining:+p.remaining_sec||0,reason:esc(p.reason)||'IDLE'};}
+  else if(m.type==='pump'){if(p.running&&!P.running){logIrr(+p.remaining_sec||15,'AUTO');}P={running:!!p.running,remaining:+p.remaining_sec||0,reason:esc(p.reason)||'IDLE'};}
   renderAll();};}
 setInterval(()=>{if(MODE==='live'&&Date.now()-wsLastMsg>12000&&!wsConnecting){try{ws.close();}catch(e){}}},5000);
 function connectLive(){const h=$('inpHost').value.trim();if(!validHost(h))return toast('❌ '+(LANG==='ar'?'IP غير صالح':'Invalid host'),'#ef4444');CFG.token=$('inpToken2').value.trim()||CFG.token;sset('rayhan_tok',obf(CFG.token));sset('rayhan_conn',JSON.stringify({host:h}));BASE='http://'+h;MODE='live';$('connPanel').classList.remove('show');startWS();refreshLive();refreshWeather();}
 async function refreshLive(){const[s,a,p]=await Promise.all([api('/api/v1/sensors'),api('/api/v1/ai'),api('/api/v1/pump')]);
- if(s&&s.ok){S.soil=+s.data.soil_percent||0;S.water=+s.data.water_percent||0;S.temp=+s.data.temp_c||25;S.hum=+s.data.humidity_percent||50;pushHist();}
+ if(s&&s.ok){S.soil=+s.data.soil_percent||0;S.water=+s.data.water_percent||0;S.temp=+s.data.temp_c||25;S.hum=+s.data.humidity_percent||50;}
  if(a&&a.ok)A={conf:+a.data.confidence||0,need:+a.data.need||0,dry:+a.data.drying_rate||0,reason:esc(a.data.reason)||'--',decision:'IDLE'};
  if(p&&p.ok)P={running:!!p.data.running,remaining:+p.data.remaining_sec||0,reason:'IDLE'};
  renderAll();}
 setInterval(()=>{if(MODE==='live')refreshLive();},8000);
 /* ═══ أوامر ═══ */
 function act(p,b){if(MODE==='demo'){demoAct(p,b);return;}api(p,p.includes('settings')?'PUT':'POST',b,true);}
-function irrigate(s){act('/api/v1/actions/irrigate',{duration_sec:s,reason:'MANUAL_UI'});logIrr(s,'MANUAL');feed('💧 '+(LANG==='ar'?'ري يدوي ':'Manual ')+s+'s');}
-function stopPump(){act('/api/v1/actions/stop',{});feed('⏹ '+(LANG==='ar'?'إيقاف':'Stop'));}
-function emergencyStop(){if(confirm('⛔')){act('/api/v1/actions/emergency-stop',{});feed('⛔ '+(LANG==='ar'?'طوارئ':'Emergency'));}}
+function irrigate(s){act('/api/v1/actions/irrigate',{duration_sec:s,reason:'MANUAL_UI'});logIrr(s,'MANUAL');}
+function stopPump(){act('/api/v1/actions/stop',{});}
+function emergencyStop(){if(confirm('⛔'))act('/api/v1/actions/emergency-stop',{});}
 function setMode(m){S.mode=m;act('/api/v1/settings/mode',{mode:m});renderAll();}
 function setPlant(v){const pl=PLANTS[+v];if(!pl)return;S.target=pl[1];act('/api/v1/settings/target',{target_moisture:pl[1]});toast(pl[0]+' → '+pl[1]+'%');renderAll();}
 function setSoil(v){toast(SOILS[+v]||'');}
 function setTarget(v){S.target=+v;act('/api/v1/settings/target',{target_moisture:+v});renderAll();}
 /* ═══ مناطق/جداول ═══ */
 function saveZ(){sset('rayhan_zones',JSON.stringify(ZONES));}
-function addZone(){const n=$('zName').value.trim();if(!n)return toast('❌','#ef4444');ZONES.unshift({id:Date.now(),name:n,emoji:$('zEmoji').value,plant:+$('zPlant').value,soil:+$('zSoil').value,en:true,lastIrr:null,usedL:0,off:Math.round(Math.random()*6-3)});saveZ();$('zName').value='';renderZones();feed('🗺️ +'+esc(n));}
+function addZone(){const n=$('zName').value.trim();if(!n)return toast('❌','#ef4444');ZONES.unshift({id:Date.now(),name:n,emoji:$('zEmoji').value,plant:+$('zPlant').value,soil:+$('zSoil').value,en:true,lastIrr:null,usedL:0,off:Math.round(Math.random()*6-3)});saveZ();$('zName').value='';renderZones();}
 function zoneDel(id){if(!confirm('🗑'))return;ZONES=ZONES.filter(z=>z.id!==id);saveZ();renderZones();}
 function zoneRen(id){const z=ZONES.find(z=>z.id===id);if(!z)return;const n=prompt('اسم جديد:',z.name);if(n&&n.trim()){z.name=n.trim();saveZ();renderZones();}}
 function zoneTgl(id){const z=ZONES.find(z=>z.id===id);if(z){z.en=!z.en;saveZ();renderZones();}}
 function zoneIrr(id){const z=ZONES.find(z=>z.id===id);if(!z||!z.en)return toast('🚫','#ef4444');if(MODE==='demo'){z.lastIrr=Date.now();z.usedL+=15*CFG.flow/60;saveZ();logIrr(15,'ZONE');toast('💧 '+z.emoji+' '+esc(z.name));renderZones();}else api('/api/v1/zones/'+z.id+'/start','POST',{duration_sec:15},true);}
 function renderZones(){$('zCount').innerText=ZONES.length;$('zUsed').innerText=fmt(ZONES.reduce((a,z)=>a+(+z.usedL||0),0))+' L';$('zActive').innerText=ZONES.filter(z=>z.en).length;
- $('zoneCards').innerHTML=ZONES.map(z=>{const m=Math.max(0,Math.min(100,S.soil+(z.off||0)));return `<div class="card" style="${z.en?'':'opacity:.55'}"><div class="t"><span class="ic" style="background:var(--gl)">${esc(z.emoji)}</span>${esc(z.name)}<span class="pill ${z.en?'g':'r'}" style="margin-inline-start:auto">${z.en?t('active_z'):t('filter_err')}</span></div><div style="font-size:13px;color:var(--mut);margin:10px 0 4px">${t('soil')}: <b style="color:var(--gd)">${fmt(m)}%</b></div><div class="bar"><i style="width:${m}%"></i></div><div style="display:flex;gap:6px;margin-top:12px"><button class="btn g sm" style="flex:1" onclick="zoneIrr(${z.id})">💧 15s</button><button class="btn o sm" onclick="zoneTgl(${z.id})">${z.en?'🚫':'🟢'}</button><button class="btn o sm" onclick="zoneRen(${z.id})">✏️</button><button class="btn r sm" onclick="zoneDel(${z.id})">🗑</button></div></div>`;}).join('');}
+ $('zoneCards').innerHTML=ZONES.map(z=>{const m=Math.max(0,Math.min(100,S.soil+(z.off||0)));return `<div class="card" style="${z.en?'':'opacity:.55'}"><div class="t"><span class="ic" style="background:var(--gl)">${esc(z.emoji)}</span>${esc(z.name)}<span class="pill ${z.en?'g':'r'}" style="margin-inline-start:auto">${z.en?t('active_z'):t('filter_err')}</span></div><div style="font-size:13px;color:var(--mut);margin:10px 0 4px">${t('soil')}: <b style="color:var(--gd)">${fmt(m)}%</b></div><div class="bar"><i style="width:${m}%"></i></div><div style="display:flex;gap:6px;margin-top:12px"><button class="btn g sm" style="flex:1" onclick="zoneIrr(${z.id})">💧 15s</button><button class="btn o sm" onclick="zoneTgl(${z.id})">${z.en?'🚫':''}</button><button class="btn o sm" onclick="zoneRen(${z.id})">✏️</button><button class="btn r sm" onclick="zoneDel(${z.id})">🗑</button></div></div>`;}).join('');}
 function addSched(){SCHED.unshift({day:+$('schDay').value,time:$('schTime').value||'06:00',dur:Math.min(120,Math.max(1,+$('schDur').value||15)),zone:+$('schZone').value});sset('rayhan_sched',JSON.stringify(SCHED));renderSched();}
 function delSched(i){SCHED.splice(i,1);sset('rayhan_sched',JSON.stringify(SCHED));renderSched();}
 function renderSched(){$('schedList').innerHTML=SCHED.map((s,i)=>`<div class="card"><div class="t"><span class="ic" style="background:var(--gl)">📅</span>${DAYSN()[s.day]||''} — ${esc(s.time)}</div><div style="font-size:13px;color:var(--mut);margin:8px 0">${s.dur} min • Z${s.zone}</div><button class="btn r sm" onclick="delSched(${i})">🗑</button></div>`).join('')||`<div class="card">—</div>`;}
@@ -322,19 +322,48 @@ function renderWeather(){if(!WDATA)return;const w=WDATA;
  $('wRecs').innerHTML=r.map(x=>`<div class="tip">${esc(x)}</div>`).join('');
  const suit=Math.max(0,Math.min(100,100-w.rain-Math.max(0,w.temp-40)*3));$('wSuit').innerText=(suit>60?'✔ ':'⚠ ')+suit+'%';
  $('wForecast').innerHTML=(w.fc||[]).map(f=>`<div class="fcard"><b>${esc(f.day)}</b><div class="e">${emo(f.main)}</div><div><b>${fT(f.t)}°</b> <small>${fT(f.tm)}°</small></div></div>`).join('');}
-/* ═══ السجل الحي v2 ═══ */
-let histSaveT=0;
-function pushHist(){hist.soil.push(S.soil);hist.water.push(S.water);hist.ts.push(Date.now());if(hist.soil.length>120){hist.soil.shift();hist.water.shift();hist.ts.shift();}if(Date.now()-histSaveT>10000){histSaveT=Date.now();sset('rayhan_hist_chart',JSON.stringify(hist));}}
-function drawChart(){const cv=$('chart');if(!cv)return;const c=cv.getContext('2d');const W=cv.width=cv.clientWidth,H=150;c.clearRect(0,0,W,H);
- c.strokeStyle='rgba(128,128,128,.15)';c.fillStyle='rgba(128,128,128,.7)';c.font='10px sans-serif';
- for(let i=0;i<=4;i++){const y=10+i*(H-24)/4;c.beginPath();c.moveTo(24,y);c.lineTo(W,y);c.stroke();c.fillText(String(100-i*25),2,y+3);}
- const n=hist.soil.length;if(n<2)return;
- const x=i=>24+(W-24)*(i/(n-1)),y=v=>10+(100-Math.max(0,Math.min(100,v)))*(H-24)/100;
- const L=(a,col)=>{c.strokeStyle=col;c.lineWidth=2;c.beginPath();let gap=0;a.forEach((v,i)=>{if(i>0&&hist.ts[i]-hist.ts[i-1]>15000){c.stroke();c.beginPath();gap=1;}if(gap){c.moveTo(x(i),y(v));gap=0;}else i?c.lineTo(x(i),y(v)):c.moveTo(x(i),y(v));});c.stroke();};
- L(hist.water,'#3b82f6');L(hist.soil,'#10b981');
- c.fillStyle='#10b981';c.beginPath();c.arc(x(n-1),y(hist.soil[n-1]),3,0,7);c.fill();
- c.fillStyle='#3b82f6';c.beginPath();c.arc(x(n-1),y(hist.water[n-1]),3,0,7);c.fill();}
-window.addEventListener('resize',()=>drawChart());
+/* ═══ مركز القرار (بديل السجل الحي) ═══ */
+function facChip(icon,label,weight){
+ const col= weight>0.66?'#ef4444':weight>0.33?'#f59e0b':'#10b981';
+ return `<div style="display:flex;justify-content:space-between;font-size:12px;padding:4px 0;border-bottom:1px dashed var(--line)"><span>${icon} ${esc(label)}</span><b style="color:${col}">${fmt(weight*100)}%</b></div>`;
+}
+function drawGauge(v){ const cv=$('gauge'); if(!cv)return; const c=cv.getContext('2d'); const cx=65,cy=65,r=52;
+ c.clearRect(0,0,130,130);
+ const a0=Math.PI*0.75, a1=Math.PI*2.25;
+ c.lineWidth=12; c.lineCap='round';
+ c.strokeStyle='rgba(128,128,128,.2)'; c.beginPath(); c.arc(cx,cy,r,a0,a1); c.stroke();
+ const col= v>0.66?'#ef4444':v>0.33?'#f59e0b':'#10b981';
+ c.strokeStyle=col; c.beginPath(); c.arc(cx,cy,r,a0,a0+(a1-a0)*Math.max(0.02,Math.min(1,v))); c.stroke();
+ c.fillStyle=col; c.font='bold 24px Segoe UI'; c.textAlign='center'; c.fillText(fmt(v*100)+'%',cx,cy+4);
+ c.fillStyle='rgba(128,128,128,.9)'; c.font='10px Segoe UI'; c.fillText(LANG==='ar'?'حاجة الري':'IRRIGATION NEED',cx,cy+22);
+}
+function renderDecision(){
+ $('dcTitle').innerText=LANG==='ar'?'مركز القرار':'Decision Center';
+ const deficit=Math.max(0,S.target-S.soil)/50;
+ const heat=Math.max(0,Math.min(1,(S.temp-25)/15));
+ const dry=Math.max(0,Math.min(1,A.dry/20));
+ const rain=S.rain?1:0;
+ const tankRisk=1-(S.water/100);
+ const need=Math.max(0,Math.min(1,A.need||deficit));
+ drawGauge(need);
+ $('factors').innerHTML=
+  facChip('🌱',LANG==='ar'?'عجز الرطوبة':'Moisture deficit',deficit)+
+  facChip('🌡️',LANG==='ar'?'إجهاد حراري':'Heat stress',heat*0.6)+
+  facChip('📉',LANG==='ar'?'سرعة الجفاف':'Drying rate',dry*0.6)+
+  facChip('🌧️',LANG==='ar'?'مطر (يوقف الري)':'Rain (halts)',rain)+
+  facChip('🪣',LANG==='ar'?'خطر الخزان':'Tank risk',tankRisk);
+ const el=$('nextIrr');
+ if(S.water<=10){ el.className='pill r'; el.innerText=LANG==='ar'?'⛔ لا ري: الخزان فارغ!':'⛔ No irrigation: tank empty!'; }
+ else if(S.rain){ el.className='pill g'; el.innerText=LANG==='ar'?'🌧 مؤجل: أمطار':'🌧 Postponed: rain'; }
+ else if(need>=(CFG.sens||0.55)){ el.className='pill r'; el.innerText=LANG==='ar'?'💧 الري الآن':'💧 Irrigating now'; }
+ else{
+  const floor=S.target-8, room=S.soil-floor;
+  const hrs=A.dry>0.2? room/A.dry : 99;
+  el.className='pill g';
+  el.innerText= hrs>=99 ? (LANG==='ar'?'✅ لا ري متوقع قريباً':'✅ No irrigation soon')
+   : (LANG==='ar'?`⏳ الري المتوقع بعد ~${fmt(hrs,1)} ساعة`:`⏳ Next irrigation in ~${fmt(hrs,1)}h`);
+ }
+}
 /* ═══ المساعد الخبير ═══ */
 const KB=[['نخيل|نخيل التمر|تمر','الفسائل ربيعاً وخريفاً','رية عميقة كل 7-14 يوماً','شمس كاملة','طمية جيدة الصرف','حتى 50°','سوسة النخيل','سمّد بالبوتاسيوم ربيعاً'],['طماطم|بندوره','شتوي أكتوبر-مارس','كل 2-3 أيام','شمس كاملة','طمية غنية','18-30°','اللفحة والذبابة','ادعمها بأوتاد'],['خيار','شتوي','يومياً','شمس مع تظليل','طمية خفيفة','20-32°','البياض والمن','اجنِه صغيراً'],['باذنجان','شتوي','كل 2-3 أيام','شمس كاملة','طمية','22-32°','الذبابة','قلّم السفلي'],['فلفل|حار|رومي','شتوي','كل 2-4 أيام','شمس','طمية','20-30°','المن','حصاد منتظم'],['باميه','صيفي','كل 3 أيام','شمس','طمية','25-35°','دودة الثمار','اجنِ كل يومين'],['كوسه','شتوي','كل 2-3 أيام','شمس','طمية','20-32°','البياض','مسافة 60سم'],['بطيخ','صيفي','غزير','شمس','رملية','25-35°','المن','قلل الري قبل الحصاد'],['شمام','صيفي','غزير','شمس','رملية','25-35°','اللفحة','ظلّل الثمار'],['بصل','شتوي','كل 4-5 أيام','شمس','طمية','15-25°','التربس','أوقف الري عند الرقود'],['ثوم','شتوي','كل 5 أيام','شمس','طمية','15-25°','الصدأ','احصد عند الجفاف'],['جزر','شتوي','خفيف','شمس','رملية عميقة','15-25°','التشقق','خفف البادرات'],['فجل','شتوي 30 يوماً','كل يومين','شمس','طمية','15-25°','البراغيث','مثالي للأطفال'],['خس','شتوي','يومي خفيف','شمس/جزئية','طمية','10-22°','المن','اجنِ خارجياً'],['جرجير','شتوي','كل يومين','جزئية','طمية','10-22°','البراغيث','قص متجدد'],['سبانخ','شتوي','كل يومين','جزئية','طمية','10-24°','اللفحة','لا صيفاً'],['ملفوف|كرنب','شتوي','كل 3 أيام','شمس','طمية','15-24°','دودة الملفوف','غطِ الرؤوس'],['قرنبيط','شتوي','منتظم','شمس','طمية','15-24°','التعفن','اربط الأوراق'],['بروكلي','شتوي','منتظم','شمس','طمية','15-24°','المن','اجنِ قبل التفتح'],['فراوله','شتوي أصص','يومي خفيف','شمس','بتموس','15-26°','العفن','علّق الأصص'],['نعناع','دائماً','كل 1-2 يوم','جزئية','طمية','15-35°','الصدأ','أصيص منفصل'],['ريحان|حبق','دافئ','كل 1-2 يوم','شمس','بتموس','20-35°','البياض','قرّط الأزهار'],['بقدونس','شتوي','كل يومين','جزئية','طمية','15-25°','اللفحة','قص خارجي'],['كزبره','شتوي','كل يومين','جزئية','طمية','15-25°','الإزهار','دفعات كل 3 أسابيع'],['زعتر','دائماً','كل 5-7 أيام','شمس','رملية','15-40°','التعفن','مثالي للرملية'],['روزماري','دائماً','أسبوعياً','شمس','رملية','15-40°','تعفن الجذور','بعد جفاف التربة'],['ورد|ورود','شتوي','كل 2-3 أيام','شمس','طمية','15-28°','البياض والمن','قلّم يناير'],['ياسمين','شتوي','كل 2-3 أيام','جزئية','طمية','18-32°','العناكب','اسنده'],['ليمون|حمضيات|برتقال','ربيعي','كل 3-4 أيام','شمس','طمية','18-35°','القشريات','سماد حمضيات'],['تين','ربيعي','كل 4-5 أيام','شمس','طمية','20-38°','خنفساء التين','قلّم الشتات'],['رمان','ربيعي','كل 5-7 أيام','شمس','طمية','20-40°','التشقق','انتظم بالنضج'],['عنب','ربيعي','كل 4-6 أيام','شمس','طمية','20-38°','البياض','قلّم شتاء'],['مانجو','ربيعي','كل 5-7 أيام','شمس','طمية','24-40°','الأنثراكنوز','احمِ الأزهار'],['جوافه','ربيعي','كل 4-6 أيام','شمس','طمية','22-38°','ذباب الفاكهة','كيس الثمار'],['موز','صيفي','غزير','شمس','طمية','24-38°','التمزق','اترك خلفين'],['صبار|سكولنت','دائماً','كل 2-3 أسابيع','ساطعة','رملية','18-45°','تعفن','صرف ممتاز'],['سانيفيريا','داخلي','كل 2-3 أسابيع','غير مباشرة','طمية','18-35°','تعفن القواعد','ينقي الهواء'],['مونستيرا','داخلي','أسبوعياً','ساطعة غير مباشرة','بتموس','18-30°','اصفرار الري','امسح الغبار'],['بوتس','داخلي','كل 7-10 أيام','متوسطة','بتموس','18-32°','الذبول','يتحمل الإهمال'],['فيكس','داخلي','كل 4-5 أيام','جزئية','طمية','18-38°','تساقط النقل','لا تنقله'],['رودس','دائماً','كل 3-4 أيام','شمس','رملية','20-45°','الملوحة','جزّ كل 30 يوماً'],['ذره','صيفي','غزير','شمس','طمية','22-35°','دودة الحشد','صفوف متقاربة'],['بطاطس|بطاطا','شتوي','كل 3 أيام','شمس','رملية','15-25°','اللفحة','كوّم التربة'],['بطاطا حلوه','صيفي','كل 3-4 أيام','شمس','رملية','22-35°','سوسة الدرنة','بعد الاصفرار'],['بازلاء','شتوي','كل 3 أيام','شمس','طمية','10-24°','البياض','اسندها'],['فول','شتوي','كل 4 أيام','شمس','طمية','10-22°','المن الأسود','اقرط القمم'],['ملوخيه','صيفي','كل 2-3 أيام','شمس','طمية','25-38°','الذبابة','قبل الإزهار'],['سدر|عناب','ربيعي','كل 7-10 أيام','شمس','طمية','20-45°','ذبابة السدر','ظل قطري'],['غاف','ربيعي','قليل','شمس','رملية','20-48°','الحافرات','رمز قطري']];
 const CAL={1:'البازلاء والفول والبطاطس',2:'البطيخ والشمام والذرة',3:'البامية والملوخية والريحان',4:'الصباريات والحمضيات',5:'تظليل وتقليل ري الظهيرة',6:'مكافحة الآفات والكومبوست',7:'تعقيم وتقليم صيفي',8:'تجهيز مشتل الشتاء',9:'الخس والملفوف والجزر',10:'الطماطم والخيار والفراولة',11:'البصل والجرجير والسبانخ',12:'الفجل والبازلاء والثوم'};
@@ -343,7 +372,7 @@ const TOP=[[/تسميد|سماد/,'التسميد: كومبوست كل شهري�
 function toggleAssistant(){$('chatPanel').classList.toggle('hidden');if(!$('chatBody').children.length){addMsg('b',LANG==='ar'?'مرحباً! 🌱 أنا خبيرك النباتي. اسأل عن نبتة أو موسم أو آفة، أو شغّل الري بصوتك.':'Hi! Ask me about plants, seasons, pests, or command irrigation.');buildChips();}}
 function buildChips(){const el=$('chips');el.innerHTML='';(LANG==='ar'?['ماذا أزرع في نوفمبر؟','حدثني عن نخيل التمر','كيف أعالج المن؟','لماذا تتساقط أوراق المونستيرا؟','اسقِ الحديقة 20 ثانية']:['Plant in November?','Date palm?','Treat aphids?','Monstera leaves?','Water 20s']).forEach(q=>{const s=document.createElement('span');s.className='chip';s.innerText=q;s.addEventListener('click',()=>handleQuery(q));el.appendChild(s);});}
 function addMsg(w,txt){const d=document.createElement('div');d.className='msg '+w;d.innerText=txt;$('chatBody').appendChild(d);$('chatBody').scrollTop=$('chatBody').scrollHeight;}
-function toggleListen(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR||!isSecureContext&&location.hostname!=='localhost'){toast('🎤 '+(LANG==='ar'?'اكتب بدلاً':'Type instead'),'#f59e0b');return;}
+function toggleListen(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){toast('🎤 '+(LANG==='ar'?'اكتب بدلاً':'Type instead'),'#f59e0b');return;}
  if(listening&&REC){REC.stop();return;}
  REC=new SR();REC.lang=LANG==='ar'?'ar-SA':'en-US';REC.interimResults=false;
  REC.onstart=()=>{listening=true;$('micBtn').classList.add('on');};
@@ -391,15 +420,14 @@ function renderNow(){
  const month=used*4||3600;$('goalTxt').innerText=fmt(month)+' / '+CFG.goal+' L';$('goalBar').style.width=Math.min(100,month/CFG.goal*100)+'%';$('goalInp').value=CFG.goal;
  $('histList').innerHTML=HIST.slice(0,10).map(h=>`<div class="nitem"><div class="ic" style="background:var(--gl)">💧</div><div><b>${esc(h.src)}</b><div style="color:var(--mut);font-size:12px">${fmt(h.liters,1)} L • ${h.dur}s</div></div><span class="tm">${new Date(h.ts).toLocaleTimeString(LANG==='ar'?'ar':'en',{hour:'2-digit',minute:'2-digit'})}</span></div>`).join('')||'<div class="card">🎉</div>';
  renderZones();renderSched();
- const day=Math.round(cons6()),week=Math.round(weekC());
- $('cDay').innerText=day+' L';$('cWeek').innerText=week+' L';$('cAvg').innerText=Math.round(week/7)+' L';
- $('cCost').innerText=fmt(week/1000*CFG.cost,2)+' SAR';
- const cons=weekArr();const mx=Math.max(...cons,1);$('weekBars').innerHTML=cons.map((v,i)=>`<div class="bcol"><small>${Math.round(v)}L</small><div class="b" style="height:${v/mx*80}%"></div><small>${(LANG==='ar'?['سبت','أحد','اثن','ثلا','أرب','خمي','جمع']:['S','S','M','T','W','T','F'])[i]}</small></div>`).join('');
+ const cons=weekArr();const mx=Math.max(...cons,1);
+ $('cDay').innerText=Math.round(cons[6])+' L';$('cWeek').innerText=Math.round(weekC())+' L';$('cAvg').innerText=Math.round(weekC()/7)+' L';
+ $('cCost').innerText=fmt(weekC()/1000*CFG.cost,2)+' SAR';
+ $('weekBars').innerHTML=cons.map((v,i)=>`<div class="bcol"><small>${Math.round(v)}L</small><div class="b" style="height:${v/mx*80}%"></div><small>${(LANG==='ar'?['سبت','أحد','اثن','ثلا','أرب','خمي','جمع']:['S','S','M','T','W','T','F'])[i]}</small></div>`).join('');
  const fl=NOTIF.filter(x=>NF==='all'||(NF==='warn'&&x.lv===2)||(NF==='err'&&x.lv===3));
  $('notifList').innerHTML=fl.map(x=>{const ic=x.lv===3?['❌','#fee2e2']:x.lv===2?['⚠️','#fef9c3']:['ℹ️','#dbeafe'];return `<div class="nitem${x.un?' unread':''}"><div class="ic" style="background:${ic[1]}">${ic[0]}</div><div><b>${esc(x.t)}</b><div style="color:var(--mut);font-size:12px;margin-top:3px">${esc(x.d)}</div></div><span class="tm">${esc(x.tm)}</span></div>`;}).join('')||'<div class="card">🎉</div>';
- drawChart();renderWeather();}
-function cons6(){return 120+Math.round(S.soil/10);}
-function weekArr(){return [120,150,90,200,110,130,cons6()];}
+ renderDecision();renderWeather();}
+function weekArr(){return [120,150,90,200,110,130,120+Math.round(S.soil/10)];}
 function weekC(){return weekArr().reduce((a,b)=>a+b,0);}
 function upStr(){const m=Math.floor((Date.now()-T0)/60000);return m<60?m+' min':Math.floor(m/60)+'h '+(m%60)+'m';}
 function logIrr(dur,src){HIST.unshift({ts:Date.now(),dur,liters:dur*CFG.flow/60,src});HIST=HIST.slice(0,50);sset('rayhan_hist',JSON.stringify(HIST));beep();}
@@ -413,7 +441,7 @@ function toggleLang(){setLang(LANG==='ar'?'en':'ar');}
 function applyTheme(){document.body.classList.toggle('dark',THEME==='dark');$('thBtn').innerText=THEME==='dark'?'☀️':'🌙';$('sTheme').value=THEME;}
 function setTheme(v){THEME=v;sset('rayhan_theme',v);applyTheme();}
 function toggleTheme(){setTheme(THEME==='dark'?'light':'dark');}
-function applySnd(){$('sndBtn').innerText=SND?'🔔':'🔕';}
+function applySnd(){$('sndBtn').innerText=SND?'🔔':'';}
 function toggleSnd(){SND=!SND;sset('rayhan_snd',SND?'1':'0');applySnd();}
 function toggleFS(){if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen();}
 function toggleConn(){$('connPanel').classList.toggle('show');}
@@ -429,8 +457,8 @@ setInterval(()=>{if(MODE!=='demo')return;
  if(P.running){P.remaining--;S.soil=Math.min(100,S.soil+1.2);S.water=Math.max(0,S.water-0.7);if(P.remaining<=0||S.water<=5)P.running=false;}else S.soil=Math.max(0,S.soil-0.15);
  S.temp=Math.max(20,Math.min(48,S.temp+(Math.random()-.5)*.3));S.hum=Math.max(15,Math.min(90,S.hum+(Math.random()-.5)));
  A.need=Math.max(0,Math.min(1,(S.target-S.soil)/50));A.conf=.55+A.need*.4;A.dry=1.8+Math.random();A.decision=A.need>=CFG.sens?'IRRIGATE':'IDLE';A.reason=A.decision==='IRRIGATE'?'DEFICIT':'OK_NO_NEED';
- if(S.mode===0&&!P.running&&A.need>=CFG.sens+0.05&&S.water>10){P.running=true;P.remaining=20;logIrr(20,'AUTO');feed('💧 '+(LANG==='ar'?'ري تلقائي':'Auto'));}
- pushHist();renderAll();},DEV?250:1000);
+ if(S.mode===0&&!P.running&&A.need>=CFG.sens+0.05&&S.water>10){P.running=true;P.remaining=20;logIrr(20,'AUTO');}
+ renderAll();},DEV?250:1000);
 function demoAct(p,b){if(p.includes('irrigate')){P.running=true;P.remaining=b.duration_sec;toast('✅ '+b.duration_sec+'s');}
  else if(p.includes('emergency')){P.running=false;S.mode=1;toast('⛔','#ef4444');}
  else if(p.includes('stop'))P.running=false;
