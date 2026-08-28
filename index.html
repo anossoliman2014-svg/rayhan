@@ -3,76 +3,106 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<meta name="theme-color" content="#0b0f0e"/>
-<title>الري الذكي | PRO Dashboard</title>
+<meta name="theme-color" content="#10b981"/>
+<title>ريحان | نظام الري الذكي</title>
 <style>
-:root{--g:#10b981;--gd:#059669;--dark:#0b0f0e;--bg:#f5f6f7;--card:#fff;--txt:#1f2937;--mut:#9ca3af;--r:#ef4444;--b:#3b82f6}
+:root{--g:#10b981;--gd:#059669;--gl:#d1fae5;--bg:#f4faf7;--card:#fff;--txt:#1f2937;--mut:#94a3b8;--r:#ef4444;--b:#3b82f6;--line:#e7f2ec}
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',Tahoma,sans-serif}
 body{display:flex;min-height:100vh;background:var(--bg);color:var(--txt)}
-aside{width:250px;background:var(--dark);background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:30px 30px;color:#fff;padding:20px 14px;display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+
+/* ═══ الافتتاحية 🎬 ═══ */
+#splash{position:fixed;inset:0;z-index:100;background:linear-gradient(135deg,#ecfdf5 0%,#e0f2fe 60%,#f0fdf4 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;transition:opacity .7s,visibility .7s}
+#splash.done{opacity:0;visibility:hidden}
+.sp-ring{position:relative;width:120px;height:120px;display:flex;align-items:center;justify-content:center}
+.sp-ring::before,.sp-ring::after{content:'';position:absolute;inset:0;border-radius:50%;border:3px solid rgba(16,185,129,.35);animation:ring 1.8s ease-out infinite}
+.sp-ring::after{animation-delay:.6s}
+@keyframes ring{0%{transform:scale(.5);opacity:1}100%{transform:scale(1.5);opacity:0}}
+.sp-logo{width:90px;height:90px;background:linear-gradient(135deg,var(--g),#047857);border-radius:30px;display:flex;align-items:center;justify-content:center;font-size:46px;box-shadow:0 14px 40px rgba(16,185,129,.4);animation:pop 1.4s cubic-bezier(.68,-.55,.27,1.55)}
+@keyframes pop{0%{transform:scale(0) rotate(-30deg)}100%{transform:scale(1) rotate(0)}}
+#splash h1{font-size:34px;color:var(--gd);margin-top:8px;animation:up .8s .3s both}
+#splash p{color:var(--mut);font-size:14px;animation:up .8s .5s both}
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.sp-bar{width:200px;height:6px;background:#e2e8f0;border-radius:4px;overflow:hidden;margin-top:14px;animation:up .8s .7s both}
+.sp-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--g),#34d399);border-radius:4px;animation:load 2s .4s forwards}
+@keyframes load{to{width:100%}}
+#splash small{color:var(--g);letter-spacing:3px;font-size:10px;font-weight:bold;animation:up .8s .9s both}
+
+/* ═══ الهيكل المشرق ☀️ ═══ */
+aside{width:250px;background:#fff;border-inline-end:1px solid var(--line);box-shadow:0 0 40px rgba(16,185,129,.06);padding:22px 14px;display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
 .logo{display:flex;align-items:center;gap:10px;margin-bottom:30px}
-.logo .ic{width:44px;height:44px;background:var(--g);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px}
-.logo b{font-size:17px}.logo small{display:block;color:var(--g);font-size:10px;letter-spacing:1px}
+.logo .ic{width:46px;height:46px;background:linear-gradient(135deg,var(--g),#047857);border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:23px;box-shadow:0 6px 16px rgba(16,185,129,.3)}
+.logo b{font-size:18px;color:var(--txt)}.logo small{display:block;color:var(--g);font-size:10px;letter-spacing:1px;font-weight:bold}
 nav{flex:1}
-.ni{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:12px;color:#9ca3af;cursor:pointer;font-size:14px;font-weight:bold;margin-bottom:4px;transition:.2s}
-.ni:hover{color:#fff}
-.ni.on{background:var(--g);color:#fff;box-shadow:0 4px 14px rgba(16,185,129,.4)}
-.stat{background:linear-gradient(135deg,#06281e,#0b0f0e);border:1px solid rgba(16,185,129,.25);border-radius:14px;padding:12px;font-size:12px;cursor:pointer}
-.stat b{display:flex;align-items:center;gap:6px}
-.stat i{width:8px;height:8px;border-radius:50%;background:var(--g);display:inline-block}
+.ni{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:13px;color:#64748b;cursor:pointer;font-size:14px;font-weight:bold;margin-bottom:5px;transition:.2s}
+.ni:hover{background:var(--gl);color:var(--gd)}
+.ni.on{background:linear-gradient(135deg,var(--g),var(--gd));color:#fff;box-shadow:0 6px 16px rgba(16,185,129,.35)}
+.stat{background:linear-gradient(135deg,#ecfdf5,#f0fdfa);border:1px solid var(--gl);border-radius:15px;padding:12px;font-size:12px;cursor:pointer}
+.stat b{display:flex;align-items:center;gap:6px;color:var(--gd)}
+.stat i{width:8px;height:8px;border-radius:50%;background:var(--g);display:inline-block;animation:bl 2s infinite}
+@keyframes bl{50%{opacity:.4}}
 .stat small{color:var(--mut);display:block;margin-top:4px}
 main{flex:1;padding:26px 30px;overflow-y:auto}
-h1{color:var(--g);font-size:26px}
+h1{color:var(--gd);font-size:26px}
 .sub{color:var(--mut);font-size:13px;margin:4px 0 20px}
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:20px}
-.card{background:var(--card);border-radius:18px;padding:18px;box-shadow:0 2px 10px rgba(0,0,0,.04)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:0 4px 16px rgba(15,118,110,.05)}
 .card .t{display:flex;align-items:center;gap:8px;font-weight:bold;font-size:14px}
 .card .ic{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px}
 .big{font-size:30px;font-weight:800;margin:8px 0 4px}
 .pill{display:inline-block;padding:5px 12px;border-radius:14px;font-size:11px;font-weight:bold}
-.pill.g{background:#d1fae5;color:var(--gd)}.pill.r{background:#fee2e2;color:var(--r)}
-.bar{height:7px;background:#e5e7eb;border-radius:5px;margin-top:8px;overflow:hidden}
-.bar i{display:block;height:100%;background:var(--g);border-radius:5px;transition:width .6s}
+.pill.g{background:var(--gl);color:var(--gd)}.pill.r{background:#fee2e2;color:var(--r)}
+.bar{height:7px;background:#eef2f1;border-radius:5px;margin-top:8px;overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--g),#34d399);border-radius:5px;transition:width .6s}
 .grid2{display:grid;grid-template-columns:2fr 1fr;gap:16px}
 @media(max-width:900px){body{flex-direction:column}aside{width:100%;height:auto;flex-direction:row;align-items:center;overflow-x:auto}nav{display:flex}main{padding:16px}.grid2{grid-template-columns:1fr}}
 .bars{display:flex;align-items:flex-end;gap:14px;height:220px;padding:10px 4px}
 .bcol{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end}
-.bcol .b{width:70%;max-width:52px;background:linear-gradient(180deg,var(--g),#a7f3d0);border-radius:8px 8px 4px 4px;transition:height .8s}
+.bcol .b{width:70%;max-width:52px;background:linear-gradient(180deg,var(--g),#a7f3d0);border-radius:10px 10px 4px 4px;transition:height .8s}
 .bcol small{color:var(--mut);font-size:11px}
-.wcard{background:linear-gradient(135deg,#2563eb,#06b6d4);color:#fff;border-radius:22px;padding:26px}
+.wcard{background:linear-gradient(135deg,#38bdf8,#2563eb);color:#fff;border-radius:24px;padding:26px;box-shadow:0 14px 34px rgba(37,99,235,.25)}
 .wcard .tmp{font-size:64px;font-weight:800}
-.wrow{display:flex;justify-content:space-between;margin-top:18px;border-top:1px solid rgba(255,255,255,.25);padding-top:14px;font-size:13px}
-.fcard{background:#fff;border-radius:16px;padding:14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.wrow{display:flex;justify-content:space-between;margin-top:18px;border-top:1px solid rgba(255,255,255,.3);padding-top:14px;font-size:13px}
+.fcard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;text-align:center;box-shadow:0 3px 10px rgba(0,0,0,.04)}
 .fcard .e{font-size:30px}
-.btn{border:none;border-radius:12px;padding:12px 18px;font-weight:bold;cursor:pointer;font-size:14px;transition:.15s}
+.btn{border:none;border-radius:13px;padding:12px 18px;font-weight:bold;cursor:pointer;font-size:14px;transition:.15s}
 .btn:active{transform:scale(.97)}
-.btn.g{background:var(--g);color:#fff}.btn.o{background:#fff;color:var(--txt);border:1px solid #e5e7eb}
-.btn.r{background:var(--r);color:#fff}
+.btn.g{background:linear-gradient(135deg,var(--g),var(--gd));color:#fff;box-shadow:0 5px 14px rgba(16,185,129,.3)}
+.btn.o{background:#fff;color:var(--txt);border:1px solid var(--line)}
+.btn.r{background:linear-gradient(135deg,#f87171,var(--r));color:#fff}
 .btn.sm{padding:8px 14px;font-size:12px;border-radius:10px}
-.tgl{display:flex;background:#e5e7eb;border-radius:14px;padding:4px;width:fit-content;margin-bottom:12px}
+.tgl{display:flex;background:#e8f0ec;border-radius:14px;padding:4px;width:fit-content;margin-bottom:12px}
 .tgl div{padding:9px 18px;border-radius:11px;font-size:13px;font-weight:bold;color:var(--mut);cursor:pointer}
-.tgl div.on{background:#fff;color:var(--gd);box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.nitem{display:flex;gap:14px;align-items:center;background:#fff;border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
-.nitem .ic{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
-.nitem .tm{margin-inline-start:auto;background:#f3f4f6;padding:4px 10px;border-radius:10px;font-size:11px;color:var(--mut);white-space:nowrap}
+.tgl div.on{background:#fff;color:var(--gd);box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.nitem{display:flex;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:12px;box-shadow:0 3px 10px rgba(0,0,0,.03)}
+.nitem .ic{width:44px;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.nitem .tm{margin-inline-start:auto;background:#f1f5f9;padding:4px 10px;border-radius:10px;font-size:11px;color:var(--mut);white-space:nowrap}
 .nitem.unread::after{content:'';width:9px;height:9px;background:var(--g);border-radius:50%;flex-shrink:0}
-input,select{width:100%;padding:12px;border-radius:12px;border:1px solid #e5e7eb;font-size:14px;margin-top:6px}
+input,select{width:100%;padding:12px;border-radius:12px;border:1px solid var(--line);font-size:14px;margin-top:6px;background:#fbfdfc}
 label{font-size:12px;color:var(--mut);font-weight:bold;display:block;margin-top:12px}
 .hidden{display:none!important}
-.pump{background:#d1fae5;color:var(--gd);border-radius:12px;padding:10px;text-align:center;font-weight:bold;margin-bottom:10px}
+.pump{background:var(--gl);color:var(--gd);border-radius:12px;padding:10px;text-align:center;font-weight:bold;margin-bottom:10px}
 .pump.on{background:#fee2e2;color:var(--r);animation:bl 1s infinite}
-@keyframes bl{50%{opacity:.6}}
 canvas{width:100%;border-radius:12px}
 #toasts{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:99}
-.toast{color:#fff;background:var(--gd);padding:11px 20px;border-radius:14px;font-size:13px;font-weight:bold;margin-bottom:8px;box-shadow:0 6px 18px rgba(0,0,0,.25)}
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:50;display:none;align-items:center;justify-content:center}
+.toast{color:#fff;background:var(--gd);padding:11px 20px;border-radius:14px;font-size:13px;font-weight:bold;margin-bottom:8px;box-shadow:0 6px 18px rgba(0,0,0,.2)}
+.overlay{position:fixed;inset:0;background:rgba(31,41,55,.35);backdrop-filter:blur(3px);z-index:50;display:none;align-items:center;justify-content:center}
 .overlay.show{display:flex}
 </style>
 </head>
 <body>
+
+<!-- ═══ الافتتاحية 🎬 ═══ -->
+<div id="splash">
+  <div class="sp-ring"><div class="sp-logo">🌱</div></div>
+  <h1>ريحان</h1>
+  <p>نظام الري الذكي المتكامل</p>
+  <div class="sp-bar"><i></i></div>
+  <small>PRO DASHBOARD</small>
+</div>
+
 <div id="toasts"></div>
 <aside>
-  <div class="logo"><div class="ic">🌱</div><div><b>الري الذكي</b><small>PRO DASHBOARD</small></div></div>
+  <div class="logo"><div class="ic">🌱</div><div><b>ريحان</b><small>PRO DASHBOARD</small></div></div>
   <nav>
     <div class="ni on" onclick="go('dash',this)">🎛️ لوحة التحكم</div>
     <div class="ni" onclick="go('zones',this)">🗺️ المناطق</div>
@@ -90,7 +120,7 @@ canvas{width:100%;border-radius:12px}
   <div class="tgl"><div id="m0" onclick="setMode(0)">🤖 ذكي</div><div id="m1" onclick="setMode(1)">🎛 يدوي</div><div id="m2" onclick="setMode(2)">📅 جدول</div></div>
   <div class="cards">
     <div class="card"><div class="t"><span class="ic" style="background:#d1fae5">💧</span>رطوبة التربة</div><div class="big" id="soil">--</div><div class="bar"><i id="soilBar"></i></div><small style="color:var(--mut)">الهدف: <span id="tgt">--</span>%</small></div>
-    <div class="card"><div class="t"><span class="ic" style="background:#dbeafe">🪣</span>مستوى الخزان</div><div class="big" id="water" style="color:var(--b)">--</div><div class="bar"><i id="waterBar" style="background:var(--b)"></i></div></div>
+    <div class="card"><div class="t"><span class="ic" style="background:#dbeafe">🪣</span>مستوى الخزان</div><div class="big" id="water" style="color:var(--b)">--</div><div class="bar"><i id="waterBar" style="background:linear-gradient(90deg,#60a5fa,#3b82f6)"></i></div></div>
     <div class="card"><div class="t"><span class="ic" style="background:#fef3c7">🌡️</span>الحرارة</div><div class="big" id="temp">--</div></div>
     <div class="card"><div class="t"><span class="ic" style="background:#e0e7ff">💦</span>رطوبة الجو</div><div class="big" id="hum">--</div><small id="rain" style="color:var(--mut)">☀️ جاف</small></div>
   </div>
@@ -132,7 +162,7 @@ canvas{width:100%;border-radius:12px}
   <h1 style="color:var(--b)">حالة الطقس</h1><div class="sub">بيانات OpenWeather للتنبؤ وتعديل خطة الري</div>
   <span class="pill g" id="wSuit">✔ مناسب للري اليوم — 85%</span>
   <div class="grid2" style="margin-top:16px">
-    <div class="wcard"><div style="font-size:40px" id="wEmo">⛅</div><div id="wCity" style="font-weight:bold;margin-top:8px">--</div><div id="wDate" style="opacity:.8;font-size:12px"></div><div class="tmp"><span id="wTemp">--</span>°</div><div id="wCond">--</div>
+    <div class="wcard"><div style="font-size:40px" id="wEmo">⛅</div><div id="wCity" style="font-weight:bold;margin-top:8px">--</div><div id="wDate" style="opacity:.85;font-size:12px"></div><div class="tmp"><span id="wTemp">--</span>°</div><div id="wCond">--</div>
       <div class="wrow"><span>💧 الرطوبة<br><b id="wHum">--</b></span><span>🌬 الرياح<br><b id="wWind">--</b></span><span>⏱ الضغط<br><b id="wPress">--</b></span><span>🌧 المطر<br><b id="wRain">--</b></span></div>
     </div>
     <div>
@@ -165,7 +195,6 @@ canvas{width:100%;border-radius:12px}
 
 </main>
 
-<!-- نافذة الاتصال (مُصلحة + وضع المطور) -->
 <div id="connPanel" class="overlay">
   <div class="card" style="width:90%;max-width:380px">
     <div class="t">📡 الاتصال بالجهاز</div>
@@ -249,29 +278,21 @@ if(w.set)$('wSet').innerText=new Date(w.set*1000).toLocaleTimeString('ar',{hour:
 const suit=Math.max(0,Math.min(100,100-w.rain-Math.max(0,w.temp-36)*3));$('wSuit').innerText=(suit>60?'✔ مناسب للري اليوم — ':'⚠ حذر للري — ')+suit+'%';
 $('wForecast').innerHTML=w.fc.map(f=>`<div class="fcard"><b>${f.day}</b><div class="e">${emo(f.main)}</div><div><b>${f.t}°</b> <small style="color:var(--mut)">${f.tm}°</small></div></div>`).join('');}
 
-/* ═══ الوضع التجريبي + وضع المطور السري 🛠️ ═══ */
+/* ═══ تجريبي + وضع المطور 🛠️ ═══ */
 function startDemo(){
-  $('connPanel').classList.remove('show');   // إغلاق النافذة دائماً (الإصلاح)
-  const h=$('inpHost').value.trim(), t=$('inpToken2').value.trim();
-  DEV = (h==='2056' && t==='666');           // باب المطور السري — تجريبي فقط
-  MODE='demo'; BASE='';
-  if(DEV){
-    $('connTxt').innerText='وضع المطور 🛠️'; $('dot').style.background='#8b5cf6';
-    S.water=12; S.soil=22;                   // سيناريو اختبار: خزان منخفض + تربة جافة
-    NOTIF.unshift({t:'وضع المطور مفعّل',d:'أهلاً أيها المبرمج! محاكاة مسرّعة + سيناريو اختبار',lv:1,tm:'الآن',un:true});
-    toast('🛠️ أهلاً أيها المبرمج! وضع الاختبار السريع مفعّل','#8b5cf6');
-  } else {
-    $('connTxt').innerText='وضع تجريبي'; $('dot').style.background='#f59e0b';
-    toast('🧪 وضع تجريبي مفعّل','#3b82f6');
-  }
-  demoWeather(); renderAll();
+  $('connPanel').classList.remove('show');
+  DEV=($('inpHost').value.trim()==='2056'&&$('inpToken2').value.trim()==='666');
+  MODE='demo';BASE='';
+  if(DEV){$('connTxt').innerText='وضع المطور 🛠️';$('dot').style.background='#8b5cf6';S.water=12;S.soil=22;NOTIF.unshift({t:'وضع المطور مفعّل',d:'أهلاً أيها المبرمج! محاكاة مسرّعة + سيناريو اختبار',lv:1,tm:'الآن',un:true});toast('🛠️ أهلاً أيها المبرمج! وضع الاختبار السريع','#8b5cf6');}
+  else{$('connTxt').innerText='وضع تجريبي';$('dot').style.background='#f59e0b';toast('🧪 وضع تجريبي مفعّل','#3b82f6');}
+  demoWeather();renderAll();
 }
 setInterval(()=>{if(MODE!=='demo')return;
 if(P.running){P.remaining--;S.soil=Math.min(100,S.soil+1.2);S.water=Math.max(0,S.water-0.7);cons[6]+=CFG.flow/60;if(P.remaining<=0||S.water<=5){P.running=false;P.reason='COMPLETED';}}else S.soil=Math.max(0,S.soil-0.15);
 S.temp=Math.max(15,Math.min(45,S.temp+(Math.random()-.5)*.3));S.hum=Math.max(20,Math.min(95,S.hum+(Math.random()-.5)));
 A.need=Math.max(0,Math.min(1,(S.target-S.soil)/50));A.conf=.55+A.need*.4;A.dry=1.8+Math.random();A.decision=A.need>=.55?'IRRIGATE':'IDLE';A.reason=A.decision==='IRRIGATE'?'DEFICIT':'OK_NO_NEED';
 if(S.mode===0&&!P.running&&A.need>=.6&&S.water>10){P.running=true;P.remaining=20;P.reason='AUTO';NOTIF.unshift({t:'بدء الري',d:'تم تفعيل المضخة تلقائياً',lv:1,tm:'الآن',un:true});}
-pushHist();renderAll();},DEV?250:1000);   // وضع المطور = محاكاة ×4 أسرع
+pushHist();renderAll();},DEV?250:1000);
 function demoAct(p,b){if(p.includes('irrigate')){P.running=true;P.remaining=b.duration_sec;P.reason='MANUAL';toast('✅ تشغيل '+b.duration_sec+'ث');}
 else if(p.includes('emergency')){P.running=false;S.mode=1;toast('⛔ إيقاف طارئ','#ef4444');}
 else if(p.includes('stop')){P.running=false;toast('⏹ توقف');}
@@ -279,7 +300,7 @@ else if(p.includes('mode')){S.mode=b.mode;toast('✅ الوضع تغيّر');}
 else if(p.includes('plant'))toast('✅ '+PLANTS[b.plant_id-1]);else if(p.includes('soil'))toast('✅ '+SOILS[b.soil_id-1]);
 else if(p.includes('target')){S.target=b.target_moisture;toast('✅ الهدف '+S.target+'%');}renderAll();}
 
-/* ═══ الرسم والعرض ═══ */
+/* ═══ العرض ═══ */
 function pushHist(){hist.soil.push(S.soil);hist.water.push(S.water);if(hist.soil.length>60){hist.soil.shift();hist.water.shift();}}
 function drawChart(){const cv=$('chart'),c=cv.getContext('2d');const W=cv.width=cv.clientWidth,H=140;c.clearRect(0,0,W,H);
 c.strokeStyle='rgba(0,0,0,.06)';for(let i=0;i<=4;i++){const y=8+i*(H-16)/4;c.beginPath();c.moveTo(0,y);c.lineTo(W,y);c.stroke();}
@@ -308,9 +329,12 @@ function saveCfg(){CFG.token=$('sToken').value||CFG.token;CFG.mqttS=$('sMqttS').
 window.onload=()=>{
   loadCfgUI();
   const saved=localStorage.getItem('rayhan_conn');
-  if(saved){try{const c=JSON.parse(saved);BASE='http://'+c.host;CFG.token=c.token||CFG.token;MODE='live';startWS();refreshLive();fetchWeatherLive();return;}catch(e){}}
-  if(location.protocol.startsWith('http')&&!location.hostname.includes('github.io')){BASE=location.origin;MODE='live';startWS();refreshLive();}
-  else startDemo();   // يفتح مباشرة بدون نافذة معلّقة
+  if(saved){try{const c=JSON.parse(saved);BASE='http://'+c.host;CFG.token=c.token||CFG.token;MODE='live';startWS();refreshLive();fetchWeatherLive();}catch(e){startDemo();}}
+  else if(location.protocol.startsWith('http')&&!location.hostname.includes('github.io')){BASE=location.origin;MODE='live';startWS();refreshLive();}
+  else startDemo();
+  renderAll();
+  /* 🎬 إخفاء الافتتاحية بعد اكتمال التحميل */
+  setTimeout(()=>{const sp=$('splash');if(sp){sp.classList.add('done');setTimeout(()=>sp.remove(),800);}},2400);
 };
 </script>
 </body>
