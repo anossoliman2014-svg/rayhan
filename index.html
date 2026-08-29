@@ -37,8 +37,11 @@ aside{width:250px;background:var(--card);border-inline-end:1px solid var(--line)
 .logo{display:flex;align-items:center;gap:10px;margin-bottom:18px}
 .logo .ic{width:46px;height:46px;background:linear-gradient(135deg,var(--g),#047857);border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:23px}
 .logo b{font-size:18px}.logo small{display:block;color:var(--g);font-size:10px;letter-spacing:1px;font-weight:bold}
-.quick{display:flex;gap:6px;margin-bottom:14px}
-.qbtn{flex:1;border:1px solid var(--line);background:var(--bg);border-radius:12px;padding:8px;cursor:pointer;font-size:14px}
+.quick{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:14px}
+.qbtn{border:1px solid var(--line);background:var(--bg);border-radius:12px;padding:10px 2px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:.2s}
+.qbtn:hover{background:var(--gl);color:var(--gd)}
+body.phone .quick{display:flex;gap:8px}
+body.phone .qbtn{flex:0 0 auto;padding:8px 12px}
 nav{flex:1}
 .ni{display:flex;align-items:center;gap:9px;padding:11px 12px;border-radius:13px;color:var(--mut);cursor:pointer;font-size:13px;font-weight:bold;margin-bottom:4px;transition:.2s;position:relative;white-space:nowrap}
 .ni:hover{background:var(--gl);color:var(--gd)}
@@ -305,10 +308,10 @@ function sget(k,d){try{return localStorage.getItem(k)??d;}catch(e){return d;}}
 function sset(k,v){try{localStorage.setItem(k,v);}catch(e){}}
 function jget(k,d){try{const v=JSON.parse(localStorage.getItem(k));return v??d;}catch(e){return d;}}
 const obf=s=>{try{return btoa(unescape(encodeURIComponent(s))).split('').reverse().join('');}catch(e){return s;}};
-const unobf=s=>{try{return decodeURIComponent(escape(atob(s.split('').reverse().join(''))));}catch(e){return s;}};
+const unobf=s=>{try{return decodeURIComponent(escape(atob(s.split('').reverse().join(''))));}catch(e){return s;}}
 function validHost(h){return /^(\d{1,3}\.){3}\d{1,3}$/.test(h)&&h.split('.').every(x=>+x<256)||/^[a-z0-9][a-z0-9.-]*\.local$/i.test(h);}
 let VIEW=sget('rv','auto');
-function applyView(){document.body.classList.toggle('phone',VIEW==='phone');const b=$('vwBtn');if(b)b.innerText=VIEW==='phone'?'💻':'📱';}
+function applyView(){document.body.classList.toggle('phone',VIEW==='phone');const b=$('vwBtn');if(b)b.innerText=VIEW==='phone'?'💻':'';}
 function toggleView(){VIEW=(VIEW==='phone')?'auto':'phone';sset('rv',VIEW);applyView();toast(VIEW==='phone'?L('📱 وضعية الهاتف','📱 Phone mode'):L('💻 وضعية اللابتوب','💻 Desktop mode'));}
 const T={ar:{app:'ريحان',tag:'نظام الري الذكي المتكامل',nav_dash:'لوحة التحكم',nav_zones:'المناطق',nav_sched:'الجدولة',nav_cons:'الاستهلاك',nav_rep:'التقارير',nav_weather:'الطقس',nav_notif:'التنبيهات',nav_set:'الإعدادات',dash_sub:'مراقبة لحظية وتحكم كامل',auto:'ذكي',manual:'يدوي',sched:'جدول',soil:'رطوبة التربة',tank:'الخزان',temp:'الحرارة',hum:'رطوبة الجو',targetH:'الهدف',uptime:'التشغيل',ops:'عمليات',saved:'وفر الذكاء',dcenter:'مركز القرار',ai:'الذكاء',confH:'الثقة',need2:'الحاجة',dry2:'الجفاف',dec2:'القرار',sensH:'الحساسية',control:'التحكم',emg:'إيقاف طارئ',plantH:'النبات',soilH:'التربة',zones_sub:'تحكم مستقل لكل منطقة',zUsed:'إجمالي الري',zActive:'نشطة',zLast:'آخر ري',addZone:'إضافة منطقة',zNameP:'اسم المنطقة',r1:'ريليه 1',r2:'ريليه 2',add:'إضافة',sched_sub:'مواعيد الري بتكرار أسبوعي',schNext:'التالي',newSch:'جدول جديد',daysL:'أيام التكرار:',cons_sub:'تحليل حقيقي من سجل الري',today:'اليوم',week:'الأسبوع',avg:'المتوسط',cost:'التكلفة',weekChart:'الأسبوع',goalM:'الهدف الشهري',goalL:'الهدف (لتر)',proj:'الإسقاط الشهري',tipsL:'نصائح ذكية',rep_sub:'تحليلات وكفاءة النظام',effL:'نقاط الكفاءة',usedL:'المستهلك',analytics:'تحليلات',topZone:'أكثر منطقة رياً',peakHr:'ساعة الذروة',peakDay:'أكثر يوم',avgDur:'متوسط المدة',autoP:'نسبة الذكي',dist:'التوزيع',logL:'سجل الري',wSub:'بيانات حية لتعديل خطة الري',sunL:'الشمس',riseL:'شروق',setL:'غروب',windL:'الرياح',hoursL:'الساعات',recsL:'توصيات',fcL:'التوقعات',nSub:'سجل ذكي من أحداث النظام',fAll:'الكل',fWarn:'تحذيرات',fErr:'أخطاء',readL:'قراءة',set_sub:'تهيئة النظام',appearL:'المظهر',langL:'اللغة',themeL:'المظهر',unitL:'الحرارة',locL:'الموقع',secL:'الأمان',costFlow:'التكلفة والتدفق',saveL:'حفظ',cancelL:'إلغاء',asstT:'مساعد ريحان',asstS:'خبير نباتات — دون إنترنت',chatP:'اسأل الخبير...',connT:'الاتصال',connB:'اتصال',demoB:'تجريبي'},
 en:{app:'Rayhan',tag:'Integrated Smart Irrigation',nav_dash:'Dashboard',nav_zones:'Zones',nav_sched:'Scheduling',nav_cons:'Consumption',nav_rep:'Reports',nav_weather:'Weather',nav_notif:'Alerts',nav_set:'Settings',dash_sub:'Live monitoring & full control',auto:'Auto',manual:'Manual',sched:'Schedule',soil:'Soil Moisture',tank:'Tank',temp:'Temperature',hum:'Air Humidity',targetH:'Target',uptime:'Uptime',ops:'Operations',saved:'AI Savings',dcenter:'Decision Center',ai:'AI',confH:'Confidence',need2:'Need',dry2:'Drying',dec2:'Decision',sensH:'Sensitivity',control:'Control',emg:'Emergency Stop',plantH:'Plant',soilH:'Soil',zones_sub:'Independent per-zone control',zUsed:'Total irrigation',zActive:'Active',zLast:'Last irrigation',addZone:'Add zone',zNameP:'Zone name',r1:'Relay 1',r2:'Relay 2',add:'Add',sched_sub:'Weekly recurring schedules',schNext:'Next run',newSch:'New schedule',daysL:'Repeat days:',cons_sub:'Real analysis from log',today:'Today',week:'Week',avg:'Average',cost:'Cost',weekChart:'Week',goalM:'Monthly goal',goalL:'Goal (L)',proj:'Monthly projection',tipsL:'Smart tips',rep_sub:'Analytics & efficiency',effL:'Efficiency score',usedL:'Used',analytics:'Analytics',topZone:'Top irrigated zone',peakHr:'Peak hour',peakDay:'Peak day',avgDur:'Avg duration',autoP:'Auto ratio',dist:'Distribution',logL:'Irrigation log',wSub:'Live data to adjust irrigation',sunL:'Sun',riseL:'Sunrise',setL:'Sunset',windL:'Wind',hoursL:'Hours',recsL:'Recommendations',fcL:'Forecast',nSub:'Smart log from events',fAll:'All',fWarn:'Warnings',fErr:'Errors',readL:'Read',set_sub:'System setup',appearL:'Appearance',langL:'Language',themeL:'Theme',unitL:'Temperature',locL:'Location',secL:'Security',costFlow:'Cost & flow',saveL:'Save',cancelL:'Cancel',asstT:'Rayhan Assistant',asstS:'Plant expert — offline',chatP:'Ask the expert...',connT:'Connect',connB:'Connect',demoB:'Demo'}};
@@ -324,7 +327,7 @@ let S={soil:35,water:80,temp:27,hum:55,rain:false,target:58,mode:0};
 let A={conf:.7,need:.3,dry:2.2,reason:'OK_NO_NEED'};
 let P={running:false,remaining:0};
 const PLANTS=[['🌴 نخيل التمر','Date Palm',45],['🍅 طماطم','Tomato',55],['🥒 خيار','Cucumber',60],['🍆 باذنجان','Eggplant',55],['🫛 بامية','Okra',50],['🌶️ فلفل','Pepper',45],['🧅 بصل','Onion',40],['🥕 جزر','Carrot',45],['🥬 خس','Lettuce',60],['🍓 فراولة','Strawberry',55],['🍉 بطيخ','Watermelon',45],['🌽 ذرة','Corn',50],['🪴 ريحان','Basil',58],['🍃 نعناع','Mint',60],['🌱 زعتر','Thyme',35],['🍇 عنب','Grapes',40],['🍋 ليمون','Lemon',40]];
-const SOILS=()=>LANG==='ar'?['🏜️ رملية','🧱 طينية','🌾 طمية','🍂 بتموس','🪨 صخرية']:['🏜️ Sandy','🧱 Clay','🌾 Loam','🍂 Peat','🪨 Rocky'];
+const SOILS=()=>LANG==='ar'?['🏜️ رملية','🧱 طينية','🌾 طمية','🍂 بتموس','🪨 صخرية']:['🏜️ Sandy','🧱 Clay',' Loam',' Peat',' Rocky'];
 let ZONES=jget('rz',null)||[{id:1,name:'Front',emoji:'🌳',plant:0,soil:0,relay:0,en:true,lastIrr:null,usedL:0,off:0},{id:2,name:'Back',emoji:'🌴',plant:1,soil:1,relay:1,en:true,lastIrr:null,usedL:0,off:-3}];
 let HIST=jget('rh',[]);
 let SCHED=jget('rsc',[]);
@@ -498,10 +501,10 @@ function logIrr(dur,src){HIST.unshift({ts:Date.now(),dur,liters:dur*CFG.flow/60,
 function applyLang(){document.documentElement.lang=LANG;document.documentElement.dir=LANG==='ar'?'rtl':'ltr';document.querySelectorAll('[data-t]').forEach(e=>e.innerText=t(e.dataset.t));document.querySelectorAll('[data-tp]').forEach(e=>e.placeholder=t(e.dataset.tp));$('lgBtn').innerText=LANG==='ar'?'EN':'ع';$('sLang').value=LANG;}
 function setLang(l){LANG=l;sset('rl',l);applyLang();renderAll();}
 function toggleLang(){setLang(LANG==='ar'?'en':'ar');}
-function applyTheme(){document.body.classList.toggle('dark',THEME==='dark');$('thBtn').innerText=THEME==='dark'?'☀️':'🌙';$('sTheme').value=THEME;}
+function applyTheme(){document.body.classList.toggle('dark',THEME==='dark');$('thBtn').innerText=THEME==='dark'?'☀️':'';$('sTheme').value=THEME;}
 function setTheme(v){THEME=v;sset('rt',v);applyTheme();}
 function toggleTheme(){setTheme(THEME==='dark'?'light':'dark');}
-function applySnd(){$('sndBtn').innerText=SND?'🔔':'';}
+function applySnd(){$('sndBtn').innerText=SND?'🔔':'🔕';}
 function toggleSnd(){SND=!SND;sset('rs',SND?'1':'0');applySnd();}
 function toggleFS(){if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen();}
 function toggleConn(){$('connPanel').classList.toggle('show');}
