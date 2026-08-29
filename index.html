@@ -10,7 +10,6 @@
 body.dark{--bg:#0b1220;--card:#151e2e;--txt:#e5e7eb;--mut:#8fa3bf;--line:#243247;--gl:rgba(16,185,129,.15)}
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',Tahoma,sans-serif}
 body{display:flex;min-height:100vh;background:var(--bg);color:var(--txt);transition:background .4s}
-/* ═══ وضعية الهاتف اليدوية (زر 📱) ══ */
 body.phone{flex-direction:column}
 body.phone aside{width:100%;height:auto;flex-direction:row;align-items:center;overflow-x:auto;position:static;padding:10px}
 body.phone nav{display:flex;gap:4px}
@@ -77,7 +76,7 @@ h1{color:var(--gd);font-size:26px}
 .btn:active{transform:scale(.97)}
 .btn.g{background:linear-gradient(135deg,var(--g),var(--gd));color:#fff}
 .btn.o{background:var(--card);color:var(--txt);border:1px solid var(--line)}
-.btn.r{background:linear-gradient(135deg,#f87171,var(--r});color:#fff}
+.btn.r{background:linear-gradient(135deg,#f87171,var(--r));color:#fff}
 .btn.sm{padding:8px 14px;font-size:12px;border-radius:10px}
 .tgl{display:flex;background:var(--line);border-radius:14px;padding:4px;width:fit-content;margin-bottom:12px}
 .tgl div{padding:9px 18px;border-radius:11px;font-size:13px;font-weight:bold;color:var(--mut);cursor:pointer}
@@ -304,12 +303,12 @@ const lat=s=>String(s).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d));
 function fmt(n,d=0){n=Number(n);if(!isFinite(n))n=0;return n.toFixed(d);}
 function sget(k,d){try{return localStorage.getItem(k)??d;}catch(e){return d;}}
 function sset(k,v){try{localStorage.setItem(k,v);}catch(e){}}
+function jget(k,d){try{const v=JSON.parse(localStorage.getItem(k));return v??d;}catch(e){return d;}}
 const obf=s=>{try{return btoa(unescape(encodeURIComponent(s))).split('').reverse().join('');}catch(e){return s;}};
 const unobf=s=>{try{return decodeURIComponent(escape(atob(s.split('').reverse().join(''))));}catch(e){return s;}};
 function validHost(h){return /^(\d{1,3}\.){3}\d{1,3}$/.test(h)&&h.split('.').every(x=>+x<256)||/^[a-z0-9][a-z0-9.-]*\.local$/i.test(h);}
-/* ═══ تبديل العرض لابتوب/هاتف ═══ */
 let VIEW=sget('rv','auto');
-function applyView(){document.body.classList.toggle('phone',VIEW==='phone');const b=$('vwBtn');if(b)b.innerText=VIEW==='phone'?'💻':'';}
+function applyView(){document.body.classList.toggle('phone',VIEW==='phone');const b=$('vwBtn');if(b)b.innerText=VIEW==='phone'?'💻':'📱';}
 function toggleView(){VIEW=(VIEW==='phone')?'auto':'phone';sset('rv',VIEW);applyView();toast(VIEW==='phone'?L('📱 وضعية الهاتف','📱 Phone mode'):L('💻 وضعية اللابتوب','💻 Desktop mode'));}
 const T={ar:{app:'ريحان',tag:'نظام الري الذكي المتكامل',nav_dash:'لوحة التحكم',nav_zones:'المناطق',nav_sched:'الجدولة',nav_cons:'الاستهلاك',nav_rep:'التقارير',nav_weather:'الطقس',nav_notif:'التنبيهات',nav_set:'الإعدادات',dash_sub:'مراقبة لحظية وتحكم كامل',auto:'ذكي',manual:'يدوي',sched:'جدول',soil:'رطوبة التربة',tank:'الخزان',temp:'الحرارة',hum:'رطوبة الجو',targetH:'الهدف',uptime:'التشغيل',ops:'عمليات',saved:'وفر الذكاء',dcenter:'مركز القرار',ai:'الذكاء',confH:'الثقة',need2:'الحاجة',dry2:'الجفاف',dec2:'القرار',sensH:'الحساسية',control:'التحكم',emg:'إيقاف طارئ',plantH:'النبات',soilH:'التربة',zones_sub:'تحكم مستقل لكل منطقة',zUsed:'إجمالي الري',zActive:'نشطة',zLast:'آخر ري',addZone:'إضافة منطقة',zNameP:'اسم المنطقة',r1:'ريليه 1',r2:'ريليه 2',add:'إضافة',sched_sub:'مواعيد الري بتكرار أسبوعي',schNext:'التالي',newSch:'جدول جديد',daysL:'أيام التكرار:',cons_sub:'تحليل حقيقي من سجل الري',today:'اليوم',week:'الأسبوع',avg:'المتوسط',cost:'التكلفة',weekChart:'الأسبوع',goalM:'الهدف الشهري',goalL:'الهدف (لتر)',proj:'الإسقاط الشهري',tipsL:'نصائح ذكية',rep_sub:'تحليلات وكفاءة النظام',effL:'نقاط الكفاءة',usedL:'المستهلك',analytics:'تحليلات',topZone:'أكثر منطقة رياً',peakHr:'ساعة الذروة',peakDay:'أكثر يوم',avgDur:'متوسط المدة',autoP:'نسبة الذكي',dist:'التوزيع',logL:'سجل الري',wSub:'بيانات حية لتعديل خطة الري',sunL:'الشمس',riseL:'شروق',setL:'غروب',windL:'الرياح',hoursL:'الساعات',recsL:'توصيات',fcL:'التوقعات',nSub:'سجل ذكي من أحداث النظام',fAll:'الكل',fWarn:'تحذيرات',fErr:'أخطاء',readL:'قراءة',set_sub:'تهيئة النظام',appearL:'المظهر',langL:'اللغة',themeL:'المظهر',unitL:'الحرارة',locL:'الموقع',secL:'الأمان',costFlow:'التكلفة والتدفق',saveL:'حفظ',cancelL:'إلغاء',asstT:'مساعد ريحان',asstS:'خبير نباتات — دون إنترنت',chatP:'اسأل الخبير...',connT:'الاتصال',connB:'اتصال',demoB:'تجريبي'},
 en:{app:'Rayhan',tag:'Integrated Smart Irrigation',nav_dash:'Dashboard',nav_zones:'Zones',nav_sched:'Scheduling',nav_cons:'Consumption',nav_rep:'Reports',nav_weather:'Weather',nav_notif:'Alerts',nav_set:'Settings',dash_sub:'Live monitoring & full control',auto:'Auto',manual:'Manual',sched:'Schedule',soil:'Soil Moisture',tank:'Tank',temp:'Temperature',hum:'Air Humidity',targetH:'Target',uptime:'Uptime',ops:'Operations',saved:'AI Savings',dcenter:'Decision Center',ai:'AI',confH:'Confidence',need2:'Need',dry2:'Drying',dec2:'Decision',sensH:'Sensitivity',control:'Control',emg:'Emergency Stop',plantH:'Plant',soilH:'Soil',zones_sub:'Independent per-zone control',zUsed:'Total irrigation',zActive:'Active',zLast:'Last irrigation',addZone:'Add zone',zNameP:'Zone name',r1:'Relay 1',r2:'Relay 2',add:'Add',sched_sub:'Weekly recurring schedules',schNext:'Next run',newSch:'New schedule',daysL:'Repeat days:',cons_sub:'Real analysis from log',today:'Today',week:'Week',avg:'Average',cost:'Cost',weekChart:'Week',goalM:'Monthly goal',goalL:'Goal (L)',proj:'Monthly projection',tipsL:'Smart tips',rep_sub:'Analytics & efficiency',effL:'Efficiency score',usedL:'Used',analytics:'Analytics',topZone:'Top irrigated zone',peakHr:'Peak hour',peakDay:'Peak day',avgDur:'Avg duration',autoP:'Auto ratio',dist:'Distribution',logL:'Irrigation log',wSub:'Live data to adjust irrigation',sunL:'Sun',riseL:'Sunrise',setL:'Sunset',windL:'Wind',hoursL:'Hours',recsL:'Recommendations',fcL:'Forecast',nSub:'Smart log from events',fAll:'All',fWarn:'Warnings',fErr:'Errors',readL:'Read',set_sub:'System setup',appearL:'Appearance',langL:'Language',themeL:'Theme',unitL:'Temperature',locL:'Location',secL:'Security',costFlow:'Cost & flow',saveL:'Save',cancelL:'Cancel',asstT:'Rayhan Assistant',asstS:'Plant expert — offline',chatP:'Ask the expert...',connT:'Connect',connB:'Connect',demoB:'Demo'}};
@@ -319,17 +318,17 @@ const DAYSL=()=>LANG==='ar'?['السبت','الأحد','الاثنين','الث�
 const MN=()=>LANG==='ar'?['يناير','فبراير','مارس','ابريل','مايو','يونيو','يوليو','اغسطس','سبتمبر','اكتوبر','نوفمبر','ديسمبر']:['January','February','March','April','May','June','July','August','September','October','November','December'];
 let THEME=sget('rt','light'),SND=sget('rs','1')==='1';
 let MODE='demo',BASE='',ws=null,DEV=false;
-let CFG=Object.assign({token:unobf(sget('rtk',obf('rayhan-2026'))),mqttS:'',mqttP:'1883',owm:'',city:'Doha, QA',cost:0.15,flow:10,unit:'C',sens:0.55,goal:3000},JSON.parse(sget('rcfg','{}')));
+let CFG=Object.assign({token:unobf(sget('rtk',obf('rayhan-2026'))),mqttS:'',mqttP:'1883',owm:'',city:'Doha, QA',cost:0.15,flow:10,unit:'C',sens:0.55,goal:3000},jget('rcfg',{}));
 function save(){sset('rcfg',JSON.stringify(CFG));}
 let S={soil:35,water:80,temp:27,hum:55,rain:false,target:58,mode:0};
 let A={conf:.7,need:.3,dry:2.2,reason:'OK_NO_NEED'};
 let P={running:false,remaining:0};
 const PLANTS=[['🌴 نخيل التمر','Date Palm',45],['🍅 طماطم','Tomato',55],['🥒 خيار','Cucumber',60],['🍆 باذنجان','Eggplant',55],['🫛 بامية','Okra',50],['🌶️ فلفل','Pepper',45],['🧅 بصل','Onion',40],['🥕 جزر','Carrot',45],['🥬 خس','Lettuce',60],['🍓 فراولة','Strawberry',55],['🍉 بطيخ','Watermelon',45],['🌽 ذرة','Corn',50],['🪴 ريحان','Basil',58],['🍃 نعناع','Mint',60],['🌱 زعتر','Thyme',35],['🍇 عنب','Grapes',40],['🍋 ليمون','Lemon',40]];
 const SOILS=()=>LANG==='ar'?['🏜️ رملية','🧱 طينية','🌾 طمية','🍂 بتموس','🪨 صخرية']:['🏜️ Sandy','🧱 Clay','🌾 Loam','🍂 Peat','🪨 Rocky'];
-let ZONES=JSON.parse(sget('rz','null'))||[{id:1,name:'Front',emoji:'🌳',plant:0,soil:0,relay:0,en:true,lastIrr:null,usedL:0,off:0},{id:2,name:'Back',emoji:'🌴',plant:1,soil:1,relay:1,en:true,lastIrr:null,usedL:0,off:-3}];
-let HIST=JSON.parse(sget('rh','[]'));
-let SCHED=JSON.parse(sget('rsc','[]'));
-let NOTIF=JSON.parse(sget('rn','[]'));if(!NOTIF.length)NOTIF=[{t:'Welcome',d:'Rayhan ready',lv:1,ts:Date.now(),un:true}];
+let ZONES=jget('rz',null)||[{id:1,name:'Front',emoji:'🌳',plant:0,soil:0,relay:0,en:true,lastIrr:null,usedL:0,off:0},{id:2,name:'Back',emoji:'🌴',plant:1,soil:1,relay:1,en:true,lastIrr:null,usedL:0,off:-3}];
+let HIST=jget('rh',[]);
+let SCHED=jget('rsc',[]);
+let NOTIF=jget('rn',[]);if(!NOTIF.length)NOTIF=[{t:'Welcome',d:'Rayhan ready',lv:1,ts:Date.now(),un:true}];
 let NF='all',WDATA=null,VOICE=true;
 let REC=null,listening=false,recTimer=null,maxTimer=null,finalT='';
 const T0=Date.now();
@@ -339,7 +338,13 @@ function notify(tt,d,lv=1){NOTIF.unshift({t:tt,d,lv,ts:Date.now(),un:true});NOTI
 function updBadge(){const u=NOTIF.filter(x=>x.un).length;const b=$('navNotif').querySelector('.badge');if(u>0){if(!b){const s=document.createElement('span');s.className='badge';s.innerText=u;$('navNotif').appendChild(s);}else b.innerText=u;}else if(b)b.remove();}
 let VOICES=[];if('speechSynthesis' in window){VOICES=speechSynthesis.getVoices();speechSynthesis.onvoiceschanged=()=>VOICES=speechSynthesis.getVoices();}
 function speak(txt){if(!VOICE||!('speechSynthesis' in window))return;try{speechSynthesis.cancel();const clean=txt.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}]/gu,'').replace(/[|•●▪%°]/g,' ').replace(/\s+/g,' ').trim();(clean.match(/[^.!؟؛]+[.!؟؛]?/g)||[clean]).forEach(c=>{c=c.trim();if(!c)return;const u=new SpeechSynthesisUtterance(c);u.lang=LANG==='ar'?'ar-SA':'en-US';const v=VOICES.find(v=>v.lang.startsWith(LANG==='ar'?'ar':'en'));if(v)u.voice=v;u.rate=1.03;speechSynthesis.speak(u);});}catch(e){}}
-function beep(){if(!SND)return;try{const c=new (window.AudioContext||window.webkitAudioContext)();const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=880;g.gain.value=.08;o.start();setTimeout(()=>o.stop(),180);}catch(e){}}
+let AC=null;
+function beep(){if(!SND)return;try{
+ if(!AC)AC=new (window.AudioContext||window.webkitAudioContext)();
+ if(AC.state==='suspended')AC.resume();
+ const o=AC.createOscillator(),g=AC.createGain();o.connect(g);g.connect(AC.destination);
+ o.frequency.value=880;g.gain.value=.08;o.start();setTimeout(()=>o.stop(),180);
+}catch(e){}}
 let wsBackoff=2000,wsLastMsg=Date.now(),wsConnecting=false;
 function scheduleWS(){setTimeout(startWS,wsBackoff);wsBackoff=Math.min(30000,Math.round(wsBackoff*1.6+Math.random()*400));}
 function startWS(){if(wsConnecting)return;wsConnecting=true;try{if(ws)ws.close();}catch(e){}
@@ -353,8 +358,10 @@ function startWS(){if(wsConnecting)return;wsConnecting=true;try{if(ws)ws.close()
   else if(m.type==='pump'){if(p.running&&!P.running)logIrr(+p.remaining_sec||15,'AUTO');P={running:!!p.running,remaining:+p.remaining_sec||0};}
   renderAll();};}
 setInterval(()=>{if(MODE==='live'&&Date.now()-wsLastMsg>12000&&!wsConnecting){try{ws.close();}catch(e){}}},5000);
-function connectLive(){const h=$('inpHost').value.trim();if(!validHost(h))return toast('❌ '+L('عنوان غير صالح','Invalid host'),'#ef4444');CFG.token=$('inpToken2').value.trim()||CFG.token;sset('rtk',obf(CFG.token));sset('rconn',JSON.stringify({host:h}));BASE='http://'+h;MODE='live';$('connPanel').classList.remove('show');startWS();}
-function act(p,b){if(MODE==='demo'){demoAct(p,b);return;}fetch(BASE+p+'?token='+encodeURIComponent(CFG.token),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)}).catch(()=>{});}
+function connectLive(){let h=$('inpHost').value.trim().replace(/^https?:\/\//i,'').replace(/\/$/,'');if(!validHost(h))return toast('❌ '+L('عنوان غير صالح','Invalid host'),'#ef4444');CFG.token=$('inpToken2').value.trim()||CFG.token;sset('rtk',obf(CFG.token));sset('rconn',JSON.stringify({host:h}));BASE='http://'+h;MODE='live';$('connPanel').classList.remove('show');startWS();}
+function act(p,b){if(MODE==='demo'){demoAct(p,b);return;}
+ const c=new AbortController();const t=setTimeout(()=>c.abort(),6000);
+ fetch(BASE+p+'?token='+encodeURIComponent(CFG.token),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b),signal:c.signal}).catch(()=>{}).finally(()=>clearTimeout(t));}
 function irrigate(s){act('/api/v1/actions/irrigate',{duration_sec:s});logIrr(s,'MANUAL');notify(L('💧 ري يدوي','💧 Manual'),' '+s+'s',1);}
 function stopPump(){act('/api/v1/actions/stop',{});}
 function emergencyStop(){if(confirm('⛔')){act('/api/v1/actions/emergency-stop',{});notify(L('⛔ طوارئ','⛔ Emergency'),'!',3);}}
@@ -399,7 +406,9 @@ function calcCons(){const now=Date.now(),day=86400000;const today=HIST.filter(h=
 function renderCons(){const c=calcCons();$('cDay').innerText=fmt(c.today)+' L';$('cWeek').innerText=fmt(c.week)+' L';$('cAvg').innerText=fmt(c.avg)+' L';$('cCost').innerText=fmt(c.week/1000*CFG.cost,2)+' SAR';
  const proj=c.avg*30;$('cProj').innerText=fmt(proj)+' L';const over=proj>CFG.goal;$('cProjSt').innerText=over?'⚠️ '+L('فوق الهدف بـ','Over goal by ')+fmt(proj-CFG.goal)+' L':'✅ '+L('ضمن الهدف','Within goal');$('cProjSt').style.color=over?'var(--r)':'var(--g)';
  $('goalTxt').innerText=fmt(c.week*4)+' / '+CFG.goal+' L';$('goalBar').style.width=Math.min(100,c.week*4/CFG.goal*100)+'%';$('goalInp').value=CFG.goal;
- const mx=Math.max(...c.byDay,1);$('weekBars').innerHTML=c.byDay.map((v,i)=>`<div class="bcol"><small>${fmt(v)}L</small><div class="b" style="height:${v/mx*80}%"></div><small>${DAYSN()[i]}</small></div>`).join('');
+ const mx=Math.max(...c.byDay,1);
+ const dayMs=86400000;const labels=[];for(let i=0;i<7;i++){const dt=new Date(Date.now()-(6-i)*dayMs);labels.push(DAYSL()[(dt.getDay()+1)%7]);}
+ $('weekBars').innerHTML=c.byDay.map((v,i)=>`<div class="bcol"><small>${fmt(v)}L</small><div class="b" style="height:${v/mx*80}%"></div><small>${labels[i]}</small></div>`).join('');
  const tips=[];if(c.avg>100)tips.push(L('🌅 الري فجراً يقلل التبخر 40%','🌅 Dawn irrigation cuts evaporation 40%'));if(c.today>c.avg*1.5)tips.push(L('⚠️ استهلاك اليوم أعلى من المتوسط','⚠️ Today above average'));if(S.temp>38)tips.push(L('🥵 حرارة مرتفعة — رِ ليلاً','🥵 High heat — irrigate at night'));if(!tips.length)tips.push(L('✅ استهلاكك مثالي','✅ Consumption is optimal'));
  $('consTips').innerHTML=tips.map(x=>`<div class="tip">${esc(x)}</div>`).join('');}
 function renderReports(){const used=HIST.reduce((a,h)=>a+(+h.liters||0),0);$('rOps').innerText=HIST.length;$('rUsed').innerText=fmt(used)+' L';$('rSaved').innerText=fmt(used*0.18)+' L';
@@ -470,10 +479,11 @@ function csvEsc(v){v=String(v??'');return /[",\n]/.test(v)?'"'+v.replace(/"/g,'"
 function exportCSV(){let c='time,dur,liters,source\n';HIST.forEach(h=>c+=new Date(h.ts).toISOString()+','+h.dur+','+(+h.liters).toFixed(1)+','+csvEsc(h.src)+'\n');dl(c,'rayhan.csv','text/csv');}
 function exportJSON(){dl(JSON.stringify({history:HIST,zones:ZONES,schedules:SCHED},null,2),'rayhan.json','application/json');}
 let pendR=false;
-function renderAll(){if(pendR)return;pendR=true;requestAnimationFrame(()=>{pendR=false;renderNow();});}
+function renderAll(){if(pendR)return;pendR=true;requestAnimationFrame(()=>{pendR=false;try{renderNow();}catch(e){console.error('render:',e);}});}
 function renderNow(){
  $('soil').innerText=fmt(S.soil)+'%';$('soilBar').style.width=Math.min(100,S.soil)+'%';$('water').innerText=fmt(S.water)+'%';$('waterBar').style.width=Math.min(100,S.water)+'%';
- $('temp').innerText=fT(S.temp)+'°';$('hum').innerText=fmt(S.hum)+'%';$('tgt').innerText=S.target;$('tgtVal').innerText=S.target;$('rng').value=S.target;
+ $('temp').innerText=fT(S.temp)+'°';$('hum').innerText=fmt(S.hum)+'%';$('tgt').innerText=S.target;
+ if(document.activeElement!==$('rng')){$('rng').value=S.target;$('tgtVal').innerText=S.target;}
  $('rain').innerText=S.rain?('🌧️ '+L('ممطر','Rain')):('☀️ '+L('جاف','Dry'));
  $('conf').innerText=fmt(A.conf*100)+'%';$('need').innerText=fmt(A.need*100)+'%';$('dry').innerText=fmt(A.dry,1);$('reason').innerText=A.reason;
  $('sensV').innerText=Math.round(CFG.sens*100)+'%';$('sensR').value=Math.round(CFG.sens*100);
@@ -488,7 +498,7 @@ function logIrr(dur,src){HIST.unshift({ts:Date.now(),dur,liters:dur*CFG.flow/60,
 function applyLang(){document.documentElement.lang=LANG;document.documentElement.dir=LANG==='ar'?'rtl':'ltr';document.querySelectorAll('[data-t]').forEach(e=>e.innerText=t(e.dataset.t));document.querySelectorAll('[data-tp]').forEach(e=>e.placeholder=t(e.dataset.tp));$('lgBtn').innerText=LANG==='ar'?'EN':'ع';$('sLang').value=LANG;}
 function setLang(l){LANG=l;sset('rl',l);applyLang();renderAll();}
 function toggleLang(){setLang(LANG==='ar'?'en':'ar');}
-function applyTheme(){document.body.classList.toggle('dark',THEME==='dark');$('thBtn').innerText=THEME==='dark'?'☀️':'';$('sTheme').value=THEME;}
+function applyTheme(){document.body.classList.toggle('dark',THEME==='dark');$('thBtn').innerText=THEME==='dark'?'☀️':'🌙';$('sTheme').value=THEME;}
 function setTheme(v){THEME=v;sset('rt',v);applyTheme();}
 function toggleTheme(){setTheme(THEME==='dark'?'light':'dark');}
 function applySnd(){$('sndBtn').innerText=SND?'🔔':'';}
@@ -508,8 +518,8 @@ setInterval(()=>{if(MODE!=='demo')return;
 function demoAct(p,b){if(p.includes('irrigate')){P.running=true;P.remaining=b.duration_sec;toast('✅ '+b.duration_sec+'s');}else if(p.includes('emergency')){P.running=false;S.mode=1;}else if(p.includes('stop'))P.running=false;else if(p.includes('mode'))S.mode=b.mode;else if(p.includes('target'))S.target=b.target_moisture;renderAll();}
 window.addEventListener('load',()=>{
  applyLang();applyTheme();applySnd();applyView();loadCfgUI();updBadge();
- const saved=sget('rconn',null);
- if(saved){try{const c=JSON.parse(saved);if(c.host&&validHost(c.host)){BASE='http://'+c.host;MODE='live';startWS();}}catch(e){startDemo();}}else startDemo();
+ const saved=jget('rconn',null);
+ if(saved&&saved.host&&validHost(saved.host)){BASE='http://'+saved.host;MODE='live';startWS();}else startDemo();
  renderAll();
  setTimeout(()=>{const sp=$('splash');if(sp){sp.classList.add('done');setTimeout(()=>sp.remove(),800);}},2400);
 });
