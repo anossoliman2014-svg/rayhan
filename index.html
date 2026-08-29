@@ -20,7 +20,6 @@ body.dark #splash{background:linear-gradient(135deg,#06281e,#0b1220)}
 .sp-logo{width:90px;height:90px;background:linear-gradient(135deg,var(--g),#047857);border-radius:30px;display:flex;align-items:center;justify-content:center;font-size:46px;box-shadow:0 14px 40px rgba(16,185,129,.4);animation:pop 1.4s cubic-bezier(.68,-.55,.27,1.55)}
 @keyframes pop{0%{transform:scale(0) rotate(-30deg)}100%{transform:scale(1)}}
 #splash h1{font-size:34px;color:var(--gd);margin-top:8px;animation:up .8s .3s both}
-body.dark #splash h1{color:#34d399}
 #splash p{color:var(--mut);font-size:14px;animation:up .8s .5s both}
 @keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1}}
 .sp-bar{width:200px;height:6px;background:#e2e8f0;border-radius:4px;overflow:hidden;margin-top:14px;animation:up .8s .7s both}
@@ -70,7 +69,7 @@ h1{color:var(--gd);font-size:26px}
 .btn:active{transform:scale(.97)}
 .btn.g{background:linear-gradient(135deg,var(--g),var(--gd));color:#fff}
 .btn.o{background:var(--card);color:var(--txt);border:1px solid var(--line)}
-.btn.r{background:linear-gradient(135deg,#f87171,var(--r});color:#fff}
+.btn.r{background:linear-gradient(135deg,#f87171,var(--r));color:#fff}
 .btn.sm{padding:8px 14px;font-size:12px;border-radius:10px}
 .tgl{display:flex;background:var(--line);border-radius:14px;padding:4px;width:fit-content;margin-bottom:12px}
 .tgl div{padding:9px 18px;border-radius:11px;font-size:13px;font-weight:bold;color:var(--mut);cursor:pointer}
@@ -192,8 +191,7 @@ label{font-size:12px;color:var(--mut);font-weight:bold;display:block;margin-top:
     <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
       <input id="zName" data-tp="zNameP" placeholder="اسم المنطقة" style="flex:2;min-width:140px"/>
       <select id="zEmoji" style="flex:1"><option>🌳</option><option>🌴</option><option>🌿</option><option>🌷</option><option>🍇</option><option>🥬</option></select>
-      <select id="zPlant" style="flex:2"></select>
-      <select id="zSoil" style="flex:1"></select>
+      <select id="zPlant" style="flex:2"></select><select id="zSoil" style="flex:1"></select>
       <select id="zRelay" style="flex:1"><option value="0" data-t="r1">ريليه 1</option><option value="1" data-t="r2">ريليه 2</option></select>
     </div>
     <button class="btn g" style="width:100%;margin-top:10px" onclick="addZone()">➕ <span data-t="add">إضافة</span></button>
@@ -314,12 +312,13 @@ let S={soil:35,water:80,temp:27,hum:55,rain:false,target:58,mode:0};
 let A={conf:.7,need:.3,dry:2.2,reason:'OK_NO_NEED'};
 let P={running:false,remaining:0};
 const PLANTS=[['🌴 نخيل التمر','Date Palm',45],['🍅 طماطم','Tomato',55],['🥒 خيار','Cucumber',60],['🍆 باذنجان','Eggplant',55],['🫛 بامية','Okra',50],['🌶️ فلفل','Pepper',45],['🧅 بصل','Onion',40],['🥕 جزر','Carrot',45],['🥬 خس','Lettuce',60],['🍓 فراولة','Strawberry',55],['🍉 بطيخ','Watermelon',45],['🌽 ذرة','Corn',50],['🪴 ريحان','Basil',58],['🍃 نعناع','Mint',60],['🌱 زعتر','Thyme',35],['🍇 عنب','Grapes',40],['🍋 ليمون','Lemon',40]];
-const SOILS=()=>LANG==='ar'?['🏜️ رملية','🧱 طينية','🌾 طمية','🍂 بتموس','🪨 صخرية']:['🏜️ Sandy','🧱 Clay',' Loam','🍂 Peat','🪨 Rocky'];
+const SOILS=()=>LANG==='ar'?['🏜️ رملية','🧱 طينية','🌾 طمية','🍂 بتموس','🪨 صخرية']:['🏜️ Sandy','🧱 Clay','🌾 Loam','🍂 Peat','🪨 Rocky'];
 let ZONES=JSON.parse(sget('rz','null'))||[{id:1,name:'Front',emoji:'🌳',plant:0,soil:0,relay:0,en:true,lastIrr:null,usedL:0,off:0},{id:2,name:'Back',emoji:'🌴',plant:1,soil:1,relay:1,en:true,lastIrr:null,usedL:0,off:-3}];
 let HIST=JSON.parse(sget('rh','[]'));
 let SCHED=JSON.parse(sget('rsc','[]'));
 let NOTIF=JSON.parse(sget('rn','[]'));if(!NOTIF.length)NOTIF=[{t:'Welcome',d:'Rayhan ready',lv:1,ts:Date.now(),un:true}];
-let NF='all',WDATA=null,VOICE=true,REC=null,listening=false;
+let NF='all',WDATA=null,VOICE=true;
+let REC=null,listening=false,recTimer=null,maxTimer=null,finalT='';
 const T0=Date.now();
 const fT=c=>CFG.unit==='F'?fmt(c*9/5+32):fmt(c,1);
 function toast(m,c){const d=document.createElement('div');d.className='toast';if(c)d.style.background=c;d.innerText=m;$('toasts').appendChild(d);setTimeout(()=>d.remove(),3000);}
@@ -392,7 +391,7 @@ function renderCons(){const c=calcCons();$('cDay').innerText=fmt(c.today)+' L';$
  $('consTips').innerHTML=tips.map(x=>`<div class="tip">${esc(x)}</div>`).join('');}
 function renderReports(){const used=HIST.reduce((a,h)=>a+(+h.liters||0),0);$('rOps').innerText=HIST.length;$('rUsed').innerText=fmt(used)+' L';$('rSaved').innerText=fmt(used*0.18)+' L';
  const autoC=HIST.filter(h=>h.src==='AUTO').length;const eff=Math.min(100,HIST.length?Math.round(autoC/HIST.length*100+(used<CFG.goal/4?20:0)):50);
- const ring=$('effRing');ring.innerText=eff;ring.style.borderColor=eff>=70?'var(--g)':eff>=40?'var(--y)':'var(--r)';ring.style.color=eff>=70?'var(--g)':eff>=40?'var(--y)':'var(--r)';
+ const ring=$('effRing');ring.innerText=eff;ring.style.borderColor=eff>=70?'var(--g)':eff>=40?'var(--y)':'var(--r)';ring.style.color=eff>=70?'var(--g)': eff>=40?'var(--y)':'var(--r)';
  $('effDesc').innerText=eff>=70?L('ممتاز — كفاءة عالية','Excellent — high efficiency'):eff>=40?L('جيد — يمكن التحسين','Good — room to improve'):L('ضعيف — فعّل الذكي','Weak — enable Auto');
  const zu={};HIST.forEach(h=>{const zn=(h.src||'').replace('ZONE: ','');if(zn)zu[zn]=(zu[zn]||0)+1;});const tz=Object.entries(zu).sort((a,b)=>b[1]-a[1])[0];$('repTopZone').innerText=tz?tz[0]+' ('+tz[1]+')':'—';
  const hu=Array(24).fill(0);HIST.forEach(h=>{hu[new Date(h.ts).getHours()]++;});$('repPeakHr').innerText=hu.indexOf(Math.max(...hu))+':00';
@@ -433,7 +432,38 @@ const CAL=()=>LANG==='ar'?{1:'البازلاء والفول',2:'البطيخ و�
 function toggleAssistant(){$('chatPanel').classList.toggle('hidden');if(!$('chatBody').children.length){addMsg('b',L('مرحباً! 🌱 اسألني عن نبتة أو موسم أو شغّل الري بصوتك.','Hi! 🌱 Ask about a plant, season, or command irrigation by voice.'));buildChips();}}
 function buildChips(){$('chips').innerHTML='';(LANG==='ar'?['ماذا أزرع في نوفمبر؟','حدثني عن النخيل','اسقِ 20 ثانية']:['What to plant in November?','Tell me about palms','Water 20s']).forEach(q=>{const s=document.createElement('span');s.className='chip';s.innerText=q;s.addEventListener('click',()=>handleQuery(q));$('chips').appendChild(s);});}
 function addMsg(w,txt){const d=document.createElement('div');d.className='msg '+w;d.innerText=txt;$('chatBody').appendChild(d);$('chatBody').scrollTop=$('chatBody').scrollHeight;}
-function toggleListen(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR)return toast('🎤 '+L('اكتب بدلاً','Type instead'),'#f59e0b');if(listening&&REC){REC.stop();return;}REC=new SR();REC.lang=LANG==='ar'?'ar-SA':'en-US';REC.onstart=()=>{listening=true;$('micBtn').classList.add('on');};REC.onend=()=>{listening=false;$('micBtn').classList.remove('on');};REC.onerror=()=>toast('⚠️','#f59e0b');REC.onresult=e=>handleQuery(e.results[0][0].transcript);REC.start();}
+/* ═══ الاستماع المحسّن: ينتظر صمتك قبل الرد ═══ */
+function stopListening(fire){
+  clearTimeout(recTimer);clearTimeout(maxTimer);
+  const q=finalT.trim();
+  if(REC){try{REC.onresult=null;REC.onend=null;REC.stop();}catch(e){}REC=null;}
+  listening=false;$('micBtn').classList.remove('on');
+  if(fire&&q){$('chatText').value='';handleQuery(q);}
+}
+function toggleListen(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR)return toast('🎤 '+L('غير مدعوم','Not supported'),'#f59e0b');
+  if(listening){stopListening(true);return;}
+  try{speechSynthesis.cancel();}catch(e){}
+  finalT='';REC=new SR();REC.lang=LANG==='ar'?'ar-SA':'en-US';
+  REC.continuous=true;REC.interimResults=true;REC.maxAlternatives=1;
+  listening=true;$('micBtn').classList.add('on');
+  toast('🎤 '+L('أسمعك... أكمل كلامك','Listening... keep talking'));
+  REC.onstart=()=>{maxTimer=setTimeout(()=>stopListening(true),20000);};
+  REC.onresult=e=>{
+    let inter='';
+    for(let i=e.resultIndex;i<e.results.length;i++){
+      const r=e.results[i];
+      if(r.isFinal)finalT+=r[0].transcript+' ';else inter+=r[0].transcript+' ';
+    }
+    $('chatText').value=(finalT+inter).trim();
+    clearTimeout(recTimer);
+    recTimer=setTimeout(()=>stopListening(true),2000);
+  };
+  REC.onerror=ev=>{if(ev.error!=='aborted'&&ev.error!=='no-speech')toast('⚠️ '+ev.error,'#f59e0b');};
+  REC.onend=()=>{if(listening)stopListening(true);};
+  try{REC.start();}catch(e){listening=false;$('micBtn').classList.remove('on');}
+}
 function sendChat(){const q=$('chatText').value.trim();if(!q)return;$('chatText').value='';handleQuery(q);}
 const norm=s=>lat(s).replace(/[أإآ]/g,'ا').replace(/ى/g,'ي').replace(/ة/g,'ه').toLowerCase();
 function handleQuery(q){addMsg('u',q);const n=norm(q).toLowerCase();let ans='';const num=(lat(q).match(/\d+/)||[])[0];
@@ -471,7 +501,7 @@ function toggleLang(){setLang(LANG==='ar'?'en':'ar');}
 function applyTheme(){document.body.classList.toggle('dark',THEME==='dark');$('thBtn').innerText=THEME==='dark'?'☀️':'🌙';$('sTheme').value=THEME;}
 function setTheme(v){THEME=v;sset('rt',v);applyTheme();}
 function toggleTheme(){setTheme(THEME==='dark'?'light':'dark');}
-function applySnd(){$('sndBtn').innerText=SND?'🔔':'🔕';}
+function applySnd(){$('sndBtn').innerText=SND?'🔔':'';}
 function toggleSnd(){SND=!SND;sset('rs',SND?'1':'0');applySnd();}
 function toggleFS(){if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen();}
 function toggleConn(){$('connPanel').classList.toggle('show');}
