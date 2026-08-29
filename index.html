@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <meta name="theme-color" content="#10b981"/>
-<title>ريحان | نظام الري الذكي</title>
+<title>ريحان | Rayhan</title>
 <style>
 :root{--g:#10b981;--gd:#059669;--gl:#d1fae5;--bg:#f4faf7;--card:#fff;--txt:#1f2937;--mut:#94a3b8;--r:#ef4444;--b:#3b82f6;--y:#f59e0b;--line:#e7f2ec}
 body.dark{--bg:#0b1220;--card:#151e2e;--txt:#e5e7eb;--mut:#8fa3bf;--line:#243247;--gl:rgba(16,185,129,.15)}
@@ -70,7 +70,7 @@ h1{color:var(--gd);font-size:26px}
 .btn:active{transform:scale(.97)}
 .btn.g{background:linear-gradient(135deg,var(--g),var(--gd));color:#fff}
 .btn.o{background:var(--card);color:var(--txt);border:1px solid var(--line)}
-.btn.r{background:linear-gradient(135deg,#f87171,var(--r));color:#fff}
+.btn.r{background:linear-gradient(135deg,#f87171,var(--r});color:#fff}
 .btn.sm{padding:8px 14px;font-size:12px;border-radius:10px}
 .tgl{display:flex;background:var(--line);border-radius:14px;padding:4px;width:fit-content;margin-bottom:12px}
 .tgl div{padding:9px 18px;border-radius:11px;font-size:13px;font-weight:bold;color:var(--mut);cursor:pointer}
@@ -96,10 +96,8 @@ label{font-size:12px;color:var(--mut);font-weight:bold;display:block;margin-top:
 .sw input:checked+span{background:var(--g)}
 .sw input:checked+span::before{right:23px}
 .days-pick{display:flex;gap:4px;margin-top:6px}
-.days-pick span{width:30px;height:30px;border-radius:10px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:11px;cursor:pointer;font-weight:bold;color:var(--mut)}
+.days-pick span{width:34px;height:30px;border-radius:10px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:10px;cursor:pointer;font-weight:bold;color:var(--mut)}
 .days-pick span.on{background:var(--g);color:#fff;border-color:var(--g)}
-.health{display:flex;gap:4px;margin-top:8px}
-.health span{flex:1;height:6px;border-radius:3px}
 .score-ring{width:80px;height:80px;border-radius:50%;border:6px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;flex-shrink:0}
 #micFab{position:fixed;bottom:20px;left:20px;z-index:60;width:62px;height:62px;border-radius:50%;border:none;background:linear-gradient(135deg,var(--g),#047857);font-size:27px;cursor:pointer;box-shadow:0 10px 26px rgba(16,185,129,.45)}
 #chatPanel{position:fixed;bottom:94px;left:20px;z-index:60;width:min(400px,94vw);height:min(580px,74vh);background:var(--card);border:1px solid var(--line);border-radius:22px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.25)}
@@ -119,10 +117,10 @@ label{font-size:12px;color:var(--mut);font-weight:bold;display:block;margin-top:
 </style>
 </head>
 <body>
-<div id="splash"><div class="sp-ring"><div class="sp-logo">🌱</div></div><h1>ريحان</h1><p>نظام الري الذكي المتكامل</p><div class="sp-bar"><i></i></div><small>PRO DASHBOARD</small></div>
+<div id="splash"><div class="sp-ring"><div class="sp-logo">🌱</div></div><h1 data-t="app">ريحان</h1><p data-t="tag">نظام الري الذكي المتكامل</p><div class="sp-bar"><i></i></div><small>PRO DASHBOARD</small></div>
 <div id="toasts"></div>
 <aside>
-  <div class="logo"><div class="ic">🌱</div><div><b>ريحان</b><small>PRO DASHBOARD</small></div></div>
+  <div class="logo"><div class="ic">🌱</div><div><b data-t="app">ريحان</b><small>PRO DASHBOARD</small></div></div>
   <div class="quick">
     <button class="qbtn" onclick="toggleTheme()" id="thBtn">🌙</button>
     <button class="qbtn" onclick="toggleLang()" id="lgBtn">EN</button>
@@ -143,23 +141,22 @@ label{font-size:12px;color:var(--mut);font-weight:bold;display:block;margin-top:
   <div class="stat" onclick="toggleConn()"><b><i id="dot"></i><span id="connTxt">...</span></b><small id="lastUpd">--</small></div>
 </aside>
 <main>
-<!-- ═══ لوحة التحكم ═══ -->
 <section id="pg-dash">
-  <h1 data-t="nav_dash">لوحة التحكم</h1><div class="sub">مراقبة لحظية وتحكم كامل بنظام الري</div>
-  <div class="tgl"><div id="m0" onclick="setMode(0)">🤖 ذكي</div><div id="m1" onclick="setMode(1)">🎛 يدوي</div><div id="m2" onclick="setMode(2)">📅 جدول</div></div>
+  <h1 data-t="nav_dash">لوحة التحكم</h1><div class="sub" data-t="dash_sub">مراقبة لحظية وتحكم كامل</div>
+  <div class="tgl"><div id="m0" onclick="setMode(0)">🤖 <span data-t="auto">ذكي</span></div><div id="m1" onclick="setMode(1)">🎛 <span data-t="manual">يدوي</span></div><div id="m2" onclick="setMode(2)">📅 <span data-t="sched">جدول</span></div></div>
   <div class="cards">
-    <div class="card"><div class="t"><span class="ic" style="background:var(--gl)">💧</span>رطوبة التربة</div><div class="big" id="soil">--</div><div class="bar"><i id="soilBar"></i></div><small style="color:var(--mut)">الهدف: <span id="tgt">--</span>%</small></div>
-    <div class="card"><div class="t"><span class="ic" style="background:#dbeafe">🪣</span>الخزان</div><div class="big" id="water" style="color:var(--b)">--</div><div class="bar"><i id="waterBar" style="background:linear-gradient(90deg,#60a5fa,#3b82f6)"></i></div></div>
-    <div class="card"><div class="t"><span class="ic" style="background:#fef3c7">🌡️</span>الحرارة</div><div class="big" id="temp">--</div></div>
-    <div class="card"><div class="t"><span class="ic" style="background:#e0e7ff">💦</span>رطوبة الجو</div><div class="big" id="hum">--</div><small id="rain" style="color:var(--mut)">☀️</small></div>
+    <div class="card"><div class="t"><span class="ic" style="background:var(--gl)">💧</span><span data-t="soil">رطوبة التربة</span></div><div class="big" id="soil">--</div><div class="bar"><i id="soilBar"></i></div><small style="color:var(--mut)"><span data-t="targetH">الهدف</span>: <span id="tgt">--</span>%</small></div>
+    <div class="card"><div class="t"><span class="ic" style="background:#dbeafe">🪣</span><span data-t="tank">الخزان</span></div><div class="big" id="water" style="color:var(--b)">--</div><div class="bar"><i id="waterBar" style="background:linear-gradient(90deg,#60a5fa,#3b82f6)"></i></div></div>
+    <div class="card"><div class="t"><span class="ic" style="background:#fef3c7">🌡️</span><span data-t="temp">الحرارة</span></div><div class="big" id="temp">--</div></div>
+    <div class="card"><div class="t"><span class="ic" style="background:#e0e7ff">💦</span><span data-t="hum">رطوبة الجو</span></div><div class="big" id="hum">--</div><small id="rain" style="color:var(--mut)">☀️</small></div>
   </div>
   <div class="cards">
-    <div class="card"><div class="t">⏱️ التشغيل</div><div class="big" id="upT">--</div></div>
-    <div class="card"><div class="t">🔄 عمليات</div><div class="big" id="qOps">0</div></div>
-    <div class="card"><div class="t">🏆 وفر الذكاء</div><div class="big" id="qSaved" style="color:var(--gd)">0 L</div></div>
+    <div class="card"><div class="t">⏱️ <span data-t="uptime">التشغيل</span></div><div class="big" id="upT">--</div></div>
+    <div class="card"><div class="t">🔄 <span data-t="ops">عمليات</span></div><div class="big" id="qOps">0</div></div>
+    <div class="card"><div class="t">🏆 <span data-t="saved">وفر الذكاء</span></div><div class="big" id="qSaved" style="color:var(--gd)">0 L</div></div>
   </div>
   <div class="grid2">
-    <div class="card"><div class="t">🧭 <span id="dcTitle">مركز القرار</span></div>
+    <div class="card"><div class="t">🧭 <span data-t="dcenter">مركز القرار</span></div>
       <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
         <canvas id="gauge" width="130" height="130" style="width:130px;height:130px"></canvas>
         <div style="flex:1;min-width:180px" id="factors"></div>
@@ -167,143 +164,134 @@ label{font-size:12px;color:var(--mut);font-weight:bold;display:block;margin-top:
       <div id="nextIrr" class="pill g" style="margin-top:12px">--</div>
     </div>
     <div>
-      <div class="card" style="margin-bottom:16px"><div class="t">🧠 الذكاء</div>
-        <div style="font-size:13px;margin-top:10px;line-height:2">الثقة: <b id="conf" style="color:var(--gd)">--</b><br>الحاجة: <b id="need" style="color:var(--gd)">--</b><br>الجفاف: <b id="dry" style="color:var(--gd)">--</b><br>القرار: <b id="reason" style="color:var(--gd)">--</b></div>
-        <label>الحساسية: <b id="sensV">--</b></label>
+      <div class="card" style="margin-bottom:16px"><div class="t">🧠 <span data-t="ai">الذكاء</span></div>
+        <div style="font-size:13px;margin-top:10px;line-height:2"><span data-t="confH">الثقة</span>: <b id="conf" style="color:var(--gd)">--</b><br><span data-t="need2">الحاجة</span>: <b id="need" style="color:var(--gd)">--</b><br><span data-t="dry2">الجفاف</span>: <b id="dry" style="color:var(--gd)">--</b><br><span data-t="dec2">القرار</span>: <b id="reason" style="color:var(--gd)">--</b></div>
+        <label><span data-t="sensH">الحساسية</span>: <b id="sensV">--</b></label>
         <input type="range" min="30" max="80" id="sensR" oninput="CFG.sens=this.value/100;$('sensV').innerText=this.value+'%'" onchange="save()"/>
       </div>
-      <div class="card"><div class="t">⚙️ التحكم</div>
+      <div class="card"><div class="t">⚙️ <span data-t="control">التحكم</span></div>
         <div class="pump" id="pumpSt" style="margin-top:10px">--</div>
         <div style="display:flex;gap:8px"><button class="btn g" style="flex:1" onclick="irrigate(10)">💧 10s</button><button class="btn g" style="flex:1" onclick="irrigate(30)">💧 30s</button><button class="btn o" style="flex:1" onclick="stopPump()">⏹</button></div>
-        <button class="btn r" style="width:100%;margin-top:8px" onclick="emergencyStop()">⛔ إيقاف طارئ</button>
-        <label>النبات</label><select id="selPlant" onchange="setPlant(this.value)"></select>
-        <label>التربة</label><select id="selSoil" onchange="setSoil(this.value)"></select>
-        <label>الهدف: <b id="tgtVal">--</b>%</label>
+        <button class="btn r" style="width:100%;margin-top:8px" onclick="emergencyStop()">⛔ <span data-t="emg">إيقاف طارئ</span></button>
+        <label data-t="plantH">النبات</label><select id="selPlant" onchange="setPlant(this.value)"></select>
+        <label data-t="soilH">التربة</label><select id="selSoil" onchange="setSoil(this.value)"></select>
+        <label><span data-t="targetH">الهدف</span>: <b id="tgtVal">--</b>%</label>
         <input type="range" min="20" max="80" id="rng" oninput="$('tgtVal').innerText=this.value" onchange="setTarget(this.value)"/>
       </div>
     </div>
   </div>
 </section>
-<!-- ═══ المناطق (محسّنة) ═══ -->
-<section id="pg-zones" class="hidden"><h1>🗺️ المناطق</h1><div class="sub">تحكم مستقل لكل منطقة مع مراقبة الحالة</div>
+<section id="pg-zones" class="hidden"><h1 data-t="nav_zones">المناطق</h1><div class="sub" data-t="zones_sub">تحكم مستقل لكل منطقة</div>
   <div class="cards">
-    <div class="card"><div class="t"><span class="ic" style="background:var(--gl)">🗺️</span>المناطق</div><div class="big" id="zCount">0</div></div>
-    <div class="card"><div class="t"><span class="ic" style="background:#dbeafe">💧</span>إجمالي الري</div><div class="big" id="zUsed">0 L</div></div>
-    <div class="card"><div class="t"><span class="ic" style="background:var(--gl)">🟢</span>نشطة</div><div class="big" id="zActive">0</div></div>
-    <div class="card"><div class="t"><span class="ic" style="background:#fef9c3">⏱</span>آخر ري</div><div class="big" id="zLastIrr" style="font-size:16px">--</div></div>
+    <div class="card"><div class="t"><span class="ic" style="background:var(--gl)">🗺️</span><span data-t="nav_zones">المناطق</span></div><div class="big" id="zCount">0</div></div>
+    <div class="card"><div class="t"><span class="ic" style="background:#dbeafe">💧</span><span data-t="zUsed">إجمالي الري</span></div><div class="big" id="zUsed">0 L</div></div>
+    <div class="card"><div class="t"><span class="ic" style="background:var(--gl)">🟢</span><span data-t="zActive">نشطة</span></div><div class="big" id="zActive">0</div></div>
+    <div class="card"><div class="t"><span class="ic" style="background:#fef9c3">⏱</span><span data-t="zLast">آخر ري</span></div><div class="big" id="zLastIrr" style="font-size:16px">--</div></div>
   </div>
-  <div class="card"><div class="t">➕ إضافة منطقة</div>
+  <div class="card"><div class="t">➕ <span data-t="addZone">إضافة منطقة</span></div>
     <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
-      <input id="zName" placeholder="اسم المنطقة" style="flex:2;min-width:140px"/>
-      <select id="zEmoji" style="flex:1"><option>🌳</option><option>🌴</option><option>🌿</option><option>🌷</option><option>🍇</option><option>🥬</option><option>🌺</option><option>🌻</option></select>
+      <input id="zName" data-tp="zNameP" placeholder="اسم المنطقة" style="flex:2;min-width:140px"/>
+      <select id="zEmoji" style="flex:1"><option>🌳</option><option>🌴</option><option>🌿</option><option>🌷</option><option>🍇</option><option>🥬</option></select>
       <select id="zPlant" style="flex:2"></select>
       <select id="zSoil" style="flex:1"></select>
-      <select id="zRelay" style="flex:1"><option value="0">ريليه 1</option><option value="1">ريليه 2</option></select>
+      <select id="zRelay" style="flex:1"><option value="0" data-t="r1">ريليه 1</option><option value="1" data-t="r2">ريليه 2</option></select>
     </div>
-    <button class="btn g" style="width:100%;margin-top:10px" onclick="addZone()">➕ إضافة</button>
+    <button class="btn g" style="width:100%;margin-top:10px" onclick="addZone()">➕ <span data-t="add">إضافة</span></button>
   </div>
   <div id="zoneCards" style="margin-top:16px"></div>
 </section>
-<!-- ═══ الجدولة (محسّنة) ═══ -->
-<section id="pg-sched" class="hidden"><h1>📅 الجدولة</h1><div class="sub">مواعيد الري مع تكرار أسبوعي ذكي</div>
+<section id="pg-sched" class="hidden"><h1 data-t="nav_sched">الجدولة</h1><div class="sub" data-t="sched_sub">مواعيد الري بتكرار أسبوعي</div>
   <div class="cards">
-    <div class="card"><div class="t"><span class="ic" style="background:var(--gl)">📅</span>الجداول</div><div class="big" id="schCount">0</div></div>
-    <div class="card"><div class="t"><span class="ic" style="background:#dbeafe">🟢</span>نشطة</div><div class="big" id="schActive">0</div></div>
-    <div class="card"><div class="t"><span class="ic" style="background:#fef9c3">⏭</span>التالي</div><div class="big" id="schNext" style="font-size:16px">--</div></div>
+    <div class="card"><div class="t"><span class="ic" style="background:var(--gl)">📅</span><span data-t="nav_sched">الجدولة</span></div><div class="big" id="schCount">0</div></div>
+    <div class="card"><div class="t"><span class="ic" style="background:var(--gl)">🟢</span><span data-t="zActive">نشطة</span></div><div class="big" id="schActive">0</div></div>
+    <div class="card"><div class="t"><span class="ic" style="background:#fef9c3">⏭</span><span data-t="schNext">التالي</span></div><div class="big" id="schNext" style="font-size:16px">--</div></div>
   </div>
-  <div class="card"><div class="t">➕ جدول جديد</div>
+  <div class="card"><div class="t">➕ <span data-t="newSch">جدول جديد</span></div>
     <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
       <input type="time" id="schTime" style="flex:1" value="06:00"/>
-      <input type="number" id="schDur" value="15" min="1" max="120" placeholder="المدة (ث)" style="flex:1"/>
+      <input type="number" id="schDur" value="15" min="1" max="120" style="flex:1"/>
       <select id="schZone" style="flex:1"></select>
     </div>
-    <label>أيام التكرار:</label>
-    <div class="days-pick" id="schDays">
-      <span onclick="tDay(this,0)">سبت</span><span onclick="tDay(this,1)">أحد</span><span onclick="tDay(this,2)">اثن</span><span onclick="tDay(this,3)">ثلا</span><span onclick="tDay(this,4)">أرب</span><span onclick="tDay(this,5)">خمي</span><span onclick="tDay(this,6)">جمع</span>
-    </div>
-    <button class="btn g" style="width:100%;margin-top:10px" onclick="addSched()">➕ إضافة</button>
+    <label data-t="daysL">أيام التكرار:</label>
+    <div class="days-pick" id="schDays"><span onclick="tDay(this,0)">--</span><span onclick="tDay(this,1)">--</span><span onclick="tDay(this,2)">--</span><span onclick="tDay(this,3)">--</span><span onclick="tDay(this,4)">--</span><span onclick="tDay(this,5)">--</span><span onclick="tDay(this,6)">--</span></div>
+    <button class="btn g" style="width:100%;margin-top:10px" onclick="addSched()">➕ <span data-t="add">إضافة</span></button>
   </div>
   <div id="schedList" style="margin-top:16px"></div>
 </section>
-<!-- ═══ الاستهلاك (محسّنة) ═══ -->
-<section id="pg-cons" class="hidden"><h1 style="color:var(--b)">📊 الاستهلاك</h1><div class="sub">تحليل حقيقي من سجل الري</div>
+<section id="pg-cons" class="hidden"><h1 style="color:var(--b)" data-t="nav_cons">الاستهلاك</h1><div class="sub" data-t="cons_sub">تحليل حقيقي من سجل الري</div>
   <div class="cards">
-    <div class="card"><div class="t"><span class="ic" style="background:#dbeafe">💧</span>اليوم</div><div class="big" id="cDay">--</div></div>
-    <div class="card"><div class="t"><span class="ic" style="background:var(--gl)">🌊</span>الأسبوع</div><div class="big" id="cWeek">--</div></div>
-    <div class="card"><div class="t"><span class="ic" style="background:#fef9c3">🫗</span>المتوسط</div><div class="big" id="cAvg">--</div></div>
-    <div class="card"><div class="t"><span class="ic" style="background:#fee2e2">💰</span>التكلفة</div><div class="big" id="cCost" style="color:var(--gd)">--</div></div>
+    <div class="card"><div class="t"><span class="ic" style="background:#dbeafe">💧</span><span data-t="today">اليوم</span></div><div class="big" id="cDay">--</div></div>
+    <div class="card"><div class="t"><span class="ic" style="background:var(--gl)">🌊</span><span data-t="week">الأسبوع</span></div><div class="big" id="cWeek">--</div></div>
+    <div class="card"><div class="t"><span class="ic" style="background:#fef9c3">🫗</span><span data-t="avg">المتوسط</span></div><div class="big" id="cAvg">--</div></div>
+    <div class="card"><div class="t"><span class="ic" style="background:#fee2e2">💰</span><span data-t="cost">التكلفة</span></div><div class="big" id="cCost" style="color:var(--gd)">--</div></div>
   </div>
   <div class="grid2">
-    <div class="card"><div class="t">📊 الأسبوع</div><div class="bars" id="weekBars"></div></div>
+    <div class="card"><div class="t">📊 <span data-t="weekChart">الأسبوع</span></div><div class="bars" id="weekBars"></div></div>
     <div>
-      <div class="card" style="margin-bottom:16px"><div class="t">🎯 الهدف الشهري</div><div class="big" id="goalTxt">--</div><div class="bar"><i id="goalBar"></i></div><label>الهدف (لتر)</label><input type="number" id="goalInp" onchange="CFG.goal=+this.value||3000;save();renderNow()"/></div>
-      <div class="card"><div class="t">📈 الإسقاط الشهري</div><div class="big" id="cProj" style="color:var(--b)">--</div><small style="color:var(--mut)" id="cProjSt">--</small></div>
+      <div class="card" style="margin-bottom:16px"><div class="t">🎯 <span data-t="goalM">الهدف الشهري</span></div><div class="big" id="goalTxt">--</div><div class="bar"><i id="goalBar"></i></div><label data-t="goalL">الهدف (لتر)</label><input type="number" id="goalInp" onchange="CFG.goal=+this.value||3000;save();renderNow()"/></div>
+      <div class="card"><div class="t">📈 <span data-t="proj">الإسقاط الشهري</span></div><div class="big" id="cProj" style="color:var(--b)">--</div><small id="cProjSt">--</small></div>
     </div>
   </div>
-  <div class="card" style="margin-top:16px"><div class="t">💡 نصائح ذكية</div><div id="consTips" style="margin-top:10px"></div></div>
+  <div class="card" style="margin-top:16px"><div class="t">💡 <span data-t="tipsL">نصائح ذكية</span></div><div id="consTips" style="margin-top:10px"></div></div>
 </section>
-<!-- ═══ التقارير (محسّنة) ═══ -->
-<section id="pg-rep" class="hidden"><h1>📑 التقارير</h1><div class="sub">تحليلات وكفاءة النظام</div>
+<section id="pg-rep" class="hidden"><h1 data-t="nav_rep">التقارير</h1><div class="sub" data-t="rep_sub">تحليلات وكفاءة النظام</div>
   <div class="cards">
-    <div class="card" style="display:flex;align-items:center;gap:14px"><div class="score-ring" id="effRing">--</div><div><b>نقاط الكفاءة</b><div style="color:var(--mut);font-size:12px" id="effDesc">--</div></div></div>
-    <div class="card"><div class="t">🔄 العمليات</div><div class="big" id="rOps">0</div></div>
-    <div class="card"><div class="t">💧 المستهلك</div><div class="big" id="rUsed">0 L</div></div>
-    <div class="card"><div class="t">🏆 التوفير</div><div class="big" id="rSaved" style="color:var(--gd)">0 L</div></div>
+    <div class="card" style="display:flex;align-items:center;gap:14px"><div class="score-ring" id="effRing">--</div><div><b data-t="effL">نقاط الكفاءة</b><div style="color:var(--mut);font-size:12px" id="effDesc">--</div></div></div>
+    <div class="card"><div class="t">🔄 <span data-t="ops">عمليات</span></div><div class="big" id="rOps">0</div></div>
+    <div class="card"><div class="t">💧 <span data-t="usedL">المستهلك</span></div><div class="big" id="rUsed">0 L</div></div>
+    <div class="card"><div class="t">🏆 <span data-t="saved">التوفير</span></div><div class="big" id="rSaved" style="color:var(--gd)">0 L</div></div>
   </div>
   <div class="grid2">
-    <div class="card"><div class="t">📊 تحليلات</div>
+    <div class="card"><div class="t">📊 <span data-t="analytics">تحليلات</span></div>
       <div style="font-size:13px;line-height:2.2;margin-top:10px">
-        🗺️ أكثر منطقة رياً: <b id="repTopZone">--</b><br>
-        ⏰ ساعة الذروة: <b id="repPeakHr">--</b><br>
-        📅 أكثر يوم: <b id="repPeakDay">--</b><br>
-        ⚡ متوسط المدة: <b id="repAvgDur">--</b><br>
-        🤖 نسبة الذكي: <b id="repAutoP">--</b>
+        🗺️ <span data-t="topZone">أكثر منطقة رياً</span>: <b id="repTopZone">--</b><br>
+        ⏰ <span data-t="peakHr">ساعة الذروة</span>: <b id="repPeakHr">--</b><br>
+        📅 <span data-t="peakDay">أكثر يوم</span>: <b id="repPeakDay">--</b><br>
+        ⚡ <span data-t="avgDur">متوسط المدة</span>: <b id="repAvgDur">--</b><br>
+        🤖 <span data-t="autoP">نسبة الذكي</span>: <b id="repAutoP">--</b>
       </div>
     </div>
-    <div class="card"><div class="t">🔄 التوزيع</div>
-      <div id="repDist" style="margin-top:10px"></div>
-    </div>
+    <div class="card"><div class="t">🔄 <span data-t="dist">التوزيع</span></div><div id="repDist" style="margin-top:10px"></div></div>
   </div>
-  <div class="card" style="margin-top:16px"><div class="t">📜 سجل الري</div><div id="histList" style="margin-top:10px;max-height:300px;overflow-y:auto"></div></div>
+  <div class="card" style="margin-top:16px"><div class="t">📜 <span data-t="logL">سجل الري</span></div><div id="histList" style="margin-top:10px;max-height:300px;overflow-y:auto"></div></div>
   <div style="display:flex;gap:10px;margin-top:16px"><button class="btn g" onclick="exportCSV()">⬇️ CSV</button><button class="btn o" onclick="exportJSON()">⬇️ JSON</button><button class="btn o" onclick="window.print()">🖨️</button></div>
 </section>
-<!-- ═══ الطقس ═══ -->
-<section id="pg-weather" class="hidden"><div style="display:flex;justify-content:space-between"><h1 style="color:var(--b)">🌤️ الطقس</h1><button class="btn o sm" onclick="refreshWeather()">🔄</button></div><div class="sub">بيانات حية لتعديل خطة الري</div><span class="pill g" id="wSuit">--</span>
+<section id="pg-weather" class="hidden"><div style="display:flex;justify-content:space-between"><h1 style="color:var(--b)" data-t="nav_weather">الطقس</h1><button class="btn o sm" onclick="refreshWeather()">🔄</button></div><div class="sub" data-t="wSub">بيانات حية لتعديل خطة الري</div><span class="pill g" id="wSuit">--</span>
   <div class="grid2" style="margin-top:16px"><div class="wcard"><div style="font-size:40px" id="wEmo">⛅</div><div id="wCity" style="font-weight:bold;margin-top:8px">--</div><div id="wDate" style="opacity:.85;font-size:12px"></div><div class="tmp"><span id="wTemp">--</span>°</div><div id="wCond">--</div><div class="wrow"><span>💧<br><b id="wHum">--</b></span><span>🌡<br><b id="wFeels">--</b></span><span>🌬<br><b id="wWind">--</b></span><span>☁️<br><b id="wClouds">--</b></span><span>🌧<br><b id="wRain">--</b></span></div></div>
-  <div><div class="card" style="margin-bottom:16px"><div class="t">🌅 الشمس</div><div style="display:flex;justify-content:space-around;margin-top:12px;text-align:center"><div><b id="wRise">--</b><small style="color:var(--mut);display:block">شروق</small></div><div><b id="wSet">--</b><small style="color:var(--mut);display:block">غروب</small></div></div><div class="bar" style="margin-top:12px"><i id="dayBar"></i></div></div><div class="card"><div class="t">🧭 الرياح</div><div class="big" id="wDir" style="font-size:20px">--</div></div></div></div>
-  <div class="card" style="margin-top:16px"><div class="t">🕐 الساعات</div><div id="wHourly" style="display:flex;gap:10px;overflow-x:auto;margin-top:12px"></div></div>
-  <div class="grid2" style="margin-top:16px"><div class="card"><div class="t">🧠 توصيات</div><div id="wRecs" style="margin-top:10px"></div></div><div class="card"><div class="t">📅 التوقعات</div><div class="cards" id="wForecast" style="margin-top:12px;grid-template-columns:repeat(auto-fit,minmax(90px,1fr))"></div></div></div>
+  <div><div class="card" style="margin-bottom:16px"><div class="t">🌅 <span data-t="sunL">الشمس</span></div><div style="display:flex;justify-content:space-around;margin-top:12px;text-align:center"><div><b id="wRise">--</b><small style="color:var(--mut);display:block" data-t="riseL">شروق</small></div><div><b id="wSet">--</b><small style="color:var(--mut);display:block" data-t="setL">غروب</small></div></div><div class="bar" style="margin-top:12px"><i id="dayBar"></i></div></div><div class="card"><div class="t">🧭 <span data-t="windL">الرياح</span></div><div class="big" id="wDir" style="font-size:20px">--</div></div></div></div>
+  <div class="card" style="margin-top:16px"><div class="t">🕐 <span data-t="hoursL">الساعات</span></div><div id="wHourly" style="display:flex;gap:10px;overflow-x:auto;margin-top:12px"></div></div>
+  <div class="grid2" style="margin-top:16px"><div class="card"><div class="t">🧠 <span data-t="recsL">توصيات</span></div><div id="wRecs" style="margin-top:10px"></div></div><div class="card"><div class="t">📅 <span data-t="fcL">التوقعات</span></div><div class="cards" id="wForecast" style="margin-top:12px;grid-template-columns:repeat(auto-fit,minmax(90px,1fr))"></div></div></div>
 </section>
-<!-- ═══ التنبيهات (محسّنة) ═══ -->
-<section id="pg-notif" class="hidden"><h1>🔔 التنبيهات</h1><div class="sub">سجل ذكي يُولَّد تلقائياً من أحداث النظام</div>
+<section id="pg-notif" class="hidden"><h1 data-t="nav_notif">التنبيهات</h1><div class="sub" data-t="nSub">سجل ذكي من أحداث النظام</div>
   <div class="cards">
-    <div class="card"><div class="t"><span class="ic" style="background:var(--gl)">📬</span>الكل</div><div class="big" id="nAll">0</div></div>
-    <div class="card"><div class="t"><span class="ic" style="background:#fef9c3">⚠️</span>تحذيرات</div><div class="big" id="nWarn" style="color:var(--y)">0</div></div>
-    <div class="card"><div class="t"><span class="ic" style="background:#fee2e2">❌</span>أخطاء</div><div class="big" id="nErr" style="color:var(--r)">0</div></div>
+    <div class="card"><div class="t"><span class="ic" style="background:var(--gl)">📬</span><span data-t="fAll">الكل</span></div><div class="big" id="nAll">0</div></div>
+    <div class="card"><div class="t"><span class="ic" style="background:#fef9c3">⚠️</span><span data-t="fWarn">تحذيرات</span></div><div class="big" id="nWarn" style="color:var(--y)">0</div></div>
+    <div class="card"><div class="t"><span class="ic" style="background:#fee2e2">❌</span><span data-t="fErr">أخطاء</span></div><div class="big" id="nErr" style="color:var(--r)">0</div></div>
   </div>
   <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
-    <button class="btn o sm" onclick="setNF('all')">الكل</button><button class="btn o sm" onclick="setNF('warn')">⚠ تحذيرات</button><button class="btn o sm" onclick="setNF('err')">❌ أخطاء</button>
-    <button class="btn o sm" style="margin-inline-start:auto" onclick="markRead()">✔ قراءة</button><button class="btn o sm" style="color:var(--r)" onclick="clearNotif()">🗑</button>
+    <button class="btn o sm" onclick="setNF('all')" data-t="fAll">الكل</button><button class="btn o sm" onclick="setNF('warn')">⚠ <span data-t="fWarn">تحذيرات</span></button><button class="btn o sm" onclick="setNF('err')">❌ <span data-t="fErr">أخطاء</span></button>
+    <button class="btn o sm" style="margin-inline-start:auto" onclick="markRead()">✔ <span data-t="readL">قراءة</span></button><button class="btn o sm" style="color:var(--r)" onclick="clearNotif()">🗑</button>
   </div>
   <div id="notifList"></div>
 </section>
-<!-- ═══ الإعدادات ═══ -->
-<section id="pg-settings" class="hidden"><h1>⚙️ الإعدادات</h1><div class="sub">تهيئة النظام</div>
-  <div class="card"><div class="t">🎨 المظهر</div><div style="display:flex;gap:10px"><div style="flex:1"><label>اللغة</label><select id="sLang" onchange="setLang(this.value)"><option value="ar">العربية 🇶🇦</option><option value="en">English</option></select></div><div style="flex:1"><label>المظهر</label><select id="sTheme" onchange="setTheme(this.value)"><option value="light">☀️</option><option value="dark">🌙</option></select></div><div style="flex:1"><label>الحرارة</label><select id="sUnit" onchange="CFG.unit=this.value;save();renderNow()"><option value="C">°C</option><option value="F">°F</option></select></div></div>
-  <label>الموقع</label><select id="sCity" onchange="CFG.city=this.value;save();refreshWeather()"><option value="Doha, QA">🇶🇦 الدوحة</option><option value="Al Rayyan, QA">الريان</option><option value="Al Wakrah, QA">الوكرة</option><option value="Al Khor, QA">الخور</option><option value="Riyadh, SA">🇸🇦 الرياض</option><option value="Dubai, AE">🇦🇪 دبي</option></select></div>
-  <div class="card" style="margin-top:16px"><div class="t">🛡️ الأمان</div><label>API Token</label><input id="sToken" type="password"/></div>
+<section id="pg-settings" class="hidden"><h1 data-t="nav_set">الإعدادات</h1><div class="sub" data-t="set_sub">تهيئة النظام</div>
+  <div class="card"><div class="t">🎨 <span data-t="appearL">المظهر</span></div><div style="display:flex;gap:10px"><div style="flex:1"><label data-t="langL">اللغة</label><select id="sLang" onchange="setLang(this.value)"><option value="ar">العربية 🇶🇦</option><option value="en">English 🇬🇧</option></select></div><div style="flex:1"><label data-t="themeL">المظهر</label><select id="sTheme" onchange="setTheme(this.value)"><option value="light">☀️</option><option value="dark">🌙</option></select></div><div style="flex:1"><label data-t="unitL">الحرارة</label><select id="sUnit" onchange="CFG.unit=this.value;save();renderNow()"><option value="C">°C</option><option value="F">°F</option></select></div></div>
+  <label data-t="locL">الموقع</label><select id="sCity" onchange="CFG.city=this.value;save();refreshWeather()"><option value="Doha, QA">🇶🇦 Doha</option><option value="Al Rayyan, QA">Al Rayyan</option><option value="Riyadh, SA">🇸🇦 Riyadh</option><option value="Dubai, AE">🇦🇪 Dubai</option></select></div>
+  <div class="card" style="margin-top:16px"><div class="t">🛡️ <span data-t="secL">الأمان</span></div><label>API Token</label><input id="sToken" type="password"/></div>
   <div class="card" style="margin-top:16px"><div class="t">🖥️ MQTT</div><div style="display:flex;gap:10px"><div style="flex:2"><label>Server</label><input id="sMqttS"/></div><div style="flex:1"><label>Port</label><input id="sMqttP"/></div></div></div>
   <div class="card" style="margin-top:16px"><div class="t">🌤️ OpenWeather</div><label>API Key</label><input id="sOwm" type="password"/></div>
-  <div class="card" style="margin-top:16px"><div class="t">💧 التكلفة والتدفق</div><div style="display:flex;gap:10px"><div style="flex:1"><label>SAR/m³</label><input id="sCost" type="number" step="0.01"/></div><div style="flex:1"><label>L/min</label><input id="sFlow" type="number"/></div></div></div>
-  <div style="display:flex;gap:10px;margin-top:20px"><button class="btn g" onclick="saveCfgUI()">💾 حفظ</button><button class="btn o" onclick="loadCfgUI()">إلغاء</button></div>
+  <div class="card" style="margin-top:16px"><div class="t">💧 <span data-t="costFlow">التكلفة والتدفق</span></div><div style="display:flex;gap:10px"><div style="flex:1"><label>SAR/m³</label><input id="sCost" type="number" step="0.01"/></div><div style="flex:1"><label>L/min</label><input id="sFlow" type="number"/></div></div></div>
+  <div style="display:flex;gap:10px;margin-top:20px"><button class="btn g" onclick="saveCfgUI()">💾 <span data-t="saveL">حفظ</span></button><button class="btn o" onclick="loadCfgUI()" data-t="cancelL">إلغاء</button></div>
 </section>
 </main>
 <button id="micFab" onclick="toggleAssistant()">🎙️</button>
-<div id="chatPanel" class="hidden"><div class="chatHead"><span style="font-size:22px">🧑🌾</span><div><b>مساعد ريحان</b><small>خبير نباتات — دون إنترنت</small></div><button onclick="VOICE=!VOICE;this.innerText=VOICE?'🔊':''">🔊</button><button onclick="toggleAssistant()">✖</button></div><div id="chatBody"></div><div class="chips" id="chips"></div><div class="chatIn"><input id="chatText" placeholder="اسأل الخبير..." onkeydown="if(event.key==='Enter')sendChat()"/><button id="micBtn" onclick="toggleListen()">🎤</button><button onclick="sendChat()">➤</button></div></div>
-<div id="connPanel" class="overlay"><div class="card" style="width:90%;max-width:380px"><div class="t">📡 الاتصال</div><input id="inpHost" placeholder="IP أو rayhan.local"/><input id="inpToken2" placeholder="Token"/><div style="display:flex;gap:8px;margin-top:12px"><button class="btn g" style="flex:1" onclick="connectLive()">اتصال</button><button class="btn o" style="flex:1" onclick="startDemo()">تجريبي</button></div></div></div>
+<div id="chatPanel" class="hidden"><div class="chatHead"><span style="font-size:22px">🧑🌾</span><div><b data-t="asstT">مساعد ريحان</b><small data-t="asstS">خبير نباتات — دون إنترنت</small></div><button onclick="VOICE=!VOICE;this.innerText=VOICE?'🔊':''">🔊</button><button onclick="toggleAssistant()">✖</button></div><div id="chatBody"></div><div class="chips" id="chips"></div><div class="chatIn"><input id="chatText" data-tp="chatP" placeholder="اسأل الخبير..." onkeydown="if(event.key==='Enter')sendChat()"/><button id="micBtn" onclick="toggleListen()">🎤</button><button onclick="sendChat()">➤</button></div></div>
+<div id="connPanel" class="overlay"><div class="card" style="width:90%;max-width:380px"><div class="t">📡 <span data-t="connT">الاتصال</span></div><input id="inpHost" placeholder="rayhan.local / 192.168.x.x"/><input id="inpToken2" placeholder="Token"/><div style="display:flex;gap:8px;margin-top:12px"><button class="btn g" style="flex:1" onclick="connectLive()" data-t="connB">اتصال</button><button class="btn o" style="flex:1" onclick="startDemo()" data-t="demoB">تجريبي</button></div></div></div>
 <script>
 'use strict';
 const $=id=>document.getElementById(id);
+let LANG=sget('rl','ar');
+const L=(a,b)=>LANG==='ar'?a:b;
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const lat=s=>String(s).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d));
 function fmt(n,d=0){n=Number(n);if(!isFinite(n))n=0;return n.toFixed(d);}
@@ -312,202 +300,172 @@ function sset(k,v){try{localStorage.setItem(k,v);}catch(e){}}
 const obf=s=>{try{return btoa(unescape(encodeURIComponent(s))).split('').reverse().join('');}catch(e){return s;}};
 const unobf=s=>{try{return decodeURIComponent(escape(atob(s.split('').reverse().join(''))));}catch(e){return s;}};
 function validHost(h){return /^(\d{1,3}\.){3}\d{1,3}$/.test(h)&&h.split('.').every(x=>+x<256)||/^[a-z0-9][a-z0-9.-]*\.local$/i.test(h);}
-async function fjson(url,opts,ms=6000){const c=new AbortController();const t=setTimeout(()=>c.abort(),ms);try{const r=await fetch(url,Object.assign({},opts,{signal:c.signal}));return await r.json();}catch(e){return null;}finally{clearTimeout(t);}}
-let LANG=sget('rl','ar'),THEME=sget('rt','light'),SND=sget('rs','1')==='1';
+const T={ar:{app:'ريحان',tag:'نظام الري الذكي المتكامل',nav_dash:'لوحة التحكم',nav_zones:'المناطق',nav_sched:'الجدولة',nav_cons:'الاستهلاك',nav_rep:'التقارير',nav_weather:'الطقس',nav_notif:'التنبيهات',nav_set:'الإعدادات',dash_sub:'مراقبة لحظية وتحكم كامل',auto:'ذكي',manual:'يدوي',sched:'جدول',soil:'رطوبة التربة',tank:'الخزان',temp:'الحرارة',hum:'رطوبة الجو',targetH:'الهدف',uptime:'التشغيل',ops:'عمليات',saved:'وفر الذكاء',dcenter:'مركز القرار',ai:'الذكاء',confH:'الثقة',need2:'الحاجة',dry2:'الجفاف',dec2:'القرار',sensH:'الحساسية',control:'التحكم',emg:'إيقاف طارئ',plantH:'النبات',soilH:'التربة',zones_sub:'تحكم مستقل لكل منطقة',zUsed:'إجمالي الري',zActive:'نشطة',zLast:'آخر ري',addZone:'إضافة منطقة',zNameP:'اسم المنطقة',r1:'ريليه 1',r2:'ريليه 2',add:'إضافة',sched_sub:'مواعيد الري بتكرار أسبوعي',schNext:'التالي',newSch:'جدول جديد',daysL:'أيام التكرار:',cons_sub:'تحليل حقيقي من سجل الري',today:'اليوم',week:'الأسبوع',avg:'المتوسط',cost:'التكلفة',weekChart:'الأسبوع',goalM:'الهدف الشهري',goalL:'الهدف (لتر)',proj:'الإسقاط الشهري',tipsL:'نصائح ذكية',rep_sub:'تحليلات وكفاءة النظام',effL:'نقاط الكفاءة',usedL:'المستهلك',analytics:'تحليلات',topZone:'أكثر منطقة رياً',peakHr:'ساعة الذروة',peakDay:'أكثر يوم',avgDur:'متوسط المدة',autoP:'نسبة الذكي',dist:'التوزيع',logL:'سجل الري',wSub:'بيانات حية لتعديل خطة الري',sunL:'الشمس',riseL:'شروق',setL:'غروب',windL:'الرياح',hoursL:'الساعات',recsL:'توصيات',fcL:'التوقعات',nSub:'سجل ذكي من أحداث النظام',fAll:'الكل',fWarn:'تحذيرات',fErr:'أخطاء',readL:'قراءة',set_sub:'تهيئة النظام',appearL:'المظهر',langL:'اللغة',themeL:'المظهر',unitL:'الحرارة',locL:'الموقع',secL:'الأمان',costFlow:'التكلفة والتدفق',saveL:'حفظ',cancelL:'إلغاء',asstT:'مساعد ريحان',asstS:'خبير نباتات — دون إنترنت',chatP:'اسأل الخبير...',connT:'الاتصال',connB:'اتصال',demoB:'تجريبي'},
+en:{app:'Rayhan',tag:'Integrated Smart Irrigation',nav_dash:'Dashboard',nav_zones:'Zones',nav_sched:'Scheduling',nav_cons:'Consumption',nav_rep:'Reports',nav_weather:'Weather',nav_notif:'Alerts',nav_set:'Settings',dash_sub:'Live monitoring & full control',auto:'Auto',manual:'Manual',sched:'Schedule',soil:'Soil Moisture',tank:'Tank',temp:'Temperature',hum:'Air Humidity',targetH:'Target',uptime:'Uptime',ops:'Operations',saved:'AI Savings',dcenter:'Decision Center',ai:'AI',confH:'Confidence',need2:'Need',dry2:'Drying',dec2:'Decision',sensH:'Sensitivity',control:'Control',emg:'Emergency Stop',plantH:'Plant',soilH:'Soil',zones_sub:'Independent per-zone control',zUsed:'Total irrigation',zActive:'Active',zLast:'Last irrigation',addZone:'Add zone',zNameP:'Zone name',r1:'Relay 1',r2:'Relay 2',add:'Add',sched_sub:'Weekly recurring schedules',schNext:'Next run',newSch:'New schedule',daysL:'Repeat days:',cons_sub:'Real analysis from log',today:'Today',week:'Week',avg:'Average',cost:'Cost',weekChart:'Week',goalM:'Monthly goal',goalL:'Goal (L)',proj:'Monthly projection',tipsL:'Smart tips',rep_sub:'Analytics & efficiency',effL:'Efficiency score',usedL:'Used',analytics:'Analytics',topZone:'Top irrigated zone',peakHr:'Peak hour',peakDay:'Peak day',avgDur:'Avg duration',autoP:'Auto ratio',dist:'Distribution',logL:'Irrigation log',wSub:'Live data to adjust irrigation',sunL:'Sun',riseL:'Sunrise',setL:'Sunset',windL:'Wind',hoursL:'Hours',recsL:'Recommendations',fcL:'Forecast',nSub:'Smart log from events',fAll:'All',fWarn:'Warnings',fErr:'Errors',readL:'Read',set_sub:'System setup',appearL:'Appearance',langL:'Language',themeL:'Theme',unitL:'Temperature',locL:'Location',secL:'Security',costFlow:'Cost & flow',saveL:'Save',cancelL:'Cancel',asstT:'Rayhan Assistant',asstS:'Plant expert — offline',chatP:'Ask the expert...',connT:'Connect',connB:'Connect',demoB:'Demo'}};
+const t=k=>(T[LANG]&&T[LANG][k])||k;
+const DAYSN=()=>LANG==='ar'?['سبت','أحد','اثن','ثلا','أرب','خمي','جمع']:['Sat','Sun','Mon','Tue','Wed','Thu','Fri'];
+const DAYSL=()=>LANG==='ar'?['السبت','الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة']:['Saturday','Sunday','Monday','Tuesday','Wednesday','Thursday','Friday'];
+const MN=()=>LANG==='ar'?['يناير','فبراير','مارس','ابريل','مايو','يونيو','يوليو','اغسطس','سبتمبر','اكتوبر','نوفمبر','ديسمبر']:['January','February','March','April','May','June','July','August','September','October','November','December'];
+let THEME=sget('rt','light'),SND=sget('rs','1')==='1';
 let MODE='demo',BASE='',ws=null,DEV=false;
 let CFG=Object.assign({token:unobf(sget('rtk',obf('rayhan-2026'))),mqttS:'',mqttP:'1883',owm:'',city:'Doha, QA',cost:0.15,flow:10,unit:'C',sens:0.55,goal:3000},JSON.parse(sget('rcfg','{}')));
 function save(){sset('rcfg',JSON.stringify(CFG));}
 let S={soil:35,water:80,temp:27,hum:55,rain:false,target:58,mode:0};
-let A={conf:.7,need:.3,dry:2.2,reason:'OK_NO_NEED',decision:'IDLE'};
+let A={conf:.7,need:.3,dry:2.2,reason:'OK_NO_NEED'};
 let P={running:false,remaining:0};
-const PLANTS=[['🌴 نخيل التمر',45],['🍅 طماطم',55],['🥒 خيار',60],['🍆 باذنجان',55],['🥒 كوسة',55],['🫛 بامية',50],['🌶️ فلفل حار',45],['🫑 فلفل رومي',50],['🧅 بصل',40],['🧄 ثوم',40],['🥕 جزر',45],['🌰 فجل',45],['🥬 خس',60],['🥬 ملفوف',55],['🌼 قرنبيط',55],['🥦 بروكلي',55],['🍃 سبانخ',60],['🌿 جرجير',55],['🍀 كزبرة',55],['🌿 بقدونس',55],['🪴 ريحان',58],['🍃 نعناع',60],['🌱 زعتر',35],['🍓 فراولة',55],['🍉 بطيخ',45],['🍈 شمام',45],['🌽 ذرة',50],['🌾 رودس',40],['🍇 عنب',40],['🍋 ليمون',40]];
-const SOILS=['🏜️ رملية','🧱 طينية','🌾 طمية','🍂 بتموس','🪨 صخرية'];
-let ZONES=JSON.parse(sget('rz','null'))||[{id:1,name:'الأمامية',emoji:'🌳',plant:0,soil:0,relay:0,en:true,lastIrr:null,usedL:0,off:0},{id:2,name:'الخلفية',emoji:'🌴',plant:1,soil:1,relay:1,en:true,lastIrr:null,usedL:0,off:-3}];
+const PLANTS=[['🌴 نخيل التمر','Date Palm',45],['🍅 طماطم','Tomato',55],['🥒 خيار','Cucumber',60],['🍆 باذنجان','Eggplant',55],['🫛 بامية','Okra',50],['🌶️ فلفل','Pepper',45],['🧅 بصل','Onion',40],['🥕 جزر','Carrot',45],['🥬 خس','Lettuce',60],['🍓 فراولة','Strawberry',55],['🍉 بطيخ','Watermelon',45],['🌽 ذرة','Corn',50],['🪴 ريحان','Basil',58],['🍃 نعناع','Mint',60],['🌱 زعتر','Thyme',35],['🍇 عنب','Grapes',40],['🍋 ليمون','Lemon',40]];
+const SOILS=()=>LANG==='ar'?['🏜️ رملية','🧱 طينية','🌾 طمية','🍂 بتموس','🪨 صخرية']:['🏜️ Sandy','🧱 Clay',' Loam','🍂 Peat','🪨 Rocky'];
+let ZONES=JSON.parse(sget('rz','null'))||[{id:1,name:'Front',emoji:'🌳',plant:0,soil:0,relay:0,en:true,lastIrr:null,usedL:0,off:0},{id:2,name:'Back',emoji:'🌴',plant:1,soil:1,relay:1,en:true,lastIrr:null,usedL:0,off:-3}];
 let HIST=JSON.parse(sget('rh','[]'));
 let SCHED=JSON.parse(sget('rsc','[]'));
-let NOTIF=JSON.parse(sget('rn','[]'));if(!NOTIF.length)NOTIF=[{t:'مرحباً بك',d:'نظام ريحان جاهز للعمل',lv:1,ts:Date.now(),un:true}];
+let NOTIF=JSON.parse(sget('rn','[]'));if(!NOTIF.length)NOTIF=[{t:'Welcome',d:'Rayhan ready',lv:1,ts:Date.now(),un:true}];
 let NF='all',WDATA=null,VOICE=true,REC=null,listening=false;
 const T0=Date.now();
 const fT=c=>CFG.unit==='F'?fmt(c*9/5+32):fmt(c,1);
-const DAYSN=['سبت','أحد','اثن','ثلا','أرب','خمي','جمع'];
-const DAYSL=['السبت','الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة'];
 function toast(m,c){const d=document.createElement('div');d.className='toast';if(c)d.style.background=c;d.innerText=m;$('toasts').appendChild(d);setTimeout(()=>d.remove(),3000);}
-function notify(t,d,lv=1){NOTIF.unshift({t,d,lv,ts:Date.now(),un:true});NOTIF=NOTIF.slice(0,50);sset('rn',JSON.stringify(NOTIF));updBadge();}
+function notify(tt,d,lv=1){NOTIF.unshift({t:tt,d,lv,ts:Date.now(),un:true});NOTIF=NOTIF.slice(0,50);sset('rn',JSON.stringify(NOTIF));updBadge();}
 function updBadge(){const u=NOTIF.filter(x=>x.un).length;const b=$('navNotif').querySelector('.badge');if(u>0){if(!b){const s=document.createElement('span');s.className='badge';s.innerText=u;$('navNotif').appendChild(s);}else b.innerText=u;}else if(b)b.remove();}
 let VOICES=[];if('speechSynthesis' in window){VOICES=speechSynthesis.getVoices();speechSynthesis.onvoiceschanged=()=>VOICES=speechSynthesis.getVoices();}
-function speak(txt){if(!VOICE||!('speechSynthesis' in window))return;try{speechSynthesis.cancel();const clean=txt.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}]/gu,'').replace(/[|•●▪%°]/g,' ').replace(/\s+/g,' ').trim();(clean.match(/[^.!؟؛]+[.!؟؛]?/g)||[clean]).forEach(c=>{c=c.trim();if(!c)return;const u=new SpeechSynthesisUtterance(c);u.lang='ar-SA';const v=VOICES.find(v=>v.lang.startsWith('ar'));if(v)u.voice=v;u.rate=1.03;speechSynthesis.speak(u);});}catch(e){}}
+function speak(txt){if(!VOICE||!('speechSynthesis' in window))return;try{speechSynthesis.cancel();const clean=txt.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}]/gu,'').replace(/[|•●▪%°]/g,' ').replace(/\s+/g,' ').trim();(clean.match(/[^.!؟؛]+[.!؟؛]?/g)||[clean]).forEach(c=>{c=c.trim();if(!c)return;const u=new SpeechSynthesisUtterance(c);u.lang=LANG==='ar'?'ar-SA':'en-US';const v=VOICES.find(v=>v.lang.startsWith(LANG==='ar'?'ar':'en'));if(v)u.voice=v;u.rate=1.03;speechSynthesis.speak(u);});}catch(e){}}
 function beep(){if(!SND)return;try{const c=new (window.AudioContext||window.webkitAudioContext)();const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=880;g.gain.value=.08;o.start();setTimeout(()=>o.stop(),180);}catch(e){}}
-/* ═══ اتصال ═══ */
 let wsBackoff=2000,wsLastMsg=Date.now(),wsConnecting=false;
-async function api(p,m='GET',b=null,auth=false){let u=BASE+p;const h={};if(b)h['Content-Type']='application/json';if(auth)u+=(u.includes('?')?'&':'?')+'token='+encodeURIComponent(CFG.token);return fjson(u,{method:m,headers:h,body:b?JSON.stringify(b):undefined});}
 function scheduleWS(){setTimeout(startWS,wsBackoff);wsBackoff=Math.min(30000,Math.round(wsBackoff*1.6+Math.random()*400));}
 function startWS(){if(wsConnecting)return;wsConnecting=true;try{if(ws)ws.close();}catch(e){}
  const h=BASE.replace(/^https?:\/\//,'');ws=new WebSocket('ws://'+h+':81/?token='+encodeURIComponent(CFG.token));
- ws.onopen=()=>{wsConnecting=false;wsBackoff=2000;wsLastMsg=Date.now();$('connTxt').innerText='متصل';$('dot').style.background='#10b981';notify('اتصال','تم الاتصال بالجهاز',1);};
- ws.onclose=()=>{wsConnecting=false;$('connTxt').innerText='انقطع';$('dot').style.background='#ef4444';scheduleWS();};
+ ws.onopen=()=>{wsConnecting=false;wsBackoff=2000;wsLastMsg=Date.now();$('connTxt').innerText=L('متصل','Online');$('dot').style.background='#10b981';};
+ ws.onclose=()=>{wsConnecting=false;$('connTxt').innerText=L('انقطع','Offline');$('dot').style.background='#ef4444';scheduleWS();};
  ws.onerror=()=>{try{ws.close();}catch(e){}};
  ws.onmessage=ev=>{wsLastMsg=Date.now();let m;try{m=JSON.parse(ev.data);}catch(e){return;}const p=m.payload||{};
-  if(m.type==='sensors'){S.soil=+p.soil_percent||0;S.water=+p.water_percent||0;S.temp=+p.temp_c||25;S.hum=+p.humidity_percent||50;S.rain=!!p.rain_detected;S.target=+p.target_moisture||S.target;S.mode=p.mode??S.mode;if(S.water<=10)notify('⛔ الخزان','مستوى الخزان منخفض جداً!',3);if(S.soil<S.target-15)notify('🌱 التربة','التربة جافة جداً',2);}
-  else if(m.type==='ai')A={conf:+p.confidence||0,need:+p.need||0,dry:+p.drying_rate||0,reason:esc(p.reason)||'--',decision:esc(p.decision)||'IDLE'};
-  else if(m.type==='pump'){if(p.running&&!P.running){logIrr(+p.remaining_sec||15,'AUTO');notify('💧 ري','ري تلقائي '+p.remaining_sec+'ث',1);}P={running:!!p.running,remaining:+p.remaining_sec||0};}
+  if(m.type==='sensors'){S.soil=+p.soil_percent||0;S.water=+p.water_percent||0;S.temp=+p.temp_c||25;S.hum=+p.humidity_percent||50;S.rain=!!p.rain_detected;S.target=+p.target_moisture||S.target;S.mode=p.mode??S.mode;}
+  else if(m.type==='ai')A={conf:+p.confidence||0,need:+p.need||0,dry:+p.drying_rate||0,reason:esc(p.reason)||'--'};
+  else if(m.type==='pump'){if(p.running&&!P.running)logIrr(+p.remaining_sec||15,'AUTO');P={running:!!p.running,remaining:+p.remaining_sec||0};}
   renderAll();};}
 setInterval(()=>{if(MODE==='live'&&Date.now()-wsLastMsg>12000&&!wsConnecting){try{ws.close();}catch(e){}}},5000);
-function connectLive(){const h=$('inpHost').value.trim();if(!validHost(h))return toast('❌ IP غير صالح','#ef4444');CFG.token=$('inpToken2').value.trim()||CFG.token;sset('rtk',obf(CFG.token));sset('rconn',JSON.stringify({host:h}));BASE='http://'+h;MODE='live';$('connPanel').classList.remove('show');startWS();refreshWeather();}
-async function refreshLive(){const[s,a,p]=await Promise.all([api('/api/v1/sensors'),api('/api/v1/ai'),api('/api/v1/pump')]);if(s&&s.ok){S.soil=+s.data.soil_percent||0;S.water=+s.data.water_percent||0;S.temp=+s.data.temp_c||25;S.hum=+s.data.humidity_percent||50;}if(a&&a.ok)A={conf:+a.data.confidence||0,need:+a.data.need||0,dry:+a.data.drying_rate||0,reason:esc(a.data.reason)||'--',decision:'IDLE'};if(p&&p.ok)P={running:!!p.data.running,remaining:+p.data.remaining_sec||0};renderAll();}
-setInterval(()=>{if(MODE==='live')refreshLive();},8000);
-function act(p,b){if(MODE==='demo'){demoAct(p,b);return;}api(p,'POST',b,true);}
-function irrigate(s){act('/api/v1/actions/irrigate',{duration_sec:s});logIrr(s,'MANUAL');notify('💧 ري يدوي','مدة '+s+' ثانية',1);}
+function connectLive(){const h=$('inpHost').value.trim();if(!validHost(h))return toast('❌ '+L('عنوان غير صالح','Invalid host'),'#ef4444');CFG.token=$('inpToken2').value.trim()||CFG.token;sset('rtk',obf(CFG.token));sset('rconn',JSON.stringify({host:h}));BASE='http://'+h;MODE='live';$('connPanel').classList.remove('show');startWS();}
+function act(p,b){if(MODE==='demo'){demoAct(p,b);return;}fetch(BASE+p+'?token='+encodeURIComponent(CFG.token),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)}).catch(()=>{});}
+function irrigate(s){act('/api/v1/actions/irrigate',{duration_sec:s});logIrr(s,'MANUAL');notify(L('💧 ري يدوي','💧 Manual'),' '+s+'s',1);}
 function stopPump(){act('/api/v1/actions/stop',{});}
-function emergencyStop(){if(confirm('⛔')){act('/api/v1/actions/emergency-stop',{});notify('⛔ طوارئ','إيقاف طارئ!',3);}}
+function emergencyStop(){if(confirm('⛔')){act('/api/v1/actions/emergency-stop',{});notify(L('⛔ طوارئ','⛔ Emergency'),'!',3);}}
 function setMode(m){S.mode=m;act('/api/v1/settings/mode',{mode:m});renderAll();}
-function setPlant(v){const pl=PLANTS[+v];if(!pl)return;S.target=pl[1];act('/api/v1/settings/target',{target_moisture:pl[1]});toast(pl[0]+' → '+pl[1]+'%');renderAll();}
-function setSoil(v){toast(SOILS[+v]||'');}
+function setPlant(v){const pl=PLANTS[+v];if(!pl)return;S.target=pl[2];act('/api/v1/settings/target',{target_moisture:pl[2]});toast(pl[LANG==='ar'?0:1]+' → '+pl[2]+'%');renderAll();}
+function setSoil(v){toast(SOILS()[+v]||'');}
 function setTarget(v){S.target=+v;act('/api/v1/settings/target',{target_moisture:+v});renderAll();}
-/* ═══ مناطق محسّنة ═══ */
 function saveZ(){sset('rz',JSON.stringify(ZONES));}
-function addZone(){const n=$('zName').value.trim();if(!n)return toast('❌','#ef4444');ZONES.unshift({id:Date.now(),name:n,emoji:$('zEmoji').value,plant:+$('zPlant').value,soil:+$('zSoil').value,relay:+$('zRelay').value,en:true,lastIrr:null,usedL:0,off:Math.round(Math.random()*6-3)});saveZ();$('zName').value='';notify('🗺️ منطقة جديدة',n,1);renderAll();}
-function zoneDel(id){if(!confirm('🗑'))return;const z=ZONES.find(z=>z.id===id);ZONES=ZONES.filter(z=>z.id!==id);saveZ();if(z)notify('🗑 حذف منطقة',z.name,2);renderAll();}
-function zoneRen(id){const z=ZONES.find(z=>z.id===id);if(!z)return;const n=prompt('اسم جديد:',z.name);if(n&&n.trim()){z.name=n.trim();saveZ();renderAll();}}
+function addZone(){const n=$('zName').value.trim();if(!n)return toast('❌','#ef4444');ZONES.unshift({id:Date.now(),name:n,emoji:$('zEmoji').value,plant:+$('zPlant').value,soil:+$('zSoil').value,relay:+$('zRelay').value,en:true,lastIrr:null,usedL:0,off:Math.round(Math.random()*6-3)});saveZ();$('zName').value='';notify('🗺️',n,1);renderAll();}
+function zoneDel(id){if(!confirm('🗑'))return;ZONES=ZONES.filter(z=>z.id!==id);saveZ();renderAll();}
+function zoneRen(id){const z=ZONES.find(z=>z.id===id);if(!z)return;const n=prompt(L('اسم جديد:','New name:'),z.name);if(n&&n.trim()){z.name=n.trim();saveZ();renderAll();}}
 function zoneTgl(id){const z=ZONES.find(z=>z.id===id);if(z){z.en=!z.en;saveZ();renderAll();}}
-function zoneIrr(id){const z=ZONES.find(z=>z.id===id);if(!z||!z.en)return toast('🚫','#ef4444');z.lastIrr=Date.now();z.usedL+=15*CFG.flow/60;saveZ();logIrr(15,'ZONE: '+z.name);notify('💧 ري منطقة',z.emoji+' '+z.name+' — 15ث',1);if(MODE!=='demo')api('/api/v1/zones/'+z.id+'/start','POST',{duration_sec:15},true);renderAll();}
-function renderZones(){
- $('zCount').innerText=ZONES.length;$('zUsed').innerText=fmt(ZONES.reduce((a,z)=>a+(+z.usedL||0),0))+' L';$('zActive').innerText=ZONES.filter(z=>z.en).length;
- const lastAll=ZONES.filter(z=>z.lastIrr).sort((a,b)=>b.lastIrr-a.lastIrr)[0];
- $('zLastIrr').innerText=lastAll?ago(lastAll.lastIrr):'—';
- $('zoneCards').innerHTML=ZONES.map(z=>{const m=Math.max(0,Math.min(100,S.soil+(z.off||0)));
-  const health=m>=S.target-5?'g':m>=S.target-15?'y':'r';
-  const hCol=health==='g'?'var(--g)':health==='y'?'var(--y)':'var(--r)';
-  return `<div class="card" style="${z.en?'':'opacity:.5'}">
-   <div class="t"><span class="ic" style="background:var(--gl)">${esc(z.emoji)}</span>${esc(z.name)}
-   <span class="pill ${health}" style="margin-inline-start:auto">${health==='g'?'ممتازة':health==='y'?'تحتاج ري':'جافة'}</span></div>
-   <div style="display:flex;gap:16px;margin:12px 0;font-size:12px;color:var(--mut)">
-    <span>💧 <b style="color:${hCol}">${fmt(m)}%</b></span>
-    <span>🔌 ريليه ${z.relay+1}</span>
-    <span>🌱 ${esc(PLANTS[z.plant]?PLANTS[z.plant][0]:'--')}</span>
-   </div>
-   <div class="bar"><i style="width:${m}%;background:${hCol}"></i></div>
-   <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:11px;color:var(--mut)">
-    <span>📊 ${fmt(z.usedL||0,1)} L</span>
-    <span>⏱ ${z.lastIrr?ago(z.lastIrr):'لم يروَ بعد'}</span>
-   </div>
-   <div style="display:flex;gap:6px;margin-top:12px">
-    <button class="btn g sm" style="flex:1" onclick="zoneIrr(${z.id})">💧 15s</button>
-    <button class="btn o sm" onclick="zoneTgl(${z.id})">${z.en?'🚫':'🟢'}</button>
-    <button class="btn o sm" onclick="zoneRen(${z.id})">✏️</button>
-    <button class="btn r sm" onclick="zoneDel(${z.id})">🗑</button>
-   </div></div>`;}).join('');}
-function ago(ts){const d=Date.now()-ts;if(d<60000)return 'الآن';if(d<3600000)return Math.floor(d/60000)+' د';if(d<86400000)return Math.floor(d/3600000)+' س';return Math.floor(d/86400000)+' يوم';}
-/* ═══ جدولة محسّنة ═══ */
+function zoneIrr(id){const z=ZONES.find(z=>z.id===id);if(!z||!z.en)return toast('🚫','#ef4444');z.lastIrr=Date.now();z.usedL+=15*CFG.flow/60;saveZ();logIrr(15,'ZONE: '+z.name);notify('💧',z.emoji+' '+z.name,1);renderAll();}
+function ago(ts){const d=Date.now()-ts;if(d<60000)return L('الآن','now');if(d<3600000)return Math.floor(d/60000)+' '+L('د','m');if(d<86400000)return Math.floor(d/3600000)+' '+L('س','h');return Math.floor(d/86400000)+' '+L('يوم','d');}
+function renderZones(){$('zCount').innerText=ZONES.length;$('zUsed').innerText=fmt(ZONES.reduce((a,z)=>a+(+z.usedL||0),0))+' L';$('zActive').innerText=ZONES.filter(z=>z.en).length;
+ const lastAll=ZONES.filter(z=>z.lastIrr).sort((a,b)=>b.lastIrr-a.lastIrr)[0];$('zLastIrr').innerText=lastAll?ago(lastAll.lastIrr):'—';
+ $('zoneCards').innerHTML=ZONES.map(z=>{const m=Math.max(0,Math.min(100,S.soil+(z.off||0)));const health=m>=S.target-5?'g':m>=S.target-15?'y':'r';const hCol=health==='g'?'var(--g)':health==='y'?'var(--y)':'var(--r)';
+  const hTxt=health==='g'?L('ممتازة','Excellent'):health==='y'?L('تحتاج ري','Needs water'):L('جافة','Dry');
+  return `<div class="card" style="${z.en?'':'opacity:.5'}"><div class="t"><span class="ic" style="background:var(--gl)">${esc(z.emoji)}</span>${esc(z.name)}<span class="pill ${health}" style="margin-inline-start:auto">${hTxt}</span></div>
+  <div style="display:flex;gap:16px;margin:12px 0;font-size:12px;color:var(--mut)"><span>💧 <b style="color:${hCol}">${fmt(m)}%</b></span><span>🔌 ${L('ريليه','Relay')} ${z.relay+1}</span><span>🌱 ${esc(PLANTS[z.plant]?PLANTS[z.plant][LANG==='ar'?0:1]:'--')}</span></div>
+  <div class="bar"><i style="width:${m}%;background:${hCol}"></i></div>
+  <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:11px;color:var(--mut)"><span>📊 ${fmt(z.usedL||0,1)} L</span><span>⏱ ${z.lastIrr?ago(z.lastIrr):L('لم يروَ بعد','Not irrigated')}</span></div>
+  <div style="display:flex;gap:6px;margin-top:12px"><button class="btn g sm" style="flex:1" onclick="zoneIrr(${z.id})">💧 15s</button><button class="btn o sm" onclick="zoneTgl(${z.id})">${z.en?'🚫':''}</button><button class="btn o sm" onclick="zoneRen(${z.id})">✏️</button><button class="btn r sm" onclick="zoneDel(${z.id})">🗑</button></div></div>`;}).join('');}
 let schDaysArr=[0,0,0,0,0,0,0];
 function tDay(el,i){schDaysArr[i]=1-schDaysArr[i];el.classList.toggle('on');}
-function addSched(){const days=schDaysArr.map((v,i)=>v?i:null).filter(x=>x!==null);if(!days.length)return toast('❌ اختر يوماً','#ef4444');SCHED.unshift({time:$('schTime').value||'06:00',dur:Math.min(120,Math.max(1,+$('schDur').value||15)),zone:+$('schZone').value||1,days,en:true});sset('rsc',JSON.stringify(SCHED));schDaysArr=[0,0,0,0,0,0,0];document.querySelectorAll('#schDays span').forEach(s=>s.classList.remove('on'));notify('📅 جدول جديد','في '+days.map(d=>DAYSN[d]).join(', '),1);renderAll();}
+function addSched(){const days=schDaysArr.map((v,i)=>v?i:null).filter(x=>x!==null);if(!days.length)return toast('❌ '+L('اختر يوماً','Pick a day'),'#ef4444');SCHED.unshift({time:$('schTime').value||'06:00',dur:Math.min(120,Math.max(1,+$('schDur').value||15)),zone:+$('schZone').value||1,days,en:true});sset('rsc',JSON.stringify(SCHED));schDaysArr=[0,0,0,0,0,0,0];document.querySelectorAll('#schDays span').forEach(s=>s.classList.remove('on'));notify('📅',days.map(d=>DAYSN()[d]).join(', '),1);renderAll();}
 function delSched(i){SCHED.splice(i,1);sset('rsc',JSON.stringify(SCHED));renderAll();}
 function tglSched(i){SCHED[i].en=!SCHED[i].en;sset('rsc',JSON.stringify(SCHED));renderAll();}
 function nextRun(s){if(!s.en)return null;const now=new Date();for(let d=0;d<7;d++){const dt=new Date(now.getTime()+d*86400000);const wd=(dt.getDay()+1)%7;if(s.days.includes(wd)){const[h,m]=s.time.split(':').map(Number);dt.setHours(h,m,0,0);if(dt>now)return dt;}}return null;}
 function renderSched(){$('schCount').innerText=SCHED.length;$('schActive').innerText=SCHED.filter(s=>s.en).length;
  const nxts=SCHED.map(s=>nextRun(s)).filter(Boolean).sort((a,b)=>a-b);
- $('schNext').innerText=nxts.length?nxts[0].toLocaleTimeString('ar',{hour:'2-digit',minute:'2-digit'})+' '+DAYSL[((nxts[0].getDay()+1)%7)]:'—';
+ $('schNext').innerText=nxts.length?nxts[0].toLocaleTimeString(LANG==='ar'?'ar':'en',{hour:'2-digit',minute:'2-digit'})+' '+DAYSL()[((nxts[0].getDay()+1)%7)]:'—';
  $('schZone').innerHTML=ZONES.map(z=>`<option value="${z.id}">${esc(z.emoji)} ${esc(z.name)}</option>`).join('');
+ document.querySelectorAll('#schDays span').forEach((el,i)=>el.innerText=DAYSN()[i]);
  $('schedList').innerHTML=SCHED.map((s,i)=>{const zn=ZONES.find(z=>z.id===s.zone);const nr=nextRun(s);
-  return `<div class="card" style="${s.en?'':'opacity:.5'}"><div class="t"><span class="ic" style="background:var(--gl)">📅</span>
-   <span>${esc(s.time)} — ${s.dur} ث</span>
-   <label class="sw" style="margin-inline-start:auto"><input type="checkbox" ${s.en?'checked':''} onchange="tglSched(${i})"><span></span></label></div>
-   <div style="font-size:12px;color:var(--mut);margin:8px 0">🗺️ ${zn?esc(zn.emoji+' '+zn.name):'--'}</div>
-   <div style="display:flex;gap:4px;flex-wrap:wrap">${(s.days||[]).map(d=>`<span class="pill g">${DAYSN[d]}</span>`).join('')}</div>
-   ${nr?`<div style="font-size:11px;color:var(--g);margin-top:6px">⏭ التالي: ${nr.toLocaleTimeString('ar',{hour:'2-digit',minute:'2-digit'})} ${DAYSL[((nr.getDay()+1)%7)]}</div>`:''}
-   <button class="btn r sm" style="margin-top:8px" onclick="delSched(${i})">🗑</button></div>`;}).join('')||'<div class="card" style="text-align:center">لا جداول بعد</div>';}
-/* ═══ استهلاك محسّن (حقيقي من HIST) ═══ */
-function calcCons(){const now=Date.now(),day=86400000;
- const today=HIST.filter(h=>now-h.ts<day).reduce((a,h)=>a+(+h.liters||0),0);
- const week=HIST.filter(h=>now-h.ts<7*day).reduce((a,h)=>a+(+h.liters||0),0);
- const byDay=Array(7).fill(0);HIST.filter(h=>now-h.ts<7*day).forEach(h=>{const d=6-Math.floor((now-h.ts)/day);if(d>=0&&d<7)byDay[d]+=(+h.liters||0);});
- return {today,week,avg:week/7,byDay};}
-function renderCons(){const c=calcCons();
- $('cDay').innerText=fmt(c.today)+' L';$('cWeek').innerText=fmt(c.week)+' L';$('cAvg').innerText=fmt(c.avg)+' L';
- $('cCost').innerText=fmt(c.week/1000*CFG.cost,2)+' SAR';
- const proj=c.avg*30;$('cProj').innerText=fmt(proj)+' L';
- const overGoal=proj>CFG.goal;$('cProjSt').innerText=overGoal?'⚠️ فوق الهدف بـ '+fmt(proj-CFG.goal)+' L':'✅ ضمن الهدف';$('cProjSt').style.color=overGoal?'var(--r)':'var(--g)';
+  return `<div class="card" style="${s.en?'':'opacity:.5'}"><div class="t"><span class="ic" style="background:var(--gl)">📅</span><span>${esc(s.time)} — ${s.dur}s</span><label class="sw" style="margin-inline-start:auto"><input type="checkbox" ${s.en?'checked':''} onchange="tglSched(${i})"><span></span></label></div>
+  <div style="font-size:12px;color:var(--mut);margin:8px 0">🗺️ ${zn?esc(zn.emoji+' '+zn.name):'--'}</div>
+  <div style="display:flex;gap:4px;flex-wrap:wrap">${(s.days||[]).map(d=>`<span class="pill g">${DAYSN()[d]}</span>`).join('')}</div>
+  ${nr?`<div style="font-size:11px;color:var(--g);margin-top:6px">⏭ ${L('التالي','Next')}: ${nr.toLocaleTimeString(LANG==='ar'?'ar':'en',{hour:'2-digit',minute:'2-digit'})} ${DAYSL()[((nr.getDay()+1)%7)]}</div>`:''}
+  <button class="btn r sm" style="margin-top:8px" onclick="delSched(${i})">🗑</button></div>`;}).join('')||`<div class="card" style="text-align:center">${L('لا جداول بعد','No schedules yet')}</div>`;}
+function calcCons(){const now=Date.now(),day=86400000;const today=HIST.filter(h=>now-h.ts<day).reduce((a,h)=>a+(+h.liters||0),0);const week=HIST.filter(h=>now-h.ts<7*day).reduce((a,h)=>a+(+h.liters||0),0);const byDay=Array(7).fill(0);HIST.filter(h=>now-h.ts<7*day).forEach(h=>{const d=6-Math.floor((now-h.ts)/day);if(d>=0&&d<7)byDay[d]+=(+h.liters||0);});return{today,week,avg:week/7,byDay};}
+function renderCons(){const c=calcCons();$('cDay').innerText=fmt(c.today)+' L';$('cWeek').innerText=fmt(c.week)+' L';$('cAvg').innerText=fmt(c.avg)+' L';$('cCost').innerText=fmt(c.week/1000*CFG.cost,2)+' SAR';
+ const proj=c.avg*30;$('cProj').innerText=fmt(proj)+' L';const over=proj>CFG.goal;$('cProjSt').innerText=over?'⚠️ '+L('فوق الهدف بـ','Over goal by ')+fmt(proj-CFG.goal)+' L':'✅ '+L('ضمن الهدف','Within goal');$('cProjSt').style.color=over?'var(--r)':'var(--g)';
  $('goalTxt').innerText=fmt(c.week*4)+' / '+CFG.goal+' L';$('goalBar').style.width=Math.min(100,c.week*4/CFG.goal*100)+'%';$('goalInp').value=CFG.goal;
- const mx=Math.max(...c.byDay,1);$('weekBars').innerHTML=c.byDay.map((v,i)=>`<div class="bcol"><small>${fmt(v)}L</small><div class="b" style="height:${v/mx*80}%"></div><small>${DAYSN[i]}</small></div>`).join('');
- const tips=[];if(c.avg>100)tips.push('🌅 الري فجراً يقلل التبخر 40%');if(c.today>c.avg*1.5)tips.push('⚠️ استهلاك اليوم أعلى من المتوسط');if(S.temp>38)tips.push('🥵 الحرارة مرتفعة — رِ ليلاً');if(c.week<c.avg*7*0.7)tips.push('🏆 استهلاكك أقل من المعتاد');if(!tips.length)tips.push('✅ استهلاكك مثالي — استمر!');
- $('consTips').innerHTML=tips.map(t=>`<div class="tip">${esc(t)}</div>`).join('');}
-/* ═══ تقارير محسّنة ═══ */
-function renderReports(){const used=HIST.reduce((a,h)=>a+(+h.liters||0),0);
- $('rOps').innerText=HIST.length;$('rUsed').innerText=fmt(used)+' L';$('rSaved').innerText=fmt(used*0.18)+' L';
- const autoC=HIST.filter(h=>h.src==='AUTO').length;const eff=HIST.length?Math.round((autoC/HIST.length)*100+((used<CFG.goal/4)?20:0)):50;
- const ring=$('effRing');ring.innerText=Math.min(100,eff);ring.style.borderColor=eff>=70?'var(--g)':eff>=40?'var(--y)':'var(--r)';ring.style.color=eff>=70?'var(--g)':eff>=40?'var(--y)':'var(--r)';
- $('effDesc').innerText=eff>=70?'ممتاز — النظام يعمل بكفاءة':eff>=40?'جيد — يمكن تحسينه':'ضعيف — فعّل الوضع الذكي';
- const zoneUse={};HIST.forEach(h=>{const zn=(h.src||'').replace('ZONE: ','');if(zn)zoneUse[zn]=(zoneUse[zn]||0)+1;});
- const topZ=Object.entries(zoneUse).sort((a,b)=>b[1]-a[1])[0];$('repTopZone').innerText=topZ?topZ[0]+' ('+topZ[1]+')':'—';
- const hrUse=Array(24).fill(0);HIST.forEach(h=>{const hr=new Date(h.ts).getHours();hrUse[hr]++;});const peakHr=hrUse.indexOf(Math.max(...hrUse));$('repPeakHr').innerText=peakHr+':00';
- const dayUse=Array(7).fill(0);HIST.forEach(h=>{dayUse[(new Date(h.ts).getDay()+1)%7]++;});const peakDay=dayUse.indexOf(Math.max(...dayUse));$('repPeakDay').innerText=DAYSL[peakDay]||'—';
- $('repAvgDur').innerText=HIST.length?fmt(HIST.reduce((a,h)=>a+h.dur,0)/HIST.length)+' ث':'—';
+ const mx=Math.max(...c.byDay,1);$('weekBars').innerHTML=c.byDay.map((v,i)=>`<div class="bcol"><small>${fmt(v)}L</small><div class="b" style="height:${v/mx*80}%"></div><small>${DAYSN()[i]}</small></div>`).join('');
+ const tips=[];if(c.avg>100)tips.push(L('🌅 الري فجراً يقلل التبخر 40%','🌅 Dawn irrigation cuts evaporation 40%'));if(c.today>c.avg*1.5)tips.push(L('⚠️ استهلاك اليوم أعلى من المتوسط','⚠️ Today above average'));if(S.temp>38)tips.push(L('🥵 حرارة مرتفعة — رِ ليلاً','🥵 High heat — irrigate at night'));if(!tips.length)tips.push(L('✅ استهلاكك مثالي','✅ Consumption is optimal'));
+ $('consTips').innerHTML=tips.map(x=>`<div class="tip">${esc(x)}</div>`).join('');}
+function renderReports(){const used=HIST.reduce((a,h)=>a+(+h.liters||0),0);$('rOps').innerText=HIST.length;$('rUsed').innerText=fmt(used)+' L';$('rSaved').innerText=fmt(used*0.18)+' L';
+ const autoC=HIST.filter(h=>h.src==='AUTO').length;const eff=Math.min(100,HIST.length?Math.round(autoC/HIST.length*100+(used<CFG.goal/4?20:0)):50);
+ const ring=$('effRing');ring.innerText=eff;ring.style.borderColor=eff>=70?'var(--g)':eff>=40?'var(--y)':'var(--r)';ring.style.color=eff>=70?'var(--g)':eff>=40?'var(--y)':'var(--r)';
+ $('effDesc').innerText=eff>=70?L('ممتاز — كفاءة عالية','Excellent — high efficiency'):eff>=40?L('جيد — يمكن التحسين','Good — room to improve'):L('ضعيف — فعّل الذكي','Weak — enable Auto');
+ const zu={};HIST.forEach(h=>{const zn=(h.src||'').replace('ZONE: ','');if(zn)zu[zn]=(zu[zn]||0)+1;});const tz=Object.entries(zu).sort((a,b)=>b[1]-a[1])[0];$('repTopZone').innerText=tz?tz[0]+' ('+tz[1]+')':'—';
+ const hu=Array(24).fill(0);HIST.forEach(h=>{hu[new Date(h.ts).getHours()]++;});$('repPeakHr').innerText=hu.indexOf(Math.max(...hu))+':00';
+ const du=Array(7).fill(0);HIST.forEach(h=>{du[(new Date(h.ts).getDay()+1)%7]++;});$('repPeakDay').innerText=DAYSL()[du.indexOf(Math.max(...du))]||'—';
+ $('repAvgDur').innerText=HIST.length?fmt(HIST.reduce((a,h)=>a+h.dur,0)/HIST.length)+' s':'—';
  $('repAutoP').innerText=HIST.length?Math.round(autoC/HIST.length*100)+'%':'—';
- const srcCount={};HIST.forEach(h=>{srcCount[h.src]=(srcCount[h.src]||0)+1;});
- $('repDist').innerHTML=Object.entries(srcCount).map(([k,v])=>`<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px dashed var(--line);font-size:12px"><span>${esc(k)}</span><b>${v}</b></div>`).join('')||'—';
- $('histList').innerHTML=HIST.slice(0,20).map(h=>`<div class="nitem"><div class="ic" style="background:var(--gl)">💧</div><div><b>${esc(h.src)}</b><div style="color:var(--mut);font-size:12px">${fmt(h.liters,1)} L • ${h.dur}s</div></div><span class="tm">${new Date(h.ts).toLocaleTimeString('ar',{hour:'2-digit',minute:'2-digit'})}</span></div>`).join('')||'<div class="card">🎉</div>';}
-/* ═══ تنبيهات محسّنة ═══ */
-function renderNotif(){
- $('nAll').innerText=NOTIF.length;$('nWarn').innerText=NOTIF.filter(x=>x.lv===2).length;$('nErr').innerText=NOTIF.filter(x=>x.lv===3).length;
+ const sc={};HIST.forEach(h=>{sc[h.src]=(sc[h.src]||0)+1;});$('repDist').innerHTML=Object.entries(sc).map(([k,v])=>`<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px dashed var(--line);font-size:12px"><span>${esc(k)}</span><b>${v}</b></div>`).join('')||'—';
+ $('histList').innerHTML=HIST.slice(0,20).map(h=>`<div class="nitem"><div class="ic" style="background:var(--gl)">💧</div><div><b>${esc(h.src)}</b><div style="color:var(--mut);font-size:12px">${fmt(h.liters,1)} L • ${h.dur}s</div></div><span class="tm">${new Date(h.ts).toLocaleTimeString(LANG==='ar'?'ar':'en',{hour:'2-digit',minute:'2-digit'})}</span></div>`).join('')||'<div class="card">🎉</div>';}
+function renderNotif(){$('nAll').innerText=NOTIF.length;$('nWarn').innerText=NOTIF.filter(x=>x.lv===2).length;$('nErr').innerText=NOTIF.filter(x=>x.lv===3).length;
  const fl=NOTIF.filter(x=>NF==='all'||(NF==='warn'&&x.lv===2)||(NF==='err'&&x.lv===3));
- $('notifList').innerHTML=fl.map(x=>{const ic=x.lv===3?['❌','#fee2e2']:x.lv===2?['⚠️','#fef9c3']:['ℹ️','#dbeafe'];
-  return `<div class="nitem${x.un?' unread':''}"><div class="ic" style="background:${ic[1]}">${ic[0]}</div><div><b>${esc(x.t)}</b><div style="color:var(--mut);font-size:12px;margin-top:3px">${esc(x.d)}</div></div><span class="tm">${ago(x.ts)}</span></div>`;}).join('')||'<div class="card" style="text-align:center">🎉 لا تنبيهات</div>';
- updBadge();}
+ $('notifList').innerHTML=fl.map(x=>{const ic=x.lv===3?['❌','#fee2e2']:x.lv===2?['⚠️','#fef9c3']:['ℹ️','#dbeafe'];return `<div class="nitem${x.un?' unread':''}"><div class="ic" style="background:${ic[1]}">${ic[0]}</div><div><b>${esc(x.t)}</b><div style="color:var(--mut);font-size:12px;margin-top:3px">${esc(x.d)}</div></div><span class="tm">${ago(x.ts)}</span></div>`;}).join('')||`<div class="card" style="text-align:center">🎉 ${L('لا تنبيهات','No alerts')}</div>`;updBadge();}
 function markRead(){NOTIF.forEach(x=>x.un=false);sset('rn',JSON.stringify(NOTIF));renderAll();}
 function clearNotif(){NOTIF=[];sset('rn','[]');renderAll();}
 function setNF(f){NF=f;renderAll();}
-/* ═══ طقس ═══ */
 const emo=c=>({Clear:'☀️',Clouds:'⛅',Rain:'🌧️',Drizzle:'🌦️',Thunderstorm:'⛈️',Snow:'❄️',Mist:'🌫️'}[c]||'🌤️');
 function refreshWeather(){demoWeather();renderWeather();}
-function demoWeather(){WDATA={city:'الدوحة',temp:38,feels:41,cond:'مشمس',main:'Clear',hum:35,clouds:10,wind:14,rain:0,deg:315,rise:null,set:null,hourly:[0,3,6,9,12,15].map(o=>({time:new Date(Date.now()+o*3600000).toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit'}),temp:38+Math.round(Math.sin(o/5)*4),main:'Clear'})),fc:[{day:'1',t:39,tm:28,main:'Clear'},{day:'2',t:40,tm:29,main:'Clear'},{day:'3',t:38,tm:28,main:'Clouds'},{day:'4',t:37,tm:27,main:'Clouds'},{day:'5',t:39,tm:28,main:'Clear'}]};}
-function renderWeather(){if(!WDATA)return;const w=WDATA;$('wCity').innerText=esc(w.city);$('wTemp').innerText=fT(w.temp);$('wCond').innerText=esc(w.cond);$('wEmo').innerText=emo(w.main);$('wHum').innerText=w.hum+'%';$('wFeels').innerText=fT(w.feels)+'°';$('wWind').innerText=w.wind;$('wClouds').innerText=w.clouds+'%';$('wRain').innerText=w.rain+'%';$('wDir').innerText=['شمالية','ش شرقية','شرقية','ج شرقية','جنوبية','ج غربية','غربية','ش غربية'][Math.round(w.deg/45)%8]||'—';$('wDate').innerText=new Date().toLocaleDateString('ar',{weekday:'long',day:'numeric',month:'long'});let p=Math.max(0,Math.min(1,(new Date().getHours()-5.5)/13));$('dayBar').style.width=(p*100)+'%';$('wHourly').innerHTML=(w.hourly||[]).map(h=>`<div class="fcard" style="min-width:88px"><small>${esc(h.time)}</small><div class="e">${emo(h.main)}</div><b>${fT(h.temp)}°</b></div>`).join('');const r=[];if(w.rain>=40)r.push('🌧️ أمطار: خفّض الري');if(w.temp>=38)r.push('🥵 حر: رِ ليلاً');if(!r.length)r.push('✅ مثالي');$('wRecs').innerHTML=r.map(x=>`<div class="tip">${esc(x)}</div>`).join('');const suit=Math.max(0,Math.min(100,100-w.rain-Math.max(0,w.temp-40)*3));$('wSuit').innerText=(suit>60?'✔ ':'⚠ ')+suit+'%';$('wForecast').innerHTML=(w.fc||[]).map(f=>`<div class="fcard"><b>${esc(f.day)}</b><div class="e">${emo(f.main)}</div><div><b>${fT(f.t)}°</b> <small>${fT(f.tm)}°</small></div></div>`).join('');}
-/* ═══ مركز القرار ═══ */
-function drawGauge(v){const cv=$('gauge');if(!cv)return;const c=cv.getContext('2d');const cx=65,cy=65,r=52;c.clearRect(0,0,130,130);const a0=Math.PI*0.75,a1=Math.PI*2.25;c.lineWidth=12;c.lineCap='round';c.strokeStyle='rgba(128,128,128,.2)';c.beginPath();c.arc(cx,cy,r,a0,a1);c.stroke();const col=v>0.66?'#ef4444':v>0.33?'#f59e0b':'#10b981';c.strokeStyle=col;c.beginPath();c.arc(cx,cy,r,a0,a0+(a1-a0)*Math.max(0.02,Math.min(1,v)));c.stroke();c.fillStyle=col;c.font='bold 24px Segoe UI';c.textAlign='center';c.fillText(fmt(v*100)+'%',cx,cy+4);c.fillStyle='rgba(128,128,128,.9)';c.font='10px Segoe UI';c.fillText('حاجة الري',cx,cy+22);}
+function demoWeather(){WDATA={city:LANG==='ar'?'الدوحة':'Doha',temp:38,feels:41,cond:L('مشمس','Sunny'),main:'Clear',hum:35,clouds:10,wind:14,rain:0,deg:315,hourly:[0,3,6,9,12,15].map(o=>({time:new Date(Date.now()+o*3600000).toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit'}),temp:38+Math.round(Math.sin(o/5)*4),main:'Clear'})),fc:[{day:'1',t:39,tm:28,main:'Clear'},{day:'2',t:40,tm:29,main:'Clear'},{day:'3',t:38,tm:28,main:'Clouds'},{day:'4',t:37,tm:27,main:'Clouds'},{day:'5',t:39,tm:28,main:'Clear'}]};}
+function renderWeather(){if(!WDATA)return;const w=WDATA;$('wCity').innerText=esc(w.city);$('wTemp').innerText=fT(w.temp);$('wCond').innerText=esc(w.cond);$('wEmo').innerText=emo(w.main);$('wHum').innerText=w.hum+'%';$('wFeels').innerText=fT(w.feels)+'°';$('wWind').innerText=w.wind+' km/h';$('wClouds').innerText=w.clouds+'%';$('wRain').innerText=w.rain+'%';
+ $('wDir').innerText=(LANG==='ar'?['شمالية','ش شرقية','شرقية','ج شرقية','جنوبية','ج غربية','غربية','ش غربية']:['N','NE','E','SE','S','SW','W','NW'])[Math.round(w.deg/45)%8]||'—';
+ $('wDate').innerText=new Date().toLocaleDateString(LANG==='ar'?'ar':'en',{weekday:'long',day:'numeric',month:'long'});
+ $('dayBar').style.width=(Math.max(0,Math.min(1,(new Date().getHours()-5.5)/13))*100)+'%';
+ $('wHourly').innerHTML=(w.hourly||[]).map(h=>`<div class="fcard" style="min-width:88px"><small>${esc(h.time)}</small><div class="e">${emo(h.main)}</div><b>${fT(h.temp)}°</b></div>`).join('');
+ const r=[];if(w.rain>=40)r.push(L('🌧️ أمطار: خفّض الري','🌧️ Rain: cut irrigation'));if(w.temp>=38)r.push(L('🥵 حر: رِ ليلاً','🥵 Heat: irrigate at night'));if(!r.length)r.push(L('✅ مثالي','✅ Ideal'));
+ $('wRecs').innerHTML=r.map(x=>`<div class="tip">${esc(x)}</div>`).join('');
+ const suit=Math.max(0,Math.min(100,100-w.rain-Math.max(0,w.temp-40)*3));$('wSuit').innerText=(suit>60?'✔ ':'⚠ ')+suit+'%';
+ $('wForecast').innerHTML=(w.fc||[]).map(f=>`<div class="fcard"><b>${esc(f.day)}</b><div class="e">${emo(f.main)}</div><div><b>${fT(f.t)}°</b> <small>${fT(f.tm)}°</small></div></div>`).join('');}
+function drawGauge(v){const cv=$('gauge');if(!cv)return;const c=cv.getContext('2d');c.clearRect(0,0,130,130);const a0=Math.PI*0.75,a1=Math.PI*2.25;c.lineWidth=12;c.lineCap='round';c.strokeStyle='rgba(128,128,128,.2)';c.beginPath();c.arc(65,65,52,a0,a1);c.stroke();const col=v>0.66?'#ef4444':v>0.33?'#f59e0b':'#10b981';c.strokeStyle=col;c.beginPath();c.arc(65,65,52,a0,a0+(a1-a0)*Math.max(0.02,Math.min(1,v)));c.stroke();c.fillStyle=col;c.font='bold 24px Segoe UI';c.textAlign='center';c.fillText(fmt(v*100)+'%',65,69);c.fillStyle='rgba(128,128,128,.9)';c.font='9px Segoe UI';c.fillText(L('حاجة الري','NEED'),65,87);}
 function facChip(ic,lb,w){const col=w>0.66?'#ef4444':w>0.33?'#f59e0b':'#10b981';return `<div style="display:flex;justify-content:space-between;font-size:12px;padding:4px 0;border-bottom:1px dashed var(--line)"><span>${ic} ${esc(lb)}</span><b style="color:${col}">${fmt(w*100)}%</b></div>`;}
-function renderDecision(){$('dcTitle').innerText='مركز القرار';const deficit=Math.max(0,S.target-S.soil)/50;const heat=Math.max(0,Math.min(1,(S.temp-25)/15));const dry=Math.max(0,Math.min(1,A.dry/20));const rain=S.rain?1:0;const tankRisk=1-(S.water/100);const need=Math.max(0,Math.min(1,A.need||deficit));drawGauge(need);$('factors').innerHTML=facChip('🌱','عجز الرطوبة',deficit)+facChip('🌡️','إجهاد حراري',heat*0.6)+facChip('📉','سرعة الجفاف',dry*0.6)+facChip('🌧️','مطر',rain)+facChip('🪣','خطر الخزان',tankRisk);const el=$('nextIrr');if(S.water<=10){el.className='pill r';el.innerText='⛔ لا ري: الخزان فارغ!';}else if(S.rain){el.className='pill g';el.innerText='🌧 مؤجل: أمطار';}else if(need>=(CFG.sens||0.55)){el.className='pill r';el.innerText='💧 الري الآن';}else{const floor=S.target-8,room=S.soil-floor;const hrs=A.dry>0.2?room/A.dry:99;el.className='pill g';el.innerText=hrs>=99?'✅ لا ري متوقع قريباً':`⏳ الري بعد ~${fmt(hrs,1)} ساعة`;}}
-/* ═══ المساعد ═══ */
-const KB=[['نخيل|تمر','ربيعاً/خريفاً','7-14 يوم','شمس كاملة','طمية','50°','سوسة النخيل','بوتاسيوم ربيعاً'],['طماطم','شتوي','2-3 أيام','شمس','طمية غنية','18-30°','اللفحة','أوتاد'],['خيار','شتوي','يومياً','جزئية','طمية','20-32°','البياض','اجنِه صغيراً'],['نعناع','دائماً','1-2 يوم','جزئية','طمية','15-35°','الصدأ','أصيص منفصل'],['مونستيرا','داخلي','أسبوعياً','غير مباشرة','بتموس','18-30°','اصفرار','امسح الغبار'],['فيكس','داخلي','4-5 أيام','جزئية','طمية','18-38°','تساقط','لا تنقله']];
-const CAL={1:'البازلاء والفول',2:'البطيخ والشمام',3:'البامية والريحان',9:'الخس والجزر',10:'الطماطم والخيار',11:'البصل والسبانخ',12:'الفجل والثوم'};
-const MN=['يناير','فبراير','مارس','ابريل','مايو','يونيو','يوليو','اغسطس','سبتمبر','اكتوبر','نوفمبر','ديسمبر'];
-function toggleAssistant(){$('chatPanel').classList.toggle('hidden');if(!$('chatBody').children.length){addMsg('b','مرحباً! 🌱 اسألني عن نبتة أو موسم أو شغّل الري بصوتك.');buildChips();}}
-function buildChips(){$('chips').innerHTML='';['ماذا أزرع في نوفمبر؟','حدثني عن النخيل','اسقِ 20 ثانية'].forEach(q=>{const s=document.createElement('span');s.className='chip';s.innerText=q;s.addEventListener('click',()=>handleQuery(q));$('chips').appendChild(s);});}
+function renderDecision(){const deficit=Math.max(0,S.target-S.soil)/50;const heat=Math.max(0,Math.min(1,(S.temp-25)/15));const dry=Math.max(0,Math.min(1,A.dry/20));const rain=S.rain?1:0;const tankRisk=1-(S.water/100);const need=Math.max(0,Math.min(1,A.need||deficit));drawGauge(need);
+ $('factors').innerHTML=facChip('🌱',L('عجز الرطوبة','Moisture deficit'),deficit)+facChip('🌡️',L('إجهاد حراري','Heat stress'),heat*0.6)+facChip('📉',L('سرعة الجفاف','Drying rate'),dry*0.6)+facChip('🌧️',L('مطر','Rain'),rain)+facChip('🪣',L('خطر الخزان','Tank risk'),tankRisk);
+ const el=$('nextIrr');if(S.water<=10){el.className='pill r';el.innerText=L('⛔ لا ري: الخزان فارغ!','⛔ No irrigation: tank empty!');}else if(S.rain){el.className='pill g';el.innerText=L('🌧 مؤجل: أمطار','🌧 Postponed: rain');}else if(need>=(CFG.sens||0.55)){el.className='pill r';el.innerText=L('💧 الري الآن','💧 Irrigating now');}else{const hrs=A.dry>0.2?(S.soil-(S.target-8))/A.dry:99;el.className='pill g';el.innerText=hrs>=99?L('✅ لا ري قريباً','✅ No irrigation soon'):L(`⏳ الري بعد ~${fmt(hrs,1)} ساعة`,`⏳ Next in ~${fmt(hrs,1)}h`);}}
+const KB=[{k:'نخيل|تمر',ke:'palm|date',ar:'نخيل التمر: الري كل 7-14 يوماً. شمس كاملة. تربة طمية. يتحمل 50°. انتبه لسوسة النخيل. بوتاسيوم ربيعاً.',en:'Date palm: water every 7-14 days. Full sun. Loam soil. Tolerates 50°C. Watch red weevil. Potassium in spring.'},
+{k:'طماطم|بندوره',ke:'tomato',ar:'طماطم: شتوي. ري كل 2-3 أيام. شمس. تربة غنية. مشكلة اللفحة. ادعمها بأوتاد.',en:'Tomato: winter crop. Water every 2-3 days. Full sun. Rich soil. Watch blight. Stake it.'},
+{k:'نعناع',ke:'mint',ar:'نعناع: دائم. ري كل 1-2 يوم. ظل جزئي. أصيص منفصل لأنه منتشر.',en:'Mint: perennial. Water every 1-2 days. Partial shade. Separate pot — it spreads.'},
+{k:'مونستيرا',ke:'monstera',ar:'مونستيرا: داخلي. ري أسبوعي. إضاءة غير مباشرة. امسح الغبار عن الأوراق.',en:'Monstera: indoor. Weekly water. Indirect light. Wipe leaf dust.'},
+{k:'فيكس',ke:'ficus',ar:'فيكس: داخلي. ري كل 4-5 أيام. لا تنقله كثيراً — يتساقط عند الصدمة.',en:'Ficus: indoor. Water every 4-5 days. Avoid moving it — drops leaves on shock.'}];
+const CAL=()=>LANG==='ar'?{1:'البازلاء والفول',2:'البطيخ والشمام',3:'البامية والريحان',9:'الخس والجزر',10:'الطماطم والخيار',11:'البصل والسبانخ',12:'الفجل والثوم'}:{1:'Peas & beans',2:'Watermelon & melon',3:'Okra & basil',9:'Lettuce & carrot',10:'Tomato & cucumber',11:'Onion & spinach',12:'Radish & garlic'};
+function toggleAssistant(){$('chatPanel').classList.toggle('hidden');if(!$('chatBody').children.length){addMsg('b',L('مرحباً! 🌱 اسألني عن نبتة أو موسم أو شغّل الري بصوتك.','Hi! 🌱 Ask about a plant, season, or command irrigation by voice.'));buildChips();}}
+function buildChips(){$('chips').innerHTML='';(LANG==='ar'?['ماذا أزرع في نوفمبر؟','حدثني عن النخيل','اسقِ 20 ثانية']:['What to plant in November?','Tell me about palms','Water 20s']).forEach(q=>{const s=document.createElement('span');s.className='chip';s.innerText=q;s.addEventListener('click',()=>handleQuery(q));$('chips').appendChild(s);});}
 function addMsg(w,txt){const d=document.createElement('div');d.className='msg '+w;d.innerText=txt;$('chatBody').appendChild(d);$('chatBody').scrollTop=$('chatBody').scrollHeight;}
-function toggleListen(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR)return toast('🎤 اكتب بدلاً','#f59e0b');if(listening&&REC){REC.stop();return;}REC=new SR();REC.lang='ar-SA';REC.onstart=()=>{listening=true;$('micBtn').classList.add('on');};REC.onend=()=>{listening=false;$('micBtn').classList.remove('on');};REC.onerror=()=>toast('⚠️','#f59e0b');REC.onresult=e=>handleQuery(e.results[0][0].transcript);REC.start();}
+function toggleListen(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR)return toast('🎤 '+L('اكتب بدلاً','Type instead'),'#f59e0b');if(listening&&REC){REC.stop();return;}REC=new SR();REC.lang=LANG==='ar'?'ar-SA':'en-US';REC.onstart=()=>{listening=true;$('micBtn').classList.add('on');};REC.onend=()=>{listening=false;$('micBtn').classList.remove('on');};REC.onerror=()=>toast('⚠️','#f59e0b');REC.onresult=e=>handleQuery(e.results[0][0].transcript);REC.start();}
 function sendChat(){const q=$('chatText').value.trim();if(!q)return;$('chatText').value='';handleQuery(q);}
 const norm=s=>lat(s).replace(/[أإآ]/g,'ا').replace(/ى/g,'ي').replace(/ة/g,'ه').toLowerCase();
-function handleQuery(q){addMsg('u',q);const n=norm(q);let ans='';const num=(lat(q).match(/\d+/)||[])[0];
- if(/اسق|شغل|water/.test(n)){const d=+num||15;irrigate(d);ans=`تم الري ${d} ثانية 💧`;}
+function handleQuery(q){addMsg('u',q);const n=norm(q).toLowerCase();let ans='';const num=(lat(q).match(/\d+/)||[])[0];
+ if(/اسق|شغل|water|irrigat/.test(n)){const d=+num||15;irrigate(d);ans=L(`تم الري ${d} ثانية 💧`,`Irrigating ${d}s 💧`);}
  else if(/اوقف|stop/.test(n)){stopPump();ans='⏹';}
- else if(/حاله|status/.test(n))ans=`التربة ${fmt(S.soil)}%، الخزان ${fmt(S.water)}%، ${fT(S.temp)}°`;
- else if(/ماذا ازرع/.test(n)){const m=new Date().getMonth()+1;ans=`في ${MN[m-1]}: ${CAL[m]||'اسأل عن شهر محدد'}`;}
- else{const e=KB.find(e=>e[0].split('|').some(k=>n.includes(norm(k))));
-  if(e)ans=`${e[0].split('|')[0]}: الموسم ${e[1]}. الري: ${e[2]}. الضوء: ${e[3]}. التربة: ${e[4]}. يتحمل ${e[5]}. مشكلة: ${e[6]}. نصيحة: ${e[7]}.`;
-  else ans='أخبرني أكثر — داخلي أم خارجي؟';}
+ else if(/حاله|status/.test(n))ans=L(`التربة ${fmt(S.soil)}%، الخزان ${fmt(S.water)}%، ${fT(S.temp)}°`,`Soil ${fmt(S.soil)}%, tank ${fmt(S.water)}%, ${fT(S.temp)}°`);
+ else if(/ماذا ازرع|plant/.test(n)){const m=new Date().getMonth()+1;ans=L(`في ${MN()[m-1]}: ${CAL()[m]||'اسأل عن شهر محدد'}`,`In ${MN()[m-1]}: ${CAL()[m]||'ask a specific month'}`);}
+ else{const e=KB.find(e=>(LANG==='ar'?e.k:e.ke).split('|').some(k=>n.includes(norm(k))));
+  if(e)ans=LANG==='ar'?e.ar:e.en;
+  else ans=L('أخبرني أكثر — داخلي أم خارجي؟','Tell me more — indoor or outdoor?');}
  addMsg('b',ans);speak(ans);}
-/* ═══ تصدير ═══ */
 function dl(c,n,ty){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([c],{type:ty}));a.download=n;a.click();}
 function csvEsc(v){v=String(v??'');return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;}
 function exportCSV(){let c='time,dur,liters,source\n';HIST.forEach(h=>c+=new Date(h.ts).toISOString()+','+h.dur+','+(+h.liters).toFixed(1)+','+csvEsc(h.src)+'\n');dl(c,'rayhan.csv','text/csv');}
 function exportJSON(){dl(JSON.stringify({history:HIST,zones:ZONES,schedules:SCHED},null,2),'rayhan.json','application/json');}
-/* ═══ عرض ═══ */
 let pendR=false;
 function renderAll(){if(pendR)return;pendR=true;requestAnimationFrame(()=>{pendR=false;renderNow();});}
 function renderNow(){
  $('soil').innerText=fmt(S.soil)+'%';$('soilBar').style.width=Math.min(100,S.soil)+'%';$('water').innerText=fmt(S.water)+'%';$('waterBar').style.width=Math.min(100,S.water)+'%';
  $('temp').innerText=fT(S.temp)+'°';$('hum').innerText=fmt(S.hum)+'%';$('tgt').innerText=S.target;$('tgtVal').innerText=S.target;$('rng').value=S.target;
- $('rain').innerText=S.rain?'🌧️ ممطر':'☀️ جاف';
+ $('rain').innerText=S.rain?('🌧️ '+L('ممطر','Rain')):('☀️ '+L('جاف','Dry'));
  $('conf').innerText=fmt(A.conf*100)+'%';$('need').innerText=fmt(A.need*100)+'%';$('dry').innerText=fmt(A.dry,1);$('reason').innerText=A.reason;
  $('sensV').innerText=Math.round(CFG.sens*100)+'%';$('sensR').value=Math.round(CFG.sens*100);
  ['m0','m1','m2'].forEach((id,i)=>$(id).className=(S.mode===i?'on':''));
- const ps=$('pumpSt');ps.className='pump'+(P.running?' on':'');ps.innerText=P.running?('تعمل — '+P.remaining+'s'):'متوقفة';
- if(!$('selPlant').options.length){$('selPlant').innerHTML=PLANTS.map((p,i)=>`<option value="${i}">${esc(p[0])} — ${p[1]}%</option>`).join('');$('selSoil').innerHTML=SOILS.map((s,i)=>`<option value="${i}">${esc(s)}</option>`).join('');$('zPlant').innerHTML=PLANTS.map((p,i)=>`<option value="${i}">${esc(p[0])}</option>`).join('');$('zSoil').innerHTML=SOILS.map((s,i)=>`<option value="${i}">${esc(s)}</option>`).join('');}
- const used=HIST.reduce((a,h)=>a+(+h.liters||0),0);
- const m=Math.floor((Date.now()-T0)/60000);$('upT').innerText=m<60?m+' min':Math.floor(m/60)+'h '+(m%60)+'m';
+ const ps=$('pumpSt');ps.className='pump'+(P.running?' on':'');ps.innerText=P.running?(L('تعمل — ','Running — ')+P.remaining+'s'):L('متوقفة','Stopped');
+ if(!$('selPlant').options.length){$('selPlant').innerHTML=PLANTS.map((p,i)=>`<option value="${i}">${esc(p[0])} ${esc(p[1])} — ${p[2]}%</option>`).join('');$('selSoil').innerHTML=SOILS().map((s,i)=>`<option value="${i}">${esc(s)}</option>`).join('');$('zPlant').innerHTML=PLANTS.map((p,i)=>`<option value="${i}">${esc(p[0])} ${esc(p[1])}</option>`).join('');$('zSoil').innerHTML=SOILS().map((s,i)=>`<option value="${i}">${esc(s)}</option>`).join('');}
+ const used=HIST.reduce((a,h)=>a+(+h.liters||0),0);const m=Math.floor((Date.now()-T0)/60000);
+ $('upT').innerText=m<60?m+' min':Math.floor(m/60)+'h '+(m%60)+'m';
  $('qOps').innerText=HIST.length;$('qSaved').innerText=fmt(used*0.18)+' L';
  renderDecision();renderZones();renderSched();renderCons();renderReports();renderNotif();renderWeather();}
 function logIrr(dur,src){HIST.unshift({ts:Date.now(),dur,liters:dur*CFG.flow/60,src});HIST=HIST.slice(0,100);sset('rh',JSON.stringify(HIST));beep();}
-/* ═══ إعدادات ═══ */
-function applyLang(){document.documentElement.lang=LANG;document.documentElement.dir=LANG==='ar'?'rtl':'ltr';$('lgBtn').innerText=LANG==='ar'?'EN':'ع';$('sLang').value=LANG;}
+function applyLang(){document.documentElement.lang=LANG;document.documentElement.dir=LANG==='ar'?'rtl':'ltr';document.querySelectorAll('[data-t]').forEach(e=>e.innerText=t(e.dataset.t));document.querySelectorAll('[data-tp]').forEach(e=>e.placeholder=t(e.dataset.tp));$('lgBtn').innerText=LANG==='ar'?'EN':'ع';$('sLang').value=LANG;}
 function setLang(l){LANG=l;sset('rl',l);applyLang();renderAll();}
 function toggleLang(){setLang(LANG==='ar'?'en':'ar');}
 function applyTheme(){document.body.classList.toggle('dark',THEME==='dark');$('thBtn').innerText=THEME==='dark'?'☀️':'🌙';$('sTheme').value=THEME;}
@@ -520,13 +478,12 @@ function toggleConn(){$('connPanel').classList.toggle('show');}
 function loadCfgUI(){$('sToken').value=CFG.token;$('sMqttS').value=CFG.mqttS;$('sMqttP').value=CFG.mqttP;$('sOwm').value=CFG.owm;$('sCity').value=CFG.city;$('sCost').value=CFG.cost;$('sFlow').value=CFG.flow;$('sUnit').value=CFG.unit;}
 function saveCfgUI(){CFG.token=$('sToken').value||CFG.token;sset('rtk',obf(CFG.token));CFG.mqttS=$('sMqttS').value;CFG.mqttP=$('sMqttP').value;CFG.owm=$('sOwm').value;CFG.city=$('sCity').value;CFG.cost=+$('sCost').value||0.15;CFG.flow=+$('sFlow').value||10;save();refreshWeather();renderAll();toast('💾');}
 function go(p,el){document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));el.classList.add('on');document.querySelectorAll('main>section').forEach(s=>s.classList.add('hidden'));$('pg-'+p).classList.remove('hidden');if(p==='notif')markRead();renderAll();}
-/* ═══ تجريبي ═══ */
-function startDemo(){$('connPanel').classList.remove('show');MODE='demo';BASE='';$('connTxt').innerText='تجريبي';$('dot').style.background='#f59e0b';demoWeather();renderAll();}
+function startDemo(){$('connPanel').classList.remove('show');MODE='demo';BASE='';$('connTxt').innerText=L('تجريبي','Demo');$('dot').style.background='#f59e0b';demoWeather();renderAll();}
 setInterval(()=>{if(MODE!=='demo')return;
  if(P.running){P.remaining--;S.soil=Math.min(100,S.soil+1.2);S.water=Math.max(0,S.water-0.7);if(P.remaining<=0||S.water<=5)P.running=false;}else S.soil=Math.max(0,S.soil-0.15);
  S.temp=Math.max(20,Math.min(48,S.temp+(Math.random()-.5)*.3));S.hum=Math.max(15,Math.min(90,S.hum+(Math.random()-.5)));
  A.need=Math.max(0,Math.min(1,(S.target-S.soil)/50));A.conf=.55+A.need*.4;A.dry=1.8+Math.random();A.reason=A.need>=CFG.sens?'DEFICIT':'OK_NO_NEED';
- if(S.mode===0&&!P.running&&A.need>=CFG.sens+0.05&&S.water>10){P.running=true;P.remaining=20;logIrr(20,'AUTO');notify('🤖 ري تلقائي','الذكاء قرر الري 20ث',1);}
+ if(S.mode===0&&!P.running&&A.need>=CFG.sens+0.05&&S.water>10){P.running=true;P.remaining=20;logIrr(20,'AUTO');notify(L('🤖 ري تلقائي','🤖 Auto irrigation'),'20s',1);}
  renderAll();},1000);
 function demoAct(p,b){if(p.includes('irrigate')){P.running=true;P.remaining=b.duration_sec;toast('✅ '+b.duration_sec+'s');}else if(p.includes('emergency')){P.running=false;S.mode=1;}else if(p.includes('stop'))P.running=false;else if(p.includes('mode'))S.mode=b.mode;else if(p.includes('target'))S.target=b.target_moisture;renderAll();}
 window.addEventListener('load',()=>{
