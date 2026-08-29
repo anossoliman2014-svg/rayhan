@@ -10,6 +10,14 @@
 body.dark{--bg:#0b1220;--card:#151e2e;--txt:#e5e7eb;--mut:#8fa3bf;--line:#243247;--gl:rgba(16,185,129,.15)}
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',Tahoma,sans-serif}
 body{display:flex;min-height:100vh;background:var(--bg);color:var(--txt);transition:background .4s}
+/* ═══ وضعية الهاتف اليدوية (زر 📱) ══ */
+body.phone{flex-direction:column}
+body.phone aside{width:100%;height:auto;flex-direction:row;align-items:center;overflow-x:auto;position:static;padding:10px}
+body.phone nav{display:flex;gap:4px}
+body.phone main{padding:16px}
+body.phone .grid2{grid-template-columns:1fr}
+body.phone .logo small{display:none}
+body.phone .stat small{display:none}
 #splash{position:fixed;inset:0;z-index:100;background:linear-gradient(135deg,#ecfdf5,#e0f2fe);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;transition:opacity .7s}
 body.dark #splash{background:linear-gradient(135deg,#06281e,#0b1220)}
 #splash.done{opacity:0;visibility:hidden}
@@ -33,7 +41,7 @@ aside{width:250px;background:var(--card);border-inline-end:1px solid var(--line)
 .quick{display:flex;gap:6px;margin-bottom:14px}
 .qbtn{flex:1;border:1px solid var(--line);background:var(--bg);border-radius:12px;padding:8px;cursor:pointer;font-size:14px}
 nav{flex:1}
-.ni{display:flex;align-items:center;gap:9px;padding:11px 12px;border-radius:13px;color:var(--mut);cursor:pointer;font-size:13px;font-weight:bold;margin-bottom:4px;transition:.2s;position:relative}
+.ni{display:flex;align-items:center;gap:9px;padding:11px 12px;border-radius:13px;color:var(--mut);cursor:pointer;font-size:13px;font-weight:bold;margin-bottom:4px;transition:.2s;position:relative;white-space:nowrap}
 .ni:hover{background:var(--gl);color:var(--gd)}
 .ni.on{background:linear-gradient(135deg,var(--g),var(--gd));color:#fff;box-shadow:0 6px 16px rgba(16,185,129,.35)}
 .ni .badge{position:absolute;left:8px;top:6px;width:18px;height:18px;border-radius:50%;background:var(--r);color:#fff;font-size:9px;display:flex;align-items:center;justify-content:center;font-weight:bold}
@@ -55,7 +63,7 @@ h1{color:var(--gd);font-size:26px}
 .bar{height:7px;background:var(--line);border-radius:5px;margin-top:8px;overflow:hidden}
 .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--g),#34d399);border-radius:5px;transition:width .6s}
 .grid2{display:grid;grid-template-columns:2fr 1fr;gap:16px}
-@media(max-width:900px){body{flex-direction:column}aside{width:100%;height:auto;flex-direction:row;align-items:center;overflow-x:auto}nav{display:flex;gap:4px}main{padding:16px}.grid2{grid-template-columns:1fr}}
+@media(max-width:900px){body{flex-direction:column}aside{width:100%;height:auto;flex-direction:row;align-items:center;overflow-x:auto;position:static;padding:10px}nav{display:flex;gap:4px}main{padding:16px}.grid2{grid-template-columns:1fr}.logo small{display:none}.stat small{display:none}}
 .bars{display:flex;align-items:flex-end;gap:14px;height:200px;padding:10px 4px}
 .bcol{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end}
 .bcol .b{width:70%;max-width:52px;background:linear-gradient(180deg,var(--g),#a7f3d0);border-radius:10px 10px 4px 4px;transition:height .8s}
@@ -69,7 +77,7 @@ h1{color:var(--gd);font-size:26px}
 .btn:active{transform:scale(.97)}
 .btn.g{background:linear-gradient(135deg,var(--g),var(--gd));color:#fff}
 .btn.o{background:var(--card);color:var(--txt);border:1px solid var(--line)}
-.btn.r{background:linear-gradient(135deg,#f87171,var(--r));color:#fff}
+.btn.r{background:linear-gradient(135deg,#f87171,var(--r});color:#fff}
 .btn.sm{padding:8px 14px;font-size:12px;border-radius:10px}
 .tgl{display:flex;background:var(--line);border-radius:14px;padding:4px;width:fit-content;margin-bottom:12px}
 .tgl div{padding:9px 18px;border-radius:11px;font-size:13px;font-weight:bold;color:var(--mut);cursor:pointer}
@@ -121,6 +129,7 @@ label{font-size:12px;color:var(--mut);font-weight:bold;display:block;margin-top:
 <aside>
   <div class="logo"><div class="ic">🌱</div><div><b data-t="app">ريحان</b><small>PRO DASHBOARD</small></div></div>
   <div class="quick">
+    <button class="qbtn" onclick="toggleView()" id="vwBtn" title="تبديل العرض">📱</button>
     <button class="qbtn" onclick="toggleTheme()" id="thBtn">🌙</button>
     <button class="qbtn" onclick="toggleLang()" id="lgBtn">EN</button>
     <button class="qbtn" onclick="toggleSnd()" id="sndBtn">🔔</button>
@@ -298,6 +307,10 @@ function sset(k,v){try{localStorage.setItem(k,v);}catch(e){}}
 const obf=s=>{try{return btoa(unescape(encodeURIComponent(s))).split('').reverse().join('');}catch(e){return s;}};
 const unobf=s=>{try{return decodeURIComponent(escape(atob(s.split('').reverse().join(''))));}catch(e){return s;}};
 function validHost(h){return /^(\d{1,3}\.){3}\d{1,3}$/.test(h)&&h.split('.').every(x=>+x<256)||/^[a-z0-9][a-z0-9.-]*\.local$/i.test(h);}
+/* ═══ تبديل العرض لابتوب/هاتف ═══ */
+let VIEW=sget('rv','auto');
+function applyView(){document.body.classList.toggle('phone',VIEW==='phone');const b=$('vwBtn');if(b)b.innerText=VIEW==='phone'?'💻':'';}
+function toggleView(){VIEW=(VIEW==='phone')?'auto':'phone';sset('rv',VIEW);applyView();toast(VIEW==='phone'?L('📱 وضعية الهاتف','📱 Phone mode'):L('💻 وضعية اللابتوب','💻 Desktop mode'));}
 const T={ar:{app:'ريحان',tag:'نظام الري الذكي المتكامل',nav_dash:'لوحة التحكم',nav_zones:'المناطق',nav_sched:'الجدولة',nav_cons:'الاستهلاك',nav_rep:'التقارير',nav_weather:'الطقس',nav_notif:'التنبيهات',nav_set:'الإعدادات',dash_sub:'مراقبة لحظية وتحكم كامل',auto:'ذكي',manual:'يدوي',sched:'جدول',soil:'رطوبة التربة',tank:'الخزان',temp:'الحرارة',hum:'رطوبة الجو',targetH:'الهدف',uptime:'التشغيل',ops:'عمليات',saved:'وفر الذكاء',dcenter:'مركز القرار',ai:'الذكاء',confH:'الثقة',need2:'الحاجة',dry2:'الجفاف',dec2:'القرار',sensH:'الحساسية',control:'التحكم',emg:'إيقاف طارئ',plantH:'النبات',soilH:'التربة',zones_sub:'تحكم مستقل لكل منطقة',zUsed:'إجمالي الري',zActive:'نشطة',zLast:'آخر ري',addZone:'إضافة منطقة',zNameP:'اسم المنطقة',r1:'ريليه 1',r2:'ريليه 2',add:'إضافة',sched_sub:'مواعيد الري بتكرار أسبوعي',schNext:'التالي',newSch:'جدول جديد',daysL:'أيام التكرار:',cons_sub:'تحليل حقيقي من سجل الري',today:'اليوم',week:'الأسبوع',avg:'المتوسط',cost:'التكلفة',weekChart:'الأسبوع',goalM:'الهدف الشهري',goalL:'الهدف (لتر)',proj:'الإسقاط الشهري',tipsL:'نصائح ذكية',rep_sub:'تحليلات وكفاءة النظام',effL:'نقاط الكفاءة',usedL:'المستهلك',analytics:'تحليلات',topZone:'أكثر منطقة رياً',peakHr:'ساعة الذروة',peakDay:'أكثر يوم',avgDur:'متوسط المدة',autoP:'نسبة الذكي',dist:'التوزيع',logL:'سجل الري',wSub:'بيانات حية لتعديل خطة الري',sunL:'الشمس',riseL:'شروق',setL:'غروب',windL:'الرياح',hoursL:'الساعات',recsL:'توصيات',fcL:'التوقعات',nSub:'سجل ذكي من أحداث النظام',fAll:'الكل',fWarn:'تحذيرات',fErr:'أخطاء',readL:'قراءة',set_sub:'تهيئة النظام',appearL:'المظهر',langL:'اللغة',themeL:'المظهر',unitL:'الحرارة',locL:'الموقع',secL:'الأمان',costFlow:'التكلفة والتدفق',saveL:'حفظ',cancelL:'إلغاء',asstT:'مساعد ريحان',asstS:'خبير نباتات — دون إنترنت',chatP:'اسأل الخبير...',connT:'الاتصال',connB:'اتصال',demoB:'تجريبي'},
 en:{app:'Rayhan',tag:'Integrated Smart Irrigation',nav_dash:'Dashboard',nav_zones:'Zones',nav_sched:'Scheduling',nav_cons:'Consumption',nav_rep:'Reports',nav_weather:'Weather',nav_notif:'Alerts',nav_set:'Settings',dash_sub:'Live monitoring & full control',auto:'Auto',manual:'Manual',sched:'Schedule',soil:'Soil Moisture',tank:'Tank',temp:'Temperature',hum:'Air Humidity',targetH:'Target',uptime:'Uptime',ops:'Operations',saved:'AI Savings',dcenter:'Decision Center',ai:'AI',confH:'Confidence',need2:'Need',dry2:'Drying',dec2:'Decision',sensH:'Sensitivity',control:'Control',emg:'Emergency Stop',plantH:'Plant',soilH:'Soil',zones_sub:'Independent per-zone control',zUsed:'Total irrigation',zActive:'Active',zLast:'Last irrigation',addZone:'Add zone',zNameP:'Zone name',r1:'Relay 1',r2:'Relay 2',add:'Add',sched_sub:'Weekly recurring schedules',schNext:'Next run',newSch:'New schedule',daysL:'Repeat days:',cons_sub:'Real analysis from log',today:'Today',week:'Week',avg:'Average',cost:'Cost',weekChart:'Week',goalM:'Monthly goal',goalL:'Goal (L)',proj:'Monthly projection',tipsL:'Smart tips',rep_sub:'Analytics & efficiency',effL:'Efficiency score',usedL:'Used',analytics:'Analytics',topZone:'Top irrigated zone',peakHr:'Peak hour',peakDay:'Peak day',avgDur:'Avg duration',autoP:'Auto ratio',dist:'Distribution',logL:'Irrigation log',wSub:'Live data to adjust irrigation',sunL:'Sun',riseL:'Sunrise',setL:'Sunset',windL:'Wind',hoursL:'Hours',recsL:'Recommendations',fcL:'Forecast',nSub:'Smart log from events',fAll:'All',fWarn:'Warnings',fErr:'Errors',readL:'Read',set_sub:'System setup',appearL:'Appearance',langL:'Language',themeL:'Theme',unitL:'Temperature',locL:'Location',secL:'Security',costFlow:'Cost & flow',saveL:'Save',cancelL:'Cancel',asstT:'Rayhan Assistant',asstS:'Plant expert — offline',chatP:'Ask the expert...',connT:'Connect',connB:'Connect',demoB:'Demo'}};
 const t=k=>(T[LANG]&&T[LANG][k])||k;
@@ -432,38 +445,15 @@ const CAL=()=>LANG==='ar'?{1:'البازلاء والفول',2:'البطيخ و�
 function toggleAssistant(){$('chatPanel').classList.toggle('hidden');if(!$('chatBody').children.length){addMsg('b',L('مرحباً! 🌱 اسألني عن نبتة أو موسم أو شغّل الري بصوتك.','Hi! 🌱 Ask about a plant, season, or command irrigation by voice.'));buildChips();}}
 function buildChips(){$('chips').innerHTML='';(LANG==='ar'?['ماذا أزرع في نوفمبر؟','حدثني عن النخيل','اسقِ 20 ثانية']:['What to plant in November?','Tell me about palms','Water 20s']).forEach(q=>{const s=document.createElement('span');s.className='chip';s.innerText=q;s.addEventListener('click',()=>handleQuery(q));$('chips').appendChild(s);});}
 function addMsg(w,txt){const d=document.createElement('div');d.className='msg '+w;d.innerText=txt;$('chatBody').appendChild(d);$('chatBody').scrollTop=$('chatBody').scrollHeight;}
-/* ═══ الاستماع المحسّن: ينتظر صمتك قبل الرد ═══ */
-function stopListening(fire){
-  clearTimeout(recTimer);clearTimeout(maxTimer);
-  const q=finalT.trim();
-  if(REC){try{REC.onresult=null;REC.onend=null;REC.stop();}catch(e){}REC=null;}
-  listening=false;$('micBtn').classList.remove('on');
-  if(fire&&q){$('chatText').value='';handleQuery(q);}
-}
-function toggleListen(){
-  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!SR)return toast('🎤 '+L('غير مدعوم','Not supported'),'#f59e0b');
-  if(listening){stopListening(true);return;}
-  try{speechSynthesis.cancel();}catch(e){}
-  finalT='';REC=new SR();REC.lang=LANG==='ar'?'ar-SA':'en-US';
-  REC.continuous=true;REC.interimResults=true;REC.maxAlternatives=1;
-  listening=true;$('micBtn').classList.add('on');
-  toast('🎤 '+L('أسمعك... أكمل كلامك','Listening... keep talking'));
-  REC.onstart=()=>{maxTimer=setTimeout(()=>stopListening(true),20000);};
-  REC.onresult=e=>{
-    let inter='';
-    for(let i=e.resultIndex;i<e.results.length;i++){
-      const r=e.results[i];
-      if(r.isFinal)finalT+=r[0].transcript+' ';else inter+=r[0].transcript+' ';
-    }
-    $('chatText').value=(finalT+inter).trim();
-    clearTimeout(recTimer);
-    recTimer=setTimeout(()=>stopListening(true),2000);
-  };
-  REC.onerror=ev=>{if(ev.error!=='aborted'&&ev.error!=='no-speech')toast('⚠️ '+ev.error,'#f59e0b');};
-  REC.onend=()=>{if(listening)stopListening(true);};
-  try{REC.start();}catch(e){listening=false;$('micBtn').classList.remove('on');}
-}
+function stopListening(fire){clearTimeout(recTimer);clearTimeout(maxTimer);const q=finalT.trim();if(REC){try{REC.onresult=null;REC.onend=null;REC.stop();}catch(e){}REC=null;}listening=false;$('micBtn').classList.remove('on');if(fire&&q){$('chatText').value='';handleQuery(q);}}
+function toggleListen(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR)return toast('🎤 '+L('غير مدعوم','Not supported'),'#f59e0b');if(listening){stopListening(true);return;}try{speechSynthesis.cancel();}catch(e){}
+ finalT='';REC=new SR();REC.lang=LANG==='ar'?'ar-SA':'en-US';REC.continuous=true;REC.interimResults=true;REC.maxAlternatives=1;
+ listening=true;$('micBtn').classList.add('on');toast('🎤 '+L('أسمعك... أكمل كلامك','Listening... keep talking'));
+ REC.onstart=()=>{maxTimer=setTimeout(()=>stopListening(true),20000);};
+ REC.onresult=e=>{let inter='';for(let i=e.resultIndex;i<e.results.length;i++){const r=e.results[i];if(r.isFinal)finalT+=r[0].transcript+' ';else inter+=r[0].transcript+' ';}$('chatText').value=(finalT+inter).trim();clearTimeout(recTimer);recTimer=setTimeout(()=>stopListening(true),2000);};
+ REC.onerror=ev=>{if(ev.error!=='aborted'&&ev.error!=='no-speech')toast('⚠️ '+ev.error,'#f59e0b');};
+ REC.onend=()=>{if(listening)stopListening(true);};
+ try{REC.start();}catch(e){listening=false;$('micBtn').classList.remove('on');}}
 function sendChat(){const q=$('chatText').value.trim();if(!q)return;$('chatText').value='';handleQuery(q);}
 const norm=s=>lat(s).replace(/[أإآ]/g,'ا').replace(/ى/g,'ي').replace(/ة/g,'ه').toLowerCase();
 function handleQuery(q){addMsg('u',q);const n=norm(q).toLowerCase();let ans='';const num=(lat(q).match(/\d+/)||[])[0];
@@ -498,7 +488,7 @@ function logIrr(dur,src){HIST.unshift({ts:Date.now(),dur,liters:dur*CFG.flow/60,
 function applyLang(){document.documentElement.lang=LANG;document.documentElement.dir=LANG==='ar'?'rtl':'ltr';document.querySelectorAll('[data-t]').forEach(e=>e.innerText=t(e.dataset.t));document.querySelectorAll('[data-tp]').forEach(e=>e.placeholder=t(e.dataset.tp));$('lgBtn').innerText=LANG==='ar'?'EN':'ع';$('sLang').value=LANG;}
 function setLang(l){LANG=l;sset('rl',l);applyLang();renderAll();}
 function toggleLang(){setLang(LANG==='ar'?'en':'ar');}
-function applyTheme(){document.body.classList.toggle('dark',THEME==='dark');$('thBtn').innerText=THEME==='dark'?'☀️':'🌙';$('sTheme').value=THEME;}
+function applyTheme(){document.body.classList.toggle('dark',THEME==='dark');$('thBtn').innerText=THEME==='dark'?'☀️':'';$('sTheme').value=THEME;}
 function setTheme(v){THEME=v;sset('rt',v);applyTheme();}
 function toggleTheme(){setTheme(THEME==='dark'?'light':'dark');}
 function applySnd(){$('sndBtn').innerText=SND?'🔔':'';}
@@ -517,7 +507,7 @@ setInterval(()=>{if(MODE!=='demo')return;
  renderAll();},1000);
 function demoAct(p,b){if(p.includes('irrigate')){P.running=true;P.remaining=b.duration_sec;toast('✅ '+b.duration_sec+'s');}else if(p.includes('emergency')){P.running=false;S.mode=1;}else if(p.includes('stop'))P.running=false;else if(p.includes('mode'))S.mode=b.mode;else if(p.includes('target'))S.target=b.target_moisture;renderAll();}
 window.addEventListener('load',()=>{
- applyLang();applyTheme();applySnd();loadCfgUI();updBadge();
+ applyLang();applyTheme();applySnd();applyView();loadCfgUI();updBadge();
  const saved=sget('rconn',null);
  if(saved){try{const c=JSON.parse(saved);if(c.host&&validHost(c.host)){BASE='http://'+c.host;MODE='live';startWS();}}catch(e){startDemo();}}else startDemo();
  renderAll();
